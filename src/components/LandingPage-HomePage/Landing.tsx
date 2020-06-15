@@ -7,6 +7,7 @@ import hazzleFree from '../../assets/LandingPage/miroodles-hazzleFree.png';
 import laptopHand from '../../assets/LandingPage/miroodles-laptop-hand.png';
 
 import { useSpring, animated } from 'react-spring'
+import { Link } from 'react-router-dom';
 
 interface Props {
     
@@ -41,7 +42,7 @@ const Landing : React.FC<Props> = ()=>{
 
             <div className="authDiv">
                 <ul className = "authUl">
-                    <li>Login</li>
+                    <li><Link to="/signin">Sign In</Link></li>
                     <li>|</li>
                     <li className="signUp">SignUp</li>
                 </ul>
