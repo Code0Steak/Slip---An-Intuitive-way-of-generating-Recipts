@@ -44,7 +44,7 @@ const Landing : React.FC<Props> = ()=>{
                 <ul className = "authUl">
                     <li><Link to="/signin">Sign In</Link></li>
                     <li>|</li>
-                    <li className="signUp">SignUp</li>
+                    <li className="signUp"><Link to="/signup">SignUp</Link></li>
                 </ul>
             </div>
 

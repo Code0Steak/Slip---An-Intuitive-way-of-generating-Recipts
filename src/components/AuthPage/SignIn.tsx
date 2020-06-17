@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react'
-import BackButton from '../../assets/AuthPage/keyboard-left-arrow-button.svg'
+import React from 'react'
+import BackButton from '../../assets/AuthPage/arrow-left.svg'
 
 interface Props {
     

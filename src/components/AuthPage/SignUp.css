@@ -1,0 +1,58 @@
+.signUpMain{
+    display: grid;
+
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 500px 5px auto;
+}
+
+.text{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    padding-left: 110px;
+
+}
+
+.back{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    padding-left: 110px;
+    padding-top: 500px;
+}
+
+.form{
+    grid-column-start: 2;
+    grid-column-end: auto;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    padding-left: 110px;
+    
+}
+
+
+
+input[type="text"]{
+    display: block;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 42px;
+
+    border: none;
+}
+
+input[type="submit"]{
+    display: block;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 42px;
+
+    border: none;
+    border-radius: 10px;
+}
