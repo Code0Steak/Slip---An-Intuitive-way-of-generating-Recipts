@@ -3,16 +3,21 @@ import { useSpring, animated } from 'react-spring'
 
 interface Props {
     displayString : string;
+    validate: () => any;
 }
 
-const Submit : React.FC<Props> = ({displayString}) => {
+const Submit : React.FC<Props> = ({displayString,validate}) => {
 
     const [state, toggle] = useState(true);
     const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 1000 } })
     
 
     return (
-             <div onClick = {() => toggle(!state)} className="newDataStore">
+             <div onClick = {() =>{
+                    toggle(!state);
+                    validate();
+                 }
+             } className="newDataStore">
 
                 <animated.div
                 style={{
