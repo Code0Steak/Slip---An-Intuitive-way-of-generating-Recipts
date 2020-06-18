@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import BackButton from '../../assets/AuthPage/arrow-left.svg'
 import './SignUp.css'
-import Submit from '../ReusableSubmitButton/Submit'
-import SnackErrorAlert from '../Alerts/SnackErrorAlert'
+import Submit from '../ReusableSubmitButton/Submit';
+import SnackErrorAlert from '../Alerts/SnackErrorAlert';
+import { Link } from 'react-router-dom';
+
 
 interface Props {
     
@@ -16,6 +18,23 @@ const SignUp : React.FC<Props> = () => {
     const [pass,setPass] = useState("");
     const [confirmPass,setConfirmPass] = useState("");
 
+    //Snackbar declarations
+    const [open,setOpen] = useState(false);
+    const [displayMessage,setDisplayMessage] = useState('');
+    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+        setDisplayMessage('');
+        setErrorType('');
+      };
+    const [errorType,setErrorType] = useState('');
+   
+    //Regex for validation
+    const emailRegex = /'^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'/;
+    const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
     return (
         <div className = "signUpMain">
@@ -25,6 +44,7 @@ const SignUp : React.FC<Props> = () => {
                     <li>to</li>
                 </ul>
                 <h3>Slip</h3>
+                <div>Have an account? <Link to = "/signin">SignIn</Link></div>
             </div>
             <div className="back">
                 <img src={BackButton} alt="" className = "backButtonSVG"/>
@@ -41,8 +61,27 @@ const SignUp : React.FC<Props> = () => {
                         () => {
                             console.log("clicked");
                             if(firstName === "" || lastName === "" || email === "" || pass === "" || confirmPass === ""){
-                                <SnackErrorAlert displayMessage = "Please fill all the fields!" />
+                               setOpen(true);
+                               setDisplayMessage("Please fill in all the fields!");
+                               setErrorType("error");
                             }
+                            else if(!(emailRegex.test(email))){
+                                setOpen(true);
+                                setDisplayMessage("Please enter a valid Email Address!");
+                                setErrorType("error");
+                            }
+                            else if(!(passRegex.test(pass))){
+                                setOpen(true);
+                                setDisplayMessage("Your Password should have minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
+                                setErrorType("error");
+                            }
+                            else if(!(pass === confirmPass)){
+                                setOpen(true);
+                                setDisplayMessage("Password's do not match!");
+                                setErrorType("error");
+                            }
+                            
+                            
                         }
 
                     } />
@@ -52,7 +91,7 @@ const SignUp : React.FC<Props> = () => {
                 <Submit displayString= "SignUp with Google" validate = {()=>{}}/>
             </div>
             </div>
-            
+            <SnackErrorAlert open = {open} handleClose = {handleClose} displayMessage = {displayMessage} errorType = {errorType} />
         </div>
     )
 }
