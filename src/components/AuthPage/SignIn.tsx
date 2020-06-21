@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import './SignIn.css'
 import Submit from '../ReusableSubmitButton/Submit';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
+import { signInWithGoogle } from '../../firebase/fire';
+
 
 interface Props {
     
@@ -19,7 +21,7 @@ const SignIn : React.FC<Props> = () => {
     const [displayMessage,setDisplayMessage] = useState('');
     const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
         if (reason === 'clickaway') {
-        return;
+        return; 
         }
     
         setOpen(false);
@@ -32,6 +34,8 @@ const SignIn : React.FC<Props> = () => {
 
     //Regex for validation
     const emailRegex = /'^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'/;
+    
+    //Check credentils:
     
 
     return (
@@ -70,7 +74,7 @@ const SignIn : React.FC<Props> = () => {
                 
             <div>----or-----</div>
                 <div className="googleSignIn">
-                <Submit displayString= "SignIn with Google" validate = {()=>{}}/>
+                <Submit displayString= "SignIn with Google" validate = {()=> signInWithGoogle() }/>
             </div>
             </div>
             <SnackErrorAlert open = {open} handleClose = {handleClose} displayMessage = {displayMessage} errorType = {errorType} />
