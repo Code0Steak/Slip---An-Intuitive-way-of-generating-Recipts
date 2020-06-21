@@ -8,8 +8,6 @@ import SignUp from './components/AuthPage/SignUp';
 
 const App = () => {
 
-  
-
   return (
     <div className="App">
       <BrowserRouter> 

@@ -8,8 +8,10 @@ import laptopHand from '../../assets/LandingPage/miroodles-laptop-hand.png';
 
 import { useSpring, animated } from 'react-spring'
 import { Link } from 'react-router-dom';
+
 import {auth} from '../../firebase/fire';
-import { userInfo } from 'os';
+import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateChange';
+
 
 interface Props {
     
@@ -20,20 +22,10 @@ const Landing : React.FC<Props> = ()=>{
     const [state, toggle] = useState(true);
     const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 1000 } })
     
-    const [currentUser,setCurrentUser] = useState();
 
   //User Auth  
-  let unsubscribe : () => any;
+  const currentUser = useAuthStateChange();
 
-  useEffect(() => {
-    unsubscribe = auth.onAuthStateChanged(user => {
-      setCurrentUser(user);
-      console.log(currentUser);
-    })
-
-    return () => unsubscribe();
-    
-  }, [currentUser])
 
     return (
         <div className="landingMain">
@@ -65,7 +57,7 @@ const Landing : React.FC<Props> = ()=>{
                         <li>|</li>
                         <li>{currentUser.displayName}</li>
                         <li>|</li>
-                        <li>SignOut</li>
+                        <li onClick = {() => auth.signOut() }>SignOut</li>
                     </> :
                     <>
                         <li><Link to="/signin">Sign In</Link></li>
