@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react'
-import {auth} from '../../firebase/fire';
+import {auth, createUserProfileDocument} from '../../firebase/fire';
 
 interface Props {
     
@@ -16,6 +16,7 @@ const useAuthStateChange = () => {
       unsubscribe = auth.onAuthStateChanged((user : any) => {
         setCurrentUser(user);
         console.log(currentUser);
+        createUserProfileDocument(user,null);
       })
   
       return () => unsubscribe();
