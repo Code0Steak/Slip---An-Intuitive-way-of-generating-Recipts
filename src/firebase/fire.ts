@@ -36,15 +36,15 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
 
   const userRef = firestore.doc(`Users/${userAuth.uid}`);
   const snapShot = await userRef.get();
-  console.log(snapShot.id,userAuth.id);
+  console.log(snapShot.id,userAuth.uid);
 
   if(!snapShot.exists){
-    const {displayName, email} = userAuth;
+    const {displayName, email, photoURL} = userAuth;
     const createdAt = new Date();
 
     try{
       await userRef.set({
-        displayName, email, createdAt, ...additionalData
+        displayName, email, createdAt, photoURL,...additionalData
       })
     }
     catch(error){
@@ -54,9 +54,8 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
   }
 
   // let newSnapShot : {id:string;data: any};
-  let currentUserID = await userRef.onSnapshot((snapShot : any) : any => snapShot.id)
 
-  return currentUserID;
+ 
 }
 
 // export const SignUp = (email : string, pass : string) => {

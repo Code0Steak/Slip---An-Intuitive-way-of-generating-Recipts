@@ -16,10 +16,10 @@ const useAuthStateChange = () : any => {
      unsubscribe = auth.onAuthStateChanged( async (user : any) => {
         
         if(user){
-          const userID = createUserProfileDocument(user,null);
+          createUserProfileDocument(user,null);
           
-          setCurrentUser({...user,userID});
-          console.log(userID);
+          setCurrentUser({...user});
+          console.log(user);
         }
         else return;
         
@@ -30,7 +30,6 @@ const useAuthStateChange = () : any => {
       
     }, [])
   
-
     return currentUser;
 }
 export default useAuthStateChange;

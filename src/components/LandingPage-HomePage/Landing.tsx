@@ -25,7 +25,7 @@ const Landing : React.FC<Props> = ()=>{
 
   //User Auth  
   const currentUser = useAuthStateChange();
-
+    console.log(currentUser);
 
     return (
         <div className="landingMain">
@@ -58,6 +58,8 @@ const Landing : React.FC<Props> = ()=>{
                         <li>{currentUser.displayName}</li>
                         <li>|</li>
                         <li onClick = {() => auth.signOut() }>SignOut</li>
+                        <li>|</li>
+                        <li><img src={`${currentUser.photoURL}`} alt=""/></li>
                     </> :
                     <>
                         <li><Link to="/signin">Sign In</Link></li>
