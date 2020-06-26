@@ -15,7 +15,6 @@ const SignIn : React.FC<Props> = () => {
 
     const [email,setEmail] = useState("");
     const [pass,setPass] = useState("");
-
     //Snackbar declarations
     const [open,setOpen] = useState(false);
     const [displayMessage,setDisplayMessage] = useState('');
@@ -74,7 +73,11 @@ const SignIn : React.FC<Props> = () => {
                 
             <div>----or-----</div>
                 <div className="googleSignIn">
-                <Submit displayString= "SignIn with Google" validate = {()=> signInWithGoogle() }/>
+                <Submit displayString= "SignIn with Google" validate = {async () => {
+                    await signInWithGoogle();
+                    
+                    } 
+                }/>
             </div>
             </div>
             <SnackErrorAlert open = {open} handleClose = {handleClose} displayMessage = {displayMessage} errorType = {errorType} />

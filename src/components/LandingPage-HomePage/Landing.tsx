@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 
 import './Landing.css';
 
@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 import {auth} from '../../firebase/fire';
 import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateChange';
-
+import firebase from '../../firebase/fire';
 
 interface Props {
     
@@ -25,7 +25,13 @@ const Landing : React.FC<Props> = ()=>{
 
   //User Auth  
   const currentUser = useAuthStateChange();
-    console.log(currentUser);
+    console.log(currentUser); 
+    
+
+    //Check if Firebase is Initialized
+    // const [firebaseInitialized,setFirebaseInitialized] = useState(false);
+
+    
 
     return (
         <div className="landingMain">
@@ -76,7 +82,7 @@ const Landing : React.FC<Props> = ()=>{
 
             <animated.div
         style={{
-          opacity: x.interpolate({ range: [0, 1], output: [0.3, 1] }),
+          opacity: x.interpolate({ range: [0, 1], output: [0.9, 1] }),
           transform: x
             .interpolate({
               range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
@@ -111,6 +117,8 @@ const Landing : React.FC<Props> = ()=>{
 
         </div>
     )
+
+     
 }
 
 export default Landing;
