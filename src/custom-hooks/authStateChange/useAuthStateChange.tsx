@@ -5,23 +5,30 @@ interface Props {
     
 }
 
-const useAuthStateChange = () => {
+const useAuthStateChange = () : any => {
 
     const [currentUser,setCurrentUser] = useState();
-
+    
 
     let unsubscribe : () => any;
   
     useEffect(() => {
-      unsubscribe = auth.onAuthStateChanged((user : any) => {
-        setCurrentUser(user);
-        console.log(currentUser);
-        createUserProfileDocument(user,null);
+     unsubscribe = auth.onAuthStateChanged( async (user : any) => {
+        
+        if(user){
+          const userID = createUserProfileDocument(user,null);
+          
+          setCurrentUser({...user,userID});
+          console.log(userID);
+        }
+        else return;
+        
+        
       })
   
       return () => unsubscribe();
       
-    }, [currentUser])
+    }, [])
   
 
     return currentUser;
