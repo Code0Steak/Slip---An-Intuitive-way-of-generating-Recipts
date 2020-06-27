@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import BackButton from '../../assets/AuthPage/arrow-left.svg'
-import { Link } from 'react-router-dom';
+import { Link, useHistory, withRouter } from 'react-router-dom';
 import './SignIn.css'
 import Submit from '../ReusableSubmitButton/Submit';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
@@ -34,7 +34,8 @@ const SignIn : React.FC<Props> = () => {
     //Regex for validation
     const emailRegex = /'^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'/;
     
-    //Check credentils:
+    //routing
+    const history = useHistory();
     
 
     return (
@@ -74,8 +75,9 @@ const SignIn : React.FC<Props> = () => {
             <div>----or-----</div>
                 <div className="googleSignIn">
                 <Submit displayString= "SignIn with Google" validate = {async () => {
-                    await signInWithGoogle();
-                    
+                    let res = signInWithGoogle();
+                    console.log(res);
+                    if(res) history.replace('/home');
                     } 
                 }/>
             </div>

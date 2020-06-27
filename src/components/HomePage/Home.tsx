@@ -1,27 +1,51 @@
 import React,{useState} from 'react';
 
-import './Landing.css';
+import './Home.css';
 
 import dev from '../../assets/LandingPage/miroodles.png';
 import hazzleFree from '../../assets/LandingPage/miroodles-hazzleFree.png';
 import laptopHand from '../../assets/LandingPage/miroodles-laptop-hand.png';
 
 import { useSpring, animated } from 'react-spring'
-import { Link } from 'react-router-dom';
-
-import {auth} from '../../firebase/fire';
+import {  useHistory } from 'react-router-dom';
 import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateChange';
+
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Popover from '@material-ui/core/Popover';
 
 interface Props {
     
 }
 
-const Landing : React.FC<Props> = ()=>{
+const Home : React.FC<Props> = ()=>{
 
     const [state, toggle] = useState(true);
     const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 1000 } })
     
-    return (
+
+  //User Auth  
+  const currentUser = useAuthStateChange();
+  console.log(currentUser); 
+
+  //routes
+  const history = useHistory();
+
+  //popover
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    console.log("clicked")
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+   
+    return (currentUser) ? (
         <div className="landingMain">
             <div className = "name">Slip</div>
 
@@ -45,9 +69,38 @@ const Landing : React.FC<Props> = ()=>{
 
             <div className="authDiv">
                 <ul className = "authUl">
-                    <li><Link to="/signin">Sign In</Link></li>
+                    <li>Notifications</li>
+                    
+                    
                     <li>|</li>
-                    <li className="signUp"><Link to="/signup">SignUp</Link></li>
+                    {/* <li onClick = {
+                        async () => {
+                        let res : any;
+                        let err : any;
+                         auth.signOut().then(result => {res = result}).catch(error=>{err = error});
+                         if(!err) history.replace('/');
+                        } 
+                         }>SignOut</li> */}
+                    
+                    <li>
+     
+      <img src={`${currentUser.photoURL}`} alt={`${currentUser.displayName}`}  className = "profileIMG" aria-describedby={id}  color="primary" onClick={()=>handleClick} />
+                                         
+    <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >GG
+      </Popover></li>
                 </ul>
             </div>
 
@@ -93,7 +146,13 @@ const Landing : React.FC<Props> = ()=>{
         </div>
     )
 
+    : 
+
+    (
+        <div>Loading...</div>
+    )
+
      
 }
 
-export default Landing;
+export default Home;
