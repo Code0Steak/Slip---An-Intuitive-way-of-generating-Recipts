@@ -183,10 +183,27 @@ ul{
 /* Profile */
 .profileIMG{
     mix-blend-mode: normal;
-    border: 8px solid #EEE9E9;
+    border: 5px solid #EEE9E9;
     border-radius: 50%;
     height: 83px;
     width: 83px;
     box-sizing: border-box;
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.changeProfileIMG{
+    mix-blend-mode: normal;
+    
+    border-radius: 50%;
+    height: 83px;
+    width: 83px;
+    box-sizing: border-box;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.profilePopover{
+
+    padding: 20px;
+
+
 }

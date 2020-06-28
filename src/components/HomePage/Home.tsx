@@ -11,6 +11,10 @@ import {  useHistory } from 'react-router-dom';
 import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateChange';
 
 import Popover from '@material-ui/core/Popover';
+import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone';
+import TextField from '@material-ui/core/TextField';
+import SnackErrorAlert from '../Alerts/SnackErrorAlert';
+
 
 interface Props {
     
@@ -34,6 +38,9 @@ const Home : React.FC<Props> = ()=>{
 
   const handleClick = (event: React.MouseEvent<HTMLImageElement>) => {
     setAnchorEl(event.currentTarget);
+    setOpenAlert(true);
+    setDisplayMessage("Double Click on a Field to Edit it!");
+    setErrorType("info");
     console.log("clicked")
   };
 
@@ -44,6 +51,29 @@ const Home : React.FC<Props> = ()=>{
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
    
+
+  /* Profile */
+
+  //Profile Data
+  const [showMore,setShowMore] = useState(false);
+  const [enableNameEditingOnDoubleClick,setEnableNameEditingOnDoubleClick] = useState(false);
+  const [enableEmailEditingOnDoubleClick,setEnableEmailEditingOnDoubleClick] = useState(false);
+
+  //Profile Alert
+  //Snackbar declarations
+  const [openAlert,setOpenAlert] = useState(false);
+  const [displayMessage,setDisplayMessage] = useState('');
+  const handleCloseAlert = (event?: React.SyntheticEvent, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setOpenAlert(false);
+      setDisplayMessage('');
+      setErrorType('');
+    };
+  const [errorType,setErrorType] = useState('');
+
     return (currentUser) ? (
         <div className="landingMain">
             <div className = "name">Slip</div>
@@ -100,12 +130,50 @@ const Home : React.FC<Props> = ()=>{
           horizontal: 'center',
         }}
 
-      > <ul>
-        <li><img src={`${currentUser.photoURL}`} alt=""/></li>
-          <li>{currentUser.displayName}</li>
-      <li>{currentUser.email}</li>
-      
+      > 
+      <div className="profilePopover">
+      <ul>
+        <li><img src={`${currentUser.photoURL}`} alt="" className = "changeProfileIMG" />
+        <AddAPhotoTwoToneIcon />
+        </li>
+          <li>
+            
+          <TextField
+          disabled = {(enableNameEditingOnDoubleClick) ? false : true }
+          id= "outline-disabled-name" 
+          label="Name"
+          defaultValue= {currentUser.displayName}
+          variant="outlined"
+
+          onDoubleClick = {()=> setEnableNameEditingOnDoubleClick(!enableNameEditingOnDoubleClick)}
+          
+        />   
+            </li>
+      <li>
+      <TextField
+          disabled = {(enableEmailEditingOnDoubleClick) ? false : true }
+          id="outlined-disabled-email"
+          label="Email"
+          defaultValue= {currentUser.email}
+          variant="outlined"
+
+          onDoubleClick = {()=> setEnableEmailEditingOnDoubleClick(!enableEmailEditingOnDoubleClick)}
+
+        /> 
+        
+        
+        </li>
+      <div>
+        <li><input type="submit" value={(showMore) ? 'Hide' : 'More'} onClick = {() => setShowMore(!showMore) } /></li>
+        {(showMore) && (<div> 
+
+          <li>Change Password</li>
+          <div> Danger Zone <li>Delete Account</li> </div>
+        </div>)  }
+      </div>
       </ul>
+
+      </div>
       </Popover></li>
                 </ul>
             </div>
@@ -148,6 +216,7 @@ const Home : React.FC<Props> = ()=>{
                     </ul>
                     
             </div>
+            <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
         </div>
     )
 
