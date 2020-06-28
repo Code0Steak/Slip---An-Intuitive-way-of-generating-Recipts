@@ -157,7 +157,13 @@ const Home : React.FC<Props> = ()=>{
           defaultValue= {currentUser.email}
           variant="outlined"
 
-          onDoubleClick = {()=> setEnableEmailEditingOnDoubleClick(!enableEmailEditingOnDoubleClick)}
+          onDoubleClick = {()=> { 
+            
+            setEnableEmailEditingOnDoubleClick(!enableEmailEditingOnDoubleClick);
+            
+            
+          
+          }}
 
         /> 
         
@@ -166,8 +172,6 @@ const Home : React.FC<Props> = ()=>{
       <div>
         <li><input type="submit" value={(showMore) ? 'Hide' : 'More'} onClick = {() => setShowMore(!showMore) } /></li>
         {(showMore) && (<div> 
-
-          <li>Change Password</li>
           <div> Danger Zone <li>Delete Account</li> </div>
         </div>)  }
       </div>
