@@ -13,7 +13,7 @@ const useAuthStateChange = () : any => {
     let unsubscribe : () => any;
   
     useEffect(() => {
-     unsubscribe = auth.onAuthStateChanged(  (user : any) => {
+     unsubscribe = auth.onAuthStateChanged( async (user : any) => {
         
         if(user){
           createUserProfileDocument(user,null);
@@ -21,10 +21,12 @@ const useAuthStateChange = () : any => {
           setCurrentUser({...user});
           console.log(user);
         }
-      
+        else return;
+        
+        
       })
   
-     return unsubscribe();
+      return () => unsubscribe();
       
     }, [])
   

@@ -7,12 +7,10 @@ import hazzleFree from '../../assets/LandingPage/miroodles-hazzleFree.png';
 import laptopHand from '../../assets/LandingPage/miroodles-laptop-hand.png';
 
 import { useSpring, animated } from 'react-spring'
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-
+import {auth} from '../../firebase/fire';
 import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateChange';
-
-import {auth} from '../../firebase/fire'
 
 interface Props {
     
@@ -23,18 +21,7 @@ const Landing : React.FC<Props> = ()=>{
     const [state, toggle] = useState(true);
     const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 1000 } })
     
-    //TO check if user exists
-    const currentUser = useAuthStateChange();
-    const history = useHistory();
-
-    return currentUser ? (<div>
-         <Link to ="/home">Click</Link> to go to previous session. Or <span onClick = {()=> {
-        let res:any; let err:any;
-        auth.signOut().then(result => {res = result}).catch(error=>{err = error});
-                         if(!err) history.replace('/');
-    }} >SignOut</span> 
-     </div>) : 
-    (
+    return (
         <div className="landingMain">
             <div className = "name">Slip</div>
 
