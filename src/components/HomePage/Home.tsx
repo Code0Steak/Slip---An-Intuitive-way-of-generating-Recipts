@@ -10,7 +10,6 @@ import { useSpring, animated } from 'react-spring'
 import {  useHistory } from 'react-router-dom';
 import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateChange';
 
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 
 interface Props {
@@ -31,9 +30,9 @@ const Home : React.FC<Props> = ()=>{
   const history = useHistory();
 
   //popover
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLImageElement | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLImageElement>) => {
     setAnchorEl(event.currentTarget);
     console.log("clicked")
   };
@@ -84,13 +83,14 @@ const Home : React.FC<Props> = ()=>{
                     
                     <li>
      
-      <img src={`${currentUser.photoURL}`} alt={`${currentUser.displayName}`}  className = "profileIMG" aria-describedby={id}  color="primary" onClick={()=>handleClick} />
-                                         
+      <img src={`${currentUser.photoURL}`} alt={`${currentUser.displayName} - Profile`}  className = "profileIMG"  aria-describedby={id} onClick={handleClick} />
+                           
     <Popover
         id={id}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
+        
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -99,7 +99,13 @@ const Home : React.FC<Props> = ()=>{
           vertical: 'top',
           horizontal: 'center',
         }}
-      >GG
+
+      > <ul>
+        <li><img src={`${currentUser.photoURL}`} alt=""/></li>
+          <li>{currentUser.displayName}</li>
+      <li>{currentUser.email}</li>
+      
+      </ul>
       </Popover></li>
                 </ul>
             </div>
@@ -142,7 +148,6 @@ const Home : React.FC<Props> = ()=>{
                     </ul>
                     
             </div>
-
         </div>
     )
 
