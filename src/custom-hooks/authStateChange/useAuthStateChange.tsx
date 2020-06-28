@@ -29,7 +29,10 @@ const useAuthStateChange = () : any => {
       return () => unsubscribe();
       
     }, [])
+
   
     return currentUser;
 }
+
+
 export default useAuthStateChange;

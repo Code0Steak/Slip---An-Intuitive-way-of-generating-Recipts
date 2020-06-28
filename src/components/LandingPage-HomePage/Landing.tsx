@@ -21,7 +21,13 @@ const Landing : React.FC<Props> = ()=>{
     const [state, toggle] = useState(true);
     const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 1000 } })
     
-    return (
+    const currentUser = useAuthStateChange();
+
+    return (currentUser) ? (<div> <Link to = "/home">Click</Link> to continue with your previous session or <Link to = "/"><span onClick = {
+        () => {
+            auth.signOut();
+        }
+    } >SignOut</span></Link></div>) : (
         <div className="landingMain">
             <div className = "name">Slip</div>
 
