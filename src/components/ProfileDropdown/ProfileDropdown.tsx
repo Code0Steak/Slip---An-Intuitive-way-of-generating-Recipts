@@ -26,7 +26,7 @@ const ProfileDropdown : React.FC<Props> = ({photoURL,displayName,email,password}
   const [openAlert,setOpenAlert] = useState(false);
   const [displayMessage,setDisplayMessage] = useState('');
   const handleCloseAlert = (event?: React.SyntheticEvent, reason?: string) => {
-      if (reason === 'clickaway'||reason === 'force') {
+      if (reason === 'clickaway') {
         return;
       }
       setOpenAlert(false);
@@ -38,9 +38,7 @@ const ProfileDropdown : React.FC<Props> = ({photoURL,displayName,email,password}
 
     const renderPasswordField = () => {
         setShowPasswordField(!showPasswordField);
-        if(openAlert) {
-        handleCloseAlert('force');
-        }
+        
         setOpenAlert(true);
         setDisplayMessage("To change your Email you need to set a Password!");
         setErrorType("info");
@@ -91,14 +89,7 @@ const ProfileDropdown : React.FC<Props> = ({photoURL,displayName,email,password}
             id="set-password"
             label="Password"
             defaultValue= ''
-            onFocus = {()=> {
-             
-             if(openAlert){   
-            setOpenAlert(false);
-            setDisplayMessage('');
-            setErrorType('');
-                        }
-                
+            onFocus = {()=> {    
                 setOpenAlert(true);
                 setDisplayMessage("Your Password should have minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
                 setErrorType("info");}}

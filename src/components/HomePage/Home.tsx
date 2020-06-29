@@ -45,6 +45,9 @@ const Home : React.FC<Props> = ()=>{
 
   const handleClose = () => {
     setAnchorEl(null);
+    setOpenAlert(false);
+    setDisplayMessage('');
+    setErrorType('');
   };
 
   const open = Boolean(anchorEl);
