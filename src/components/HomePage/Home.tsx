@@ -12,8 +12,10 @@ import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateC
 
 import Popover from '@material-ui/core/Popover';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-import ProfileDropdown from '../ProfileDropdown/ProfileDropdown';
 import {auth} from '../../firebase/fire';
+
+import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone';
+import TextField from '@material-ui/core/TextField';
 
 interface Props {
     
@@ -56,7 +58,24 @@ const Home : React.FC<Props> = ()=>{
 
   /* Profile */
 
-  
+    //Profile Data
+    const [photoURL,setPhotoURL] = useState(currentUser.photoURL);
+    const [displayName,setDisplayName] = useState(currentUser.displayName);
+    const [email,setEmail] = useState(currentUser.email);
+    const [password,setPassword] = useState(currentUser.password);
+
+    //Profile Enable Fields
+    const [showMore,setShowMore] = useState(false);
+    const [enableNameEditingOnDoubleClick,setEnableNameEditingOnDoubleClick] = useState(false);
+    const [enableEmailEditingOnDoubleClick,setEnableEmailEditingOnDoubleClick] = useState(false);
+    const [showPasswordField,setShowPasswordField] = useState(false);
+    const renderPasswordField = () => {
+      setShowPasswordField(!showPasswordField);
+      
+      setOpenAlert(true);
+      setDisplayMessage("To change your Email you need to set a Password!");
+      setErrorType("info");
+  }
 
   //Profile Alert
   //Snackbar declarations
@@ -99,7 +118,6 @@ const Home : React.FC<Props> = ()=>{
                 <ul className = "authUl">
                     <li>Notifications</li>
                     
-                    
                     <li>|</li>
                     {/* <li onClick = {
                         async () => {
@@ -131,8 +149,72 @@ const Home : React.FC<Props> = ()=>{
 
               > 
              
-                <ProfileDropdown photoURL = {currentUser.photoURL} displayName = {currentUser.displayName} email = {currentUser.email} password = {currentUser.password}   />
+            { (password) ? (<div>Hello</div>) :(  <div className="profilePopover">
+        <ul>
+          <li><img src={`${photoURL}`} alt="" className = "changeProfileIMG" />
+          <AddAPhotoTwoToneIcon />
+          </li>
+            <li>
+              
+            <TextField
+            disabled = {(enableNameEditingOnDoubleClick) ? false : true }
+            id= "outline-disabled-name" 
+            label="Name"
+            defaultValue= {displayName}
+          
+            onDoubleClick = {()=> setEnableNameEditingOnDoubleClick(!enableNameEditingOnDoubleClick)}
+            
+          />   
+              </li>
+        <li>
+        <TextField
+            disabled = {(enableEmailEditingOnDoubleClick) ? false : true }
+            id="outlined-disabled-email"
+            label="Email"
+            defaultValue= {email}
+            
 
+            onDoubleClick = {()=> { 
+              
+              setEnableEmailEditingOnDoubleClick(!enableEmailEditingOnDoubleClick);
+              
+              renderPasswordField();
+              
+            
+            }}
+
+          /> 
+          {(showPasswordField && enableEmailEditingOnDoubleClick) &&<>  <TextField
+            
+            id="set-password"
+            label="Password"
+            defaultValue= ''
+            onFocus = {()=> {    
+                setOpenAlert(true);
+                setDisplayMessage("Your Password should have minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
+                setErrorType("info");}}
+          /> 
+          
+          <TextField
+            
+            id="set-password"
+            label="Confirm Password"
+            defaultValue= ''
+            
+          /> 
+          </>
+          }
+          
+          </li>
+        <div>
+          <li><input type="submit" value={(showMore) ? 'Hide' : 'More'} onClick = {() => setShowMore(!showMore) } /></li>
+          {(showMore) && (<div> 
+            <div> Danger Zone <li>Delete Account</li> </div>
+          </div>)  }
+        </div>
+        </ul>
+
+    </div>)}
               </Popover></li>
                 </ul>
             </div>
