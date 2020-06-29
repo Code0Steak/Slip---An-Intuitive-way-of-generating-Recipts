@@ -35,6 +35,9 @@ export const signInWithGoogle = async () => {
 
 }
 
+//Cloud Firestore Storage 
+// const storage = firebase.storage();
+
 //Export the entire firebase lib
 export default firebase;
 
@@ -93,3 +96,29 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
 //       });
 
 // }
+
+
+/* Update */
+//Update Display Name
+
+
+export const updateDisplayName = (name : string) => {
+  let user = firebase.auth().currentUser;
+  
+  if(user){
+  
+      user.updateProfile({
+        displayName: `${name}`,
+      }).then(() => {
+        console.log('success');
+      }).catch((error) => {
+        
+        console.log(error);
+      });
+
+      const res = firestore.collection('Users').doc(`${user.uid}`).update({
+        displayName : `${name}`
+      })
+
+  }
+} 

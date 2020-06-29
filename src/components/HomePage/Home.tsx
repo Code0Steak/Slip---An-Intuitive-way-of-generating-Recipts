@@ -12,7 +12,7 @@ import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateC
 
 import Popover from '@material-ui/core/Popover';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-import {auth} from '../../firebase/fire';
+import {auth,updateDisplayName} from '../../firebase/fire';
 
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone';
 import TextField from '@material-ui/core/TextField';
@@ -45,12 +45,24 @@ const Home : React.FC<Props> = ()=>{
     console.log("clicked")
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
+    
     setAnchorEl(null);
+
+    //Updates
+
+    if(displayName != currentUser.displayName){
+      console.log(displayName);
+      updateDisplayName(displayName);
+    }
+
+    //Clear out snackbar fields
     setOpenAlert(false);
     setDisplayMessage('');
     setErrorType('');
 
+    
+    //Clear profile data
     setPhotoURL('');
     setDisplayName('');
     setEmail('');
@@ -147,6 +159,7 @@ const Home : React.FC<Props> = ()=>{
       if (reason === 'clickaway') {
         return;
       }
+
       setOpenAlert(false);
       setDisplayMessage('');
       setErrorType('');
@@ -216,7 +229,8 @@ const Home : React.FC<Props> = ()=>{
             defaultValue= {currentUser.displayName}
           
             onDoubleClick = {()=> setEnableNameEditingOnDoubleClick(!enableNameEditingOnDoubleClick)}
-            
+            onChange = {(e) => setDisplayName(e.target.value)}
+
           />   
               </li>
         <li>
