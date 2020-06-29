@@ -45,46 +45,45 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
   if(!userAuth) return;
 
   const userRef = firestore.doc(`Users/${userAuth.uid}`);
-  userRef.onSnapshot(snapShot => {
-      if(!snapShot.exists){
-        if(userAuth.password){
-          const {displayName, email, photoURL, password} = userAuth;
-          const createdAt = new Date();
-          const signInMethod = 'email and password'
-          try{
-            userRef.set({
-              displayName, email, createdAt, photoURL, password , signInMethod,...additionalData
-            })
-          }
-          catch(error){
-            console.log(`Error creating User Account : ${error.message}`);
-          }
+  const snapShot = await userRef.get();
+  console.log(snapShot.id,userAuth);
+
+  if(!snapShot.exists){
+    if(userAuth.password){
+      const {displayName, email, photoURL, password} = userAuth;
+      const createdAt = new Date();
+      const signInMethod = 'email and password'
+      try{
+        await userRef.set({
+          displayName, email, createdAt, photoURL, password , signInMethod,...additionalData
+        })
       }
-      else {
-  
-          const {displayName, email, photoURL} = userAuth;
-          const createdAt = new Date();
-          const password = '';
-          const signInMethod = 'google signin';
-          try{
-            userRef.set({
-              displayName, email, createdAt, photoURL,password, signInMethod,...additionalData
-            })
-          }
-          catch(error){
-            console.log(`Error creating User Account : ${error.message}`);
-          }
+      catch(error){
+        console.log(`Error creating User Account : ${error.message}`);
+      }
     }
+    else {
+
+        const {displayName, email, photoURL} = userAuth;
+        const createdAt = new Date();
+        const password = '';
+        const signInMethod = 'google signin';
+        try{
+          await userRef.set({
+            displayName, email, createdAt, photoURL,password, signInMethod,...additionalData
+          })
+        }
+        catch(error){
+          console.log(`Error creating User Account : ${error.message}`);
+        }
   }
-    console.log(snapShot.id,userAuth);
 
-  
-  });
-
-}
+  }
 
   // let newSnapShot : {id:string;data: any};
 
+ 
+}
 
 // export const SignUp = (email : string, pass : string) => {
 
@@ -97,12 +96,6 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
 //       });
 
 // }
-/* Current user */
-export const getCurrentUser = () => {
-  const user = auth.currentUser;
-  if(user) return user;
-  else return;
-}
 
 
 /* Update */
