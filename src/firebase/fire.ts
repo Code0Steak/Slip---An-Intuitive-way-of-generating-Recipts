@@ -43,20 +43,37 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
 
   const userRef = firestore.doc(`Users/${userAuth.uid}`);
   const snapShot = await userRef.get();
-  console.log(snapShot.id,userAuth.uid);
+  console.log(snapShot.id,userAuth);
 
   if(!snapShot.exists){
-    const {displayName, email, photoURL} = userAuth;
-    const createdAt = new Date();
+    if(userAuth.password){
+      const {displayName, email, photoURL, password} = userAuth;
+      const createdAt = new Date();
+      const signInMethod = 'email and password'
+      try{
+        await userRef.set({
+          displayName, email, createdAt, photoURL, password , signInMethod,...additionalData
+        })
+      }
+      catch(error){
+        console.log(`Error creating User Account : ${error.message}`);
+      }
+    }
+    else {
 
-    try{
-      await userRef.set({
-        displayName, email, createdAt, photoURL,...additionalData
-      })
-    }
-    catch(error){
-      console.log(`Error creating User Account : ${error.message}`);
-    }
+        const {displayName, email, photoURL} = userAuth;
+        const createdAt = new Date();
+        const password = '';
+        const signInMethod = 'google signin';
+        try{
+          await userRef.set({
+            displayName, email, createdAt, photoURL,password, signInMethod,...additionalData
+          })
+        }
+        catch(error){
+          console.log(`Error creating User Account : ${error.message}`);
+        }
+  }
 
   }
 

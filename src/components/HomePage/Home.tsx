@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 
 import './Home.css';
 
@@ -11,10 +11,9 @@ import {  useHistory } from 'react-router-dom';
 import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateChange';
 
 import Popover from '@material-ui/core/Popover';
-import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone';
-import TextField from '@material-ui/core/TextField';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-
+import ProfileDropdown from '../ProfileDropdown/ProfileDropdown';
+import {auth} from '../../firebase/fire';
 
 interface Props {
     
@@ -29,7 +28,7 @@ const Home : React.FC<Props> = ()=>{
   //User Auth  
   const currentUser = useAuthStateChange();
   console.log(currentUser); 
-
+  
   //routes
   const history = useHistory();
 
@@ -54,10 +53,7 @@ const Home : React.FC<Props> = ()=>{
 
   /* Profile */
 
-  //Profile Data
-  const [showMore,setShowMore] = useState(false);
-  const [enableNameEditingOnDoubleClick,setEnableNameEditingOnDoubleClick] = useState(false);
-  const [enableEmailEditingOnDoubleClick,setEnableEmailEditingOnDoubleClick] = useState(false);
+  
 
   //Profile Alert
   //Snackbar declarations
@@ -67,10 +63,10 @@ const Home : React.FC<Props> = ()=>{
       if (reason === 'clickaway') {
         return;
       }
-  
       setOpenAlert(false);
       setDisplayMessage('');
       setErrorType('');
+      
     };
   const [errorType,setErrorType] = useState('');
 
@@ -115,70 +111,26 @@ const Home : React.FC<Props> = ()=>{
      
       <img src={`${currentUser.photoURL}`} alt={`${currentUser.displayName} - Profile`}  className = "profileIMG"  aria-describedby={id} onClick={handleClick} />
                            
-    <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
 
-      > 
-      <div className="profilePopover">
-      <ul>
-        <li><img src={`${currentUser.photoURL}`} alt="" className = "changeProfileIMG" />
-        <AddAPhotoTwoToneIcon />
-        </li>
-          <li>
-            
-          <TextField
-          disabled = {(enableNameEditingOnDoubleClick) ? false : true }
-          id= "outline-disabled-name" 
-          label="Name"
-          defaultValue= {currentUser.displayName}
-          variant="outlined"
+              > 
+             
+                <ProfileDropdown photoURL = {currentUser.photoURL} displayName = {currentUser.displayName} email = {currentUser.email} password = {currentUser.password}   />
 
-          onDoubleClick = {()=> setEnableNameEditingOnDoubleClick(!enableNameEditingOnDoubleClick)}
-          
-        />   
-            </li>
-      <li>
-      <TextField
-          disabled = {(enableEmailEditingOnDoubleClick) ? false : true }
-          id="outlined-disabled-email"
-          label="Email"
-          defaultValue= {currentUser.email}
-          variant="outlined"
-
-          onDoubleClick = {()=> { 
-            
-            setEnableEmailEditingOnDoubleClick(!enableEmailEditingOnDoubleClick);
-            
-            
-          
-          }}
-
-        /> 
-        
-        
-        </li>
-      <div>
-        <li><input type="submit" value={(showMore) ? 'Hide' : 'More'} onClick = {() => setShowMore(!showMore) } /></li>
-        {(showMore) && (<div> 
-          <div> Danger Zone <li>Delete Account</li> </div>
-        </div>)  }
-      </div>
-      </ul>
-
-      </div>
-      </Popover></li>
+              </Popover></li>
                 </ul>
             </div>
 
