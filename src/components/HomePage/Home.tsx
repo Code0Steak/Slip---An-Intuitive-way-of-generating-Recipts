@@ -50,6 +50,13 @@ const Home : React.FC<Props> = ()=>{
     setOpenAlert(false);
     setDisplayMessage('');
     setErrorType('');
+
+    setPhotoURL('');
+    setDisplayName('');
+    setEmail('');
+    setPassword('');
+    setConformPassword('');
+
   };
 
   const open = Boolean(anchorEl);
@@ -59,10 +66,11 @@ const Home : React.FC<Props> = ()=>{
   /* Profile */
 
     //Profile Data
-    const [photoURL,setPhotoURL] = useState(currentUser.photoURL);
-    const [displayName,setDisplayName] = useState(currentUser.displayName);
-    const [email,setEmail] = useState(currentUser.email);
-    const [password,setPassword] = useState(currentUser.password);
+    const [photoURL,setPhotoURL] = useState('');
+    const [displayName,setDisplayName] = useState('');
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+    const [confirmPassword,setConformPassword] = useState('');
 
     //Profile Enable Fields
     const [showMore,setShowMore] = useState(false);
@@ -75,6 +83,60 @@ const Home : React.FC<Props> = ()=>{
       setOpenAlert(true);
       setDisplayMessage("To change your Email you need to set a Password!");
       setErrorType("info");
+  }
+
+  //Regex
+      //Regex for validation
+      const emailRegex = /'^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'/;
+      const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  
+  //Email Regex Validation
+ 
+  const emailValidation = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+
+    setEmail(e.target.value);
+    if(!emailRegex.test(email)){
+      setOpenAlert(true);
+      setDisplayMessage("Please enter a valid Email Address!");
+      setErrorType("error");
+    }else{
+      setOpenAlert(false);
+      setDisplayMessage("");
+      setErrorType("");
+    }
+
+  }
+
+  //Password Regex Validation
+  const passwordValidation = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+
+    setPassword(e.target.value);
+    if(!passRegex.test(password)){
+      setOpenAlert(true);
+      setDisplayMessage("Please set a Password with minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
+      setErrorType("error");
+    }else{
+      setOpenAlert(false);
+      setDisplayMessage("");
+      setErrorType("");
+    }
+
+  }
+
+  //Confirm Password
+  const passwordMatchCheck = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+
+    setConformPassword(e.target.value);
+    if(!(password === confirmPassword)){
+      setOpenAlert(true);
+      setDisplayMessage("Password's don't match!");
+      setErrorType("error");
+    }else{
+      setOpenAlert(false);
+      setDisplayMessage("");
+      setErrorType("");
+    }
+
   }
 
   //Profile Alert
@@ -119,15 +181,6 @@ const Home : React.FC<Props> = ()=>{
                     <li>Notifications</li>
                     
                     <li>|</li>
-                    {/* <li onClick = {
-                        async () => {
-                        let res : any;
-                        let err : any;
-                         auth.signOut().then(result => {res = result}).catch(error=>{err = error});
-                         if(!err) history.replace('/');
-                        } 
-                         }>SignOut</li> */}
-                    
                     <li>
      
       <img src={`${currentUser.photoURL}`} alt={`${currentUser.displayName} - Profile`}  className = "profileIMG"  aria-describedby={id} onClick={handleClick} />
@@ -149,9 +202,9 @@ const Home : React.FC<Props> = ()=>{
 
               > 
              
-            { (password) ? (<div>Hello</div>) :(  <div className="profilePopover">
+            { (currentUser.password) ? (<div>Hello</div>) :(  <div className="profilePopover">
         <ul>
-          <li><img src={`${photoURL}`} alt="" className = "changeProfileIMG" />
+          <li><img src={`${currentUser.photoURL}`} alt="" className = "changeProfileIMG" />
           <AddAPhotoTwoToneIcon />
           </li>
             <li>
@@ -160,7 +213,7 @@ const Home : React.FC<Props> = ()=>{
             disabled = {(enableNameEditingOnDoubleClick) ? false : true }
             id= "outline-disabled-name" 
             label="Name"
-            defaultValue= {displayName}
+            defaultValue= {currentUser.displayName}
           
             onDoubleClick = {()=> setEnableNameEditingOnDoubleClick(!enableNameEditingOnDoubleClick)}
             
@@ -171,7 +224,7 @@ const Home : React.FC<Props> = ()=>{
             disabled = {(enableEmailEditingOnDoubleClick) ? false : true }
             id="outlined-disabled-email"
             label="Email"
-            defaultValue= {email}
+            defaultValue= {currentUser.email}
             
 
             onDoubleClick = {()=> { 
@@ -183,24 +236,29 @@ const Home : React.FC<Props> = ()=>{
             
             }}
 
+            onChange = {(e) => emailValidation(e)}
+
           /> 
           {(showPasswordField && enableEmailEditingOnDoubleClick) &&<>  <TextField
             
             id="set-password"
             label="Password"
+            type = "password"
             defaultValue= ''
-            onFocus = {()=> {    
-                setOpenAlert(true);
-                setDisplayMessage("Your Password should have minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
-                setErrorType("info");}}
+            onChange = {(e) => passwordValidation(e) }
+            // onFocus = {()=> {    
+            //     setOpenAlert(true);
+            //     setDisplayMessage("Your Password should have minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
+            //     setErrorType("info");}}
           /> 
           
           <TextField
             
-            id="set-password"
+            id="set-confirm-password"
             label="Confirm Password"
+            type = "password"
             defaultValue= ''
-            
+            onChange = {(e) => passwordMatchCheck(e)}
           /> 
           </>
           }
@@ -211,6 +269,14 @@ const Home : React.FC<Props> = ()=>{
           {(showMore) && (<div> 
             <div> Danger Zone <li>Delete Account</li> </div>
           </div>)  }
+          <li><input type="submit" value="Sign Out" onClick = {
+                        async () => {
+                        let res : any;
+                        let err : any;
+                         auth.signOut().then(result => {res = result}).catch(error=>{err = error});
+                         if(!err) history.replace('/');
+                        } 
+                         } /></li>
         </div>
         </ul>
 
