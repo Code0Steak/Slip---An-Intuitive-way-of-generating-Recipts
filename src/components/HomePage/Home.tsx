@@ -12,7 +12,7 @@ import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateC
 
 import Popover from '@material-ui/core/Popover';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-import {auth,updateDisplayName} from '../../firebase/fire';
+import {auth,updateDisplayName, firestoreUserData} from '../../firebase/fire';
 
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone';
 import TextField from '@material-ui/core/TextField';
@@ -30,6 +30,7 @@ const Home : React.FC<Props> = ()=>{
   //User Auth  
   const currentUser = useAuthStateChange();
   console.log(currentUser); 
+  const  userDocData = firestoreUserData();
   
   //routes
   const history = useHistory();
@@ -45,13 +46,16 @@ const Home : React.FC<Props> = ()=>{
     console.log("clicked")
   };
 
+  //Get Realtime Data from firestore:
+  const userDocData : any = firestoreUserData();
+  console.log('User Doc Data',userDocData);
   const handleClose = async () => {
     
     setAnchorEl(null);
 
     //Updates
 
-    if(displayName != currentUser.displayName){
+    if(displayName != '' && displayName != currentUser.displayName){
       console.log(displayName);
       updateDisplayName(displayName);
     }
@@ -61,13 +65,13 @@ const Home : React.FC<Props> = ()=>{
     setDisplayMessage('');
     setErrorType('');
 
-    
+
     //Clear profile data
-    setPhotoURL('');
-    setDisplayName('');
-    setEmail('');
-    setPassword('');
-    setConformPassword('');
+    // setPhotoURL('');
+    // setDisplayName('');
+    // setEmail('');
+    // setPassword('');
+    // setConformPassword('');
 
   };
 
@@ -238,7 +242,7 @@ const Home : React.FC<Props> = ()=>{
             disabled = {(enableEmailEditingOnDoubleClick) ? false : true }
             id="outlined-disabled-email"
             label="Email"
-            defaultValue= {currentUser.email}
+            defaultValue = {currentUser.email}
             
 
             onDoubleClick = {()=> { 
