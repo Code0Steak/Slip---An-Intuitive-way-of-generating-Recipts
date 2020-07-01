@@ -4,7 +4,7 @@ import './SignUp.css'
 import Submit from '../ReusableSubmitButton/Submit';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
 import { Link, useHistory } from 'react-router-dom';
-import { signInWithGoogle } from '../../firebase/fire';
+import { signInWithGoogle, auth, createUserProfileDocument, signUpWithEmailAndPassword } from '../../firebase/fire';
 
 
 interface Props {
@@ -80,6 +80,11 @@ const SignUp : React.FC<Props> = () => {
                                 setDisplayMessage("Password's do not match!");
                                 setErrorType("error");
                             }
+                            else{
+                                let res  = signUpWithEmailAndPassword(firstName,lastName,email,pass);
+                                console.log(res);
+                                if(!res) history.replace('/home');
+                            }
                             
                             
                         }
@@ -88,7 +93,7 @@ const SignUp : React.FC<Props> = () => {
                 </form>
                 <div>----or-----</div>
                 <div className="googleSignUp">
-                <Submit displayString= "SignUp with Google" validate = {()=>{
+                <Submit displayString= "SignUp with Google" validate = {async ()=>{
                     let res = signInWithGoogle();
                     console.log(res);
                     if(res) history.replace('/home');

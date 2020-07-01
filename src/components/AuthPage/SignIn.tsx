@@ -4,7 +4,7 @@ import { Link, useHistory, withRouter } from 'react-router-dom';
 import './SignIn.css'
 import Submit from '../ReusableSubmitButton/Submit';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-import { signInWithGoogle } from '../../firebase/fire';
+import { signInWithGoogle, auth } from '../../firebase/fire';
 
 
 interface Props {
@@ -59,14 +59,21 @@ const SignIn : React.FC<Props> = () => {
 
                         () => {
                             console.log("clicked");
-                            
-                            if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)){
+                            if(email === '' || pass == ''){
+                               setOpen(true);
+                               setDisplayMessage("Please fill in all the fields!");
+                               setErrorType("error");
+                            }
+                            else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)){
                                 setOpen(true);
                                 setDisplayMessage("Please enter a valid Email Address!");
                                 setErrorType("error");
                             }
-                            
-                            
+                            else{
+                                let res : any;
+                                auth.signInWithEmailAndPassword(email,pass).catch(err => res = err);
+                                if(!res) history.replace('/home');
+                            }                    
                         }
 
                         } />

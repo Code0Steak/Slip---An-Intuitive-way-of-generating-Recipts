@@ -35,6 +35,58 @@ export const signInWithGoogle = async () => {
 
 }
 
+//SignUp with Email and Password
+export const signUpWithEmailAndPassword = async (firstName: string,lastName: string,email: string,password: string) => {
+  let res : any;
+  auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
+    // Handle Errors here.
+   
+    // ...
+    res = error.message;
+  });
+
+  if(!res) {
+    let currentUser = auth.currentUser;
+    let currentUserUid : any;
+    if(currentUser != null){
+      currentUser.providerData.forEach(function (profile : any) {
+          currentUserUid = profile.uid;
+          console.log(profile.uid);
+          console.log("Sign-in provider: " + profile.providerId);
+          console.log("  Provider-specific UID: " + profile.uid);
+          console.log("  Name: " + profile.displayName);
+          console.log("  Email: " + profile.email);
+          console.log("  Photo URL: " + profile.photoURL);
+      })
+    }
+
+    const userRef = firestore.doc(`Users/${currentUserUid}`);
+    const snapShot = await userRef.get();
+    console.log(snapShot.id,currentUserUid);
+
+    if(!snapShot.exists){
+
+      const createdAt = new Date();
+      const displayName = firstName + lastName;
+      const photoURL = '';
+      try{
+        await userRef.set({
+          displayName, email,createdAt,photoURL
+        })
+      }
+      catch(error){
+        console.log(error.message);
+        res = error.message;
+      }
+
+    }
+  }
+  return res;
+}
+
+//SignIn with Email and Password
+
+
 //Cloud Firestore Storage 
 // const storage = firebase.storage();
 
@@ -49,6 +101,7 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
   console.log(snapShot.id,userAuth);
 
   if(!snapShot.exists){
+
     if(userAuth.password){
       const {displayName, email, photoURL, password} = userAuth;
       const createdAt = new Date();
