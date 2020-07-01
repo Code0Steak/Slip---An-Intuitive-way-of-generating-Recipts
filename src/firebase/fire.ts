@@ -41,9 +41,6 @@ export const signInWithGoogle = async () => {
 //Export the entire firebase lib
 export default firebase;
 
-/* Create */
-
-//Creates User's profile Document in Firestore
 export const createUserProfileDocument = async (userAuth : any, additionalData : any) => {
   if(!userAuth) return;
 
@@ -88,20 +85,19 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
  
 }
 
-/* Realtime Listener */
-export const firestoreUserData = () => {
-  const user = auth.currentUser;
-  let userDocData : any;
-  if(user){
-    const userData = firestore.collection('Users').doc(user.uid);
+// export const SignUp = (email : string, pass : string) => {
+
     
-    userData.onSnapshot(doc => {
-      console.log('Doc Data',doc.data().displayName);
-      userDocData = doc.data();})
-      
-  }
-  return userDocData;
-}
+//     firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
+//         // Handle Errors here.
+//         var errorCode = error.code;
+//         var errorMessage = error.message;
+//         // ...
+//       });
+
+// }
+
+
 /* Update */
 //Update Display Name
 
