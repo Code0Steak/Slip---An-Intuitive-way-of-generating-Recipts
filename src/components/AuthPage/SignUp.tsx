@@ -3,7 +3,8 @@ import BackButton from '../../assets/AuthPage/arrow-left.svg'
 import './SignUp.css'
 import Submit from '../ReusableSubmitButton/Submit';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { signInWithGoogle } from '../../firebase/fire';
 
 
 interface Props {
@@ -35,6 +36,9 @@ const SignUp : React.FC<Props> = () => {
     //Regex for validation
     const emailRegex = /'^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'/;
     const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+    //routing
+    const history = useHistory();
 
     return (
         <div className = "signUpMain">
@@ -88,7 +92,11 @@ const SignUp : React.FC<Props> = () => {
                 </form>
                 <div>----or-----</div>
                 <div className="googleSignUp">
-                <Submit displayString= "SignUp with Google" validate = {()=>{}}/>
+                <Submit displayString= "SignUp with Google" validate = {()=>{
+                    let res = signInWithGoogle();
+                    console.log(res);
+                    if(res) history.replace('/home');
+                }}/>
             </div>
             </div>
             <SnackErrorAlert open = {open} handleClose = {handleClose} displayMessage = {displayMessage} errorType = {errorType} />
