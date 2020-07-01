@@ -21,7 +21,7 @@ const Submit : React.FC<Props> = ({displayString,validate}) => {
 
                 <animated.div
                 style={{
-                opacity: x.interpolate({ range: [0, 1], output: [0.3, 1] }),
+                opacity: x.interpolate({ range: [0, 1], output: [0.9, 1] }),
                 transform: x
                 .interpolate({
                 range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
