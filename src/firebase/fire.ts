@@ -122,3 +122,27 @@ export const updateDisplayName = (name : string) => {
 
   }
 } 
+
+export const updateEmail = (e : string,pass: string) => {
+  let user = firebase.auth().currentUser;
+
+  if(user){
+    user.updateEmail(e).then(function() {
+      // Update successful.
+      console.log('success');
+    }).catch(function(error) {
+      // An error happened.
+      console.log('error');
+    });
+
+    user.updatePassword(pass).then(function() {
+      // Update successful.
+      console.log('success');
+    }).catch(function(error) {
+      // An error happened.
+      console.log(error);
+    });
+
+  }
+
+}

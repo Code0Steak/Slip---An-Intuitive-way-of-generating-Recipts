@@ -51,7 +51,7 @@ const Home : React.FC<Props> = ()=>{
 
     //Updates
 
-    if(displayName != currentUser.displayName){
+    if(displayName != '' && displayName != currentUser.displayName ){
       console.log(displayName);
       updateDisplayName(displayName);
     }
@@ -60,14 +60,15 @@ const Home : React.FC<Props> = ()=>{
     setOpenAlert(false);
     setDisplayMessage('');
     setErrorType('');
-
+    //Clear error field
+    setError(true);
     
     //Clear profile data
-    setPhotoURL('');
-    setDisplayName('');
-    setEmail('');
-    setPassword('');
-    setConformPassword('');
+    // setPhotoURL('');
+    // setDisplayName('');
+    // setEmail('');
+    // setPassword('');
+    // setConformPassword('');
 
   };
 
@@ -103,7 +104,7 @@ const Home : React.FC<Props> = ()=>{
       const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   
   //Email Regex Validation
- 
+  const [err,setError] = useState(true);
   const emailValidation = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 
     setEmail(e.target.value);
@@ -115,6 +116,7 @@ const Home : React.FC<Props> = ()=>{
       setOpenAlert(false);
       setDisplayMessage("");
       setErrorType("");
+      setError(false);
     }
 
   }
@@ -131,6 +133,7 @@ const Home : React.FC<Props> = ()=>{
       setOpenAlert(false);
       setDisplayMessage("");
       setErrorType("");
+      setError(false);
     }
 
   }
@@ -147,6 +150,7 @@ const Home : React.FC<Props> = ()=>{
       setOpenAlert(false);
       setDisplayMessage("");
       setErrorType("");
+      setError(false);
     }
 
   }
@@ -226,7 +230,7 @@ const Home : React.FC<Props> = ()=>{
             disabled = {(enableNameEditingOnDoubleClick) ? false : true }
             id= "outline-disabled-name" 
             label="Name"
-            defaultValue= {currentUser.displayName}
+            defaultValue= { (displayName) ? displayName : currentUser.displayName}
           
             onDoubleClick = {()=> setEnableNameEditingOnDoubleClick(!enableNameEditingOnDoubleClick)}
             onChange = {(e) => setDisplayName(e.target.value)}
