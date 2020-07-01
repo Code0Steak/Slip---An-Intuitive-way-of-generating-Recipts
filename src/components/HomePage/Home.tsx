@@ -98,17 +98,14 @@ const Home : React.FC<Props> = ()=>{
       setErrorType("info");
   }
 
-  //Regex
-      //Regex for validation
-      const emailRegex = /'^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'/;
-      const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-  
-  //Email Regex Validation
+  /*Error and Regex*/
   const [err,setError] = useState(true);
+  //Email Regex Validation
+ 
   const emailValidation = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 
     setEmail(e.target.value);
-    if(!emailRegex.test(email)){
+    if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)){
       setOpenAlert(true);
       setDisplayMessage("Please enter a valid Email Address!");
       setErrorType("error");
@@ -125,7 +122,7 @@ const Home : React.FC<Props> = ()=>{
   const passwordValidation = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 
     setPassword(e.target.value);
-    if(!passRegex.test(password)){
+    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/i.test(password)){
       setOpenAlert(true);
       setDisplayMessage("Please set a Password with minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
       setErrorType("error");

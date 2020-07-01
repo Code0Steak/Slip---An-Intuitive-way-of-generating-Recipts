@@ -33,10 +33,6 @@ const SignUp : React.FC<Props> = () => {
       };
     const [errorType,setErrorType] = useState('');
    
-    //Regex for validation
-    const emailRegex = /'^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'/;
-    const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-
     //routing
     const history = useHistory();
 
@@ -69,12 +65,12 @@ const SignUp : React.FC<Props> = () => {
                                setDisplayMessage("Please fill in all the fields!");
                                setErrorType("error");
                             }
-                            else if(!(emailRegex.test(email))){
+                            else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)){
                                 setOpen(true);
                                 setDisplayMessage("Please enter a valid Email Address!");
                                 setErrorType("error");
                             }
-                            else if(!(passRegex.test(pass))){
+                            else if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/i.test(pass)){
                                 setOpen(true);
                                 setDisplayMessage("Your Password should have minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
                                 setErrorType("error");

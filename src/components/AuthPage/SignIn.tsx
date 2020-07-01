@@ -60,7 +60,7 @@ const SignIn : React.FC<Props> = () => {
                         () => {
                             console.log("clicked");
                             
-                            if(!(emailRegex.test(email))){
+                            if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)){
                                 setOpen(true);
                                 setDisplayMessage("Please enter a valid Email Address!");
                                 setErrorType("error");
