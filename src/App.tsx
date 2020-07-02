@@ -18,7 +18,7 @@ const App = () => {
         <Route exact path={"/signin"} component = {SignIn} />
         <Route exact path = {"/signup"} component = {SignUp} />
         <Route exact path = {"/home"} component = {Home} />
-        <Route exact path = {"/createNewDataStore"} component = {CreateDataStore} />
+        <Route  path = {"/createNewDataStore/"} component = {CreateDataStore} />
       </BrowserRouter>
       
     </div>

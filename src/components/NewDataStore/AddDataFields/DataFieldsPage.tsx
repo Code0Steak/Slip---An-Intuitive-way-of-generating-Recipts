@@ -9,7 +9,7 @@ const DataFieldsPage : React.FC<Props> = () => {
 
     return(
     <div>
-
+        Data Fields Page
     </div>)
 }
 
