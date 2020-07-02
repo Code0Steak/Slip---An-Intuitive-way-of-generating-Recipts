@@ -302,7 +302,7 @@ const Home : React.FC<Props> = ()=>{
 
             <div className="title">The most Intuitive way of creating recipts...</div>
 
-            <div onClick = {() =>{ toggle(!state); history.replace('/createNewDataStore/')} } className="newDataStore">
+            <div onClick = {() =>{ toggle(!state); history.push('/createNewDataStore/')} } className="newDataStore">
 
             <animated.div
         style={{
