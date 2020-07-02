@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import SignIn from './components/AuthPage/SignIn';
 import SignUp from './components/AuthPage/SignUp';
 import Home from './components/HomePage/Home';
+import CreateDataStore from './components/NewDataStore/CreateDataStore';
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route exact path={"/signin"} component = {SignIn} />
         <Route exact path = {"/signup"} component = {SignUp} />
         <Route exact path = {"/home"} component = {Home} />
+        <Route exact path = {"/createNewDataStore"} component = {CreateDataStore} />
       </BrowserRouter>
       
     </div>
