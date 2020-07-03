@@ -3,7 +3,7 @@ import './DataFieldsPage.css'
 
 interface Props{
     displayDataFields : Array<string>;
-    removeDataField : (dataField : string,index : number) => any;
+    removeDataField : (index : number) => any;
     addDataField : () => any;
     writeValue : (value : string, index : number) => any;
 }
@@ -26,7 +26,7 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,removeDataField,add
 
             // else return 
             return (<div key = {index}> <input type="text" value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)}  /> <span onClick = {
-                () => removeDataField(dataField,index)
+                () => removeDataField(index)
             }>{index}-</span>
         </div>)
 

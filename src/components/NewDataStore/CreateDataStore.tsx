@@ -28,11 +28,17 @@ const CreateDataStore : React.FC<Props> = () => {
     const renderComponent = (step : number) => {
         switch(step){
             case 0 : console.log('step 1');
-                     const removeDataField = (dataField : string) => {
-                         
-                        const [remove = dataField,...others] = dataFields;
-                        setDataFields(others);
-                     };
+                     const removeDataField = (index : number) => {
+                        let newArr = dataFields.map((dataField : string,i) => {
+                            if(i != index)
+                                return dataField
+                            else return ''
+                            
+                        })
+                        newArr = newArr.filter(el => el != '')
+                        setDataFields([...newArr]);
+
+                    }
                      const addDataField = () => {
                          setDataFields([...dataFields,'']);
                          console.log('added');
