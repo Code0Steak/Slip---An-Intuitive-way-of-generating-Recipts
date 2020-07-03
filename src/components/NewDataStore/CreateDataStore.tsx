@@ -32,8 +32,23 @@ const CreateDataStore : React.FC<Props> = () => {
                          
                         const [remove = dataField,...others] = dataFields;
                         setDataFields(others);
+                     };
+                     const addDataField = () => {
+                         setDataFields([...dataFields,'']);
+                         console.log('added');
                      }
-                      return <DataFieldsPage displayDataFields = {dataFields} removeDataField = {removeDataField} />;
+                     const writeValue = (value : string,index : number) => {
+                         const newArr = dataFields.map((dataField,i) => {
+                             if(i === index)
+                                 return value
+                             else return dataField
+                             
+                         })
+
+                         setDataFields([...newArr]);
+
+                     }
+                      return <DataFieldsPage displayDataFields = {dataFields} removeDataField = {removeDataField} addDataField = {addDataField} writeValue = {writeValue} />;
                       
             case 1 : console.log('step2')
                      return <TaxFieldsPage />;
