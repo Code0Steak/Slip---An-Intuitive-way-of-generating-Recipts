@@ -7,7 +7,7 @@ import hazzleFree from '../../assets/LandingPage/miroodles-hazzleFree.png';
 import laptopHand from '../../assets/LandingPage/miroodles-laptop-hand.png';
 
 import { useSpring, animated } from 'react-spring'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import {auth} from '../../firebase/fire';
 import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateChange';
@@ -23,11 +23,15 @@ const Landing : React.FC<Props> = ()=>{
     
     const currentUser = useAuthStateChange();
 
-    return (currentUser) ? (<div> <Link to = "/home">Click</Link> to continue with your previous session or <Link to = "/"><span onClick = {
-        () => {
-            auth.signOut();
-        }
-    } >SignOut</span></Link></div>) : (
+    return (currentUser) ? (
+    // <div> <Link to = "/home">Click</Link> to continue with your previous session or <Link to = "/"><span onClick = {
+    //     () => {
+    //         auth.signOut();
+    //     }
+    // } >SignOut</span></Link></div>
+    
+    <Redirect to = "/home" />    
+    ) : (
         <div className="landingMain">
             <div className = "name">Slip</div>
 

@@ -7,7 +7,7 @@ interface Props {
 const FeedTaxDataPage : React.FC<Props> = () => {
     return (
         <div>
-            
+            Feed Tax Data
         </div>
     )
 }

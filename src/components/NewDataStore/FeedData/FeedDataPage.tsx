@@ -8,7 +8,7 @@ interface Props {
 const FeedDataPage : React.FC<Props> = () => {
     return (
         <div>
-            
+            Feed Data
         </div>
     )
 }
