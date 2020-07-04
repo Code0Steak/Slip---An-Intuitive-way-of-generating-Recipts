@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.3",
     "@types/material-ui": "^0.21.7"
   }
 }
