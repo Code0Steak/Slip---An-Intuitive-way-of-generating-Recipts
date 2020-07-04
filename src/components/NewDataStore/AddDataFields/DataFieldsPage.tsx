@@ -1,7 +1,5 @@
 import React,{useRef} from 'react'
 import './DataFieldsPage.css'
-import {useGesture} from 'react-use-gesture'
-import { useSprings, animated, interpolate } from 'react-spring'
 
 interface Props{
     displayDataFields : Array<string>;
@@ -11,22 +9,6 @@ interface Props{
 }
 
 const DataFieldsPage : React.FC<Props> = ({displayDataFields,removeDataField,addDataField,writeValue}) => {
-
-    // Lodash Clamp
-    const clamp = (num : number,lower : number,upper : number) : number => {
-
-        num = +num
-        lower = +lower
-        upper = +upper
-        lower = lower === lower ? lower : 0
-        upper = upper === upper ? upper : 0
-        if (num === num) {
-            num = num <= upper ? num : upper
-            num = num >= lower ? num : lower
-        }
-        return num
-
-    }
 
     return(
     <div>
