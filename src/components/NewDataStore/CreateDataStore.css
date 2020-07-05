@@ -1,11 +1,33 @@
-.mainOne{
-    display : grid;
-    grid-template-columns: 675px 675px;
-    grid-template-rows: 25% 100px auto;
+.cancel{
+    position: absolute;
+    right: 30px;
+    top: 30px;
 }
 
 .titleText{
     position : absolute;
     left: 30px;
     top: 30px;
+
+    font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 25px;
+line-height: 59px;
+
+
+}
+
+.stepNumber{
+    position: absolute;
+    width: 431px;
+    height: 67px;
+    left: 30px;
+    top: 600px;
+    font-family: Roboto;
+font-style: italic;
+font-weight: bold;
+font-size: 40px;
+line-height: 56px;
+
 }

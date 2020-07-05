@@ -7,8 +7,7 @@ import FeedDataPage from './FeedData/FeedDataPage';
 import FeedTaxDataPage from './FeedTaxData/FeedTaxDataPage';
 import { Link } from 'react-router-dom'
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-import HighlightOffTwoToneIcon from '@material-ui/icons/HighlightOffTwoTone';
-
+import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
 interface Props {
     
 }
@@ -60,13 +59,15 @@ const CreateDataStore : React.FC<Props> = () => {
 
                      }
                      const nextPage = () => {
-                         if(dataFields){
-                             setSelectStep(1)
-                         }
-                         else{
+                         if(dataFields === []){
                             setOpenAlert(true);
                             setDisplayMessage("Please add Data Fields to continue!");
                             setErrorType("info");
+                             
+                         }
+                         else{
+                            console.log(dataFields)
+                             setSelectStep(1)
                          }
 
                      }
@@ -154,7 +155,7 @@ const CreateDataStore : React.FC<Props> = () => {
             {
                 renderComponent(selectStep)
             }
-            <div><HighlightOffTwoToneIcon /></div>
+            <div className = "cancel"><CancelTwoToneIcon style={{fontSize: 40}} /></div>
             <div className="stepNumber"><span>1</span> <span>2</span> <span>3</span> <span>4</span></div>
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
 

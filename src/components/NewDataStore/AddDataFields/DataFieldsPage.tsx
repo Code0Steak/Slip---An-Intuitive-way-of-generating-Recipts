@@ -1,5 +1,10 @@
 import React from 'react'
 import './DataFieldsPage.css'
+import TextField from '@material-ui/core/TextField';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import RemoveCircleTwoToneIcon from '@material-ui/icons/RemoveCircleTwoTone';
+import AddBoxTwoToneIcon from '@material-ui/icons/AddBoxTwoTone';
+import Button from '@material-ui/core/Button';
 
 interface Props{
     displayDataFields : Array<string>;
@@ -12,34 +17,40 @@ interface Props{
 const DataFieldsPage : React.FC<Props> = ({displayDataFields,removeDataField,addDataField,writeValue,nextPage}) => {
 
     return(
-    <div>
-        Data Fields Page
-
+    <div className = "dataFieldsPageMain">
+        <div className="sideBlock">
+                
+            <div className = "pageName">Add Data Field</div>
+            <div className="pageDescription">Add the Data Fields, they will act as columns in your data table!</div>
+            
+        </div>
+        <div className = "dataFieldsDiv">
         {   
             displayDataFields.map( (dataField,index) => {
 
-            // if(dataField) 
-            
-            // return (<div key = {index}>{dataField}<span onClick = {
-            //         () => removeDataField(dataField)
-            //     }>-</span>
-            // </div>)
+            return (<div className = "dataFieldDiv" key = {index}> <Button variant="contained"  key = {index} className = "dataFieldButton" >
 
-            // else return 
-            return (<div key = {index}> <input type="text" value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)}  /> <span onClick = {
+<TextField id="standard-basic" size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField" />
+            <span onClick = {
                 () => removeDataField(index)
-            }>{index}-</span>
-        </div>)
+            } key = {index} ><RemoveCircleTwoToneIcon/></span>
+
+            </Button> </div>    
+        )
 
                 })
             
         }
 
+        
         <div className="addDataField"><span onClick = {
-            () => addDataField()
-        } >+</span></div>
+                    () => addDataField()
+                } ><AddBoxTwoToneIcon /></span></div>
 
-        <div onClick = {()=> nextPage()}>Next</div>
+        </div>
+
+
+        <div onClick = {()=> nextPage()} className="nextPageButton"><ArrowForwardIcon /></div>
 
     </div>)
 }
