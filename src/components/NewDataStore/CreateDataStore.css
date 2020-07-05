@@ -1,0 +1,11 @@
+.mainOne{
+    display : grid;
+    grid-template-columns: 675px 675px;
+    grid-template-rows: 25% 100px auto;
+}
+
+.titleText{
+    position : absolute;
+    left: 30px;
+    top: 30px;
+}

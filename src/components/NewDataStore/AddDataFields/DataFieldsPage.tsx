@@ -1,4 +1,4 @@
-import React,{useRef} from 'react'
+import React from 'react'
 import './DataFieldsPage.css'
 
 interface Props{
@@ -6,9 +6,10 @@ interface Props{
     removeDataField : (index : number) => any;
     addDataField : () => any;
     writeValue : (value : string, index : number) => any;
+    nextPage : () => any;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,removeDataField,addDataField,writeValue}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,removeDataField,addDataField,writeValue,nextPage}) => {
 
     return(
     <div>
@@ -37,6 +38,8 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,removeDataField,add
         <div className="addDataField"><span onClick = {
             () => addDataField()
         } >+</span></div>
+
+        <div onClick = {()=> nextPage()}>Next</div>
 
     </div>)
 }
