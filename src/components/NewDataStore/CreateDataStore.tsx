@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom'
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
 import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
 import useStickyState from '../../custom-hooks/persistState/useStickyState';
+import CreateDataStoreDialogue from '../Dialogues/CreateDataStoreDialogues/CreateDataStoreDialogues';
+
 interface Props {
     
 }
@@ -17,6 +19,20 @@ const CreateDataStore : React.FC<Props> = () => {
     
     /* Routing */
     const history = useHistory();
+
+    /* Handle Close */
+    const [openDialogue, setOpenDialogue] = React.useState(false);
+
+    const handleCloseCancel = () => {
+        setOpenDialogue(false);
+    };
+
+    const handleCloseExit = () => {
+        reset();
+        setOpenDialogue(false);
+        history.push('/home');
+    };
+
 
     /* Component Logic and Variables*/
     const [selectStep,setSelectStep] = useStickyState(0,"step");
@@ -28,6 +44,15 @@ const CreateDataStore : React.FC<Props> = () => {
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
     //Feed Data Page
     const [items,setItems] = useStickyState([],"items");
+
+    //reset
+    const reset = () => {
+        setSelectStep(0);
+        setDataFields(['ID','Item Name','Price']);
+        setShopName('');
+        setTaxFields(['CGST','SGST']);
+        setItems([]);
+    }
     // Tracks if the User has made progress with the form   
     const [progress,setProgress] = useState(false);
 
@@ -169,15 +194,15 @@ const CreateDataStore : React.FC<Props> = () => {
     return (
         <div className = "mainOne">
             <div className = "titleText">
-                <h2><Link to = "/home">Slip</Link> - New Data Store </h2>
+                <h2><span onClick = {()=>setOpenDialogue(true)}>Slip</span> - New Data Store </h2>
             </div>  
             {
                 renderComponent(selectStep)
             }
-            <div className = "cancel"><CancelTwoToneIcon style={{fontSize: 40}} /></div>
+            <div className = "cancel" onClick = {()=>setOpenDialogue(true)}  ><CancelTwoToneIcon style={{fontSize: 40}} /></div>
             <div className="stepNumber"><span>1</span> <span>2</span> <span>3</span> <span>4</span></div>
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
-
+            <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit}  />
         </div>
     )
 }
