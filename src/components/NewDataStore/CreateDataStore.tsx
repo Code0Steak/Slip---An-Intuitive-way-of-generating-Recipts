@@ -47,6 +47,8 @@ const CreateDataStore : React.FC<Props> = () => {
 
     //reset
     const reset = () => {
+        console.log('erazed')
+        localStorage.clear();
         setSelectStep(0);
         setDataFields(['ID','Item Name','Price']);
         setShopName('');
