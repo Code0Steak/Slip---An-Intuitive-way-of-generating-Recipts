@@ -45,9 +45,9 @@
   grid-row-start: 2;
   grid-row-end: auto;
   justify-self: baseline;
-  
+  height: 300px;
   padding: 30px;
-
+  overflow: scroll;
 }
 .dataFieldDiv{
     width: 300px;
@@ -61,18 +61,6 @@
     width: 250px;
 }
 
-.addButton{
-    size: 200px;
-}
-
-.nextPageButton{
-  grid-column-start: 2;
-  grid-column-end: auto;
-  grid-row-start: 2;
-  grid-row-end: auto;
-
-  justify-self: end;
-}
 
 .nextPageButton{
   position: absolute;

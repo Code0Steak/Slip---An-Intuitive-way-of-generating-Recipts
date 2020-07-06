@@ -1,0 +1,78 @@
+.taxFieldsPageMain{
+    display : grid;
+    grid-template-columns: 40% auto;
+    grid-template-rows: 200px 67px 491px auto;
+}
+
+/* Side Fields */
+.taxSideBlock{
+    background-color: #C4C4C4;
+    width: auto;
+    height: auto;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 4;
+
+    padding: 15px;
+
+    padding-top: 240px;
+}
+
+.tax{
+    
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 50px;
+  line-height: 84px;
+
+  color: #FFFFFF;
+}
+
+.taxInfo{
+    font-family: Roboto;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 24px;
+    
+  }
+
+  /* */
+
+  .taxFieldsDiv{
+    grid-column-start: 2;
+    grid-column-end: auto;
+    grid-row-start: 2;
+    grid-row-end: auto;
+    justify-self: baseline;
+    height: 300px;
+    padding: 30px;
+    overflow: scroll;
+  }
+
+.taxFieldDiv{
+    width: 300px;
+    padding: 15px;
+}
+
+.taxFieldButton{
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 90px;
+}
+
+.taxField{
+    width: 250px;
+}
+
+.taxNextPageButton{
+    position: absolute;
+    bottom: 3.2%;
+    right: 2%;
+}
+
+.taxBackPageButton{
+    position: absolute;
+    bottom: 3.2%;
+    right: 4%;
+}
