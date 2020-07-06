@@ -7,7 +7,7 @@ interface Props {
 
 const FeedDataPage : React.FC<Props> = () => {
     return (
-        <div>
+        <div className = "feedDataMain">
             Feed Data
         </div>
     )

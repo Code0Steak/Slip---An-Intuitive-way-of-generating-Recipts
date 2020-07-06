@@ -8,6 +8,7 @@ import FeedTaxDataPage from './FeedTaxData/FeedTaxDataPage';
 import { Link } from 'react-router-dom'
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
 import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
+import useStickyState from '../../custom-hooks/persistState/useStickyState';
 interface Props {
     
 }
@@ -18,13 +19,13 @@ const CreateDataStore : React.FC<Props> = () => {
     const history = useHistory();
 
     /* Component Logic */
-    const [selectStep,setSelectStep] = useState(0);
+    const [selectStep,setSelectStep] = useStickyState(0,"step");
     
     //Data Fields Page
-    const [dataFields,setDataFields] = useState(['ID','Item Name','Price']);
-    const [shopName,setShopName] = useState('');
+    const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price'],"dataFields");
+    const [shopName,setShopName] = useStickyState('',"shopName");
     //Tax Fields Page
-    const [taxFields,setTaxFields] = useState(['CGST','SGST']);
+    const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
 
     // Tracks if the User has made progress with the form   
     const [progress,setProgress] = useState(false);
@@ -34,13 +35,13 @@ const CreateDataStore : React.FC<Props> = () => {
         switch(step){
             case 0 : console.log('step 1');
                      const removeDataField = (index : number) => {
-                        let newArr = dataFields.map((dataField : string,i) => {
+                        let newArr = dataFields.map((dataField : string,i : number) => {
                             if(i !== index)
                                 return dataField
                             else return ''
                             
                         })
-                        newArr = newArr.filter(el => el !== '')
+                        newArr = newArr.filter((el: string) => el !== '')
                         setDataFields([...newArr]);
 
                     }
@@ -49,7 +50,7 @@ const CreateDataStore : React.FC<Props> = () => {
                          console.log('added');
                      }
                      const writeValue = (value : string,index : number) => {
-                         const newArr = dataFields.map((dataField,i) => {
+                         const newArr = dataFields.map((dataField: string,i: number) => {
                              if(i === index)
                                  return value
                              else return dataField
@@ -85,13 +86,13 @@ const CreateDataStore : React.FC<Props> = () => {
                       
             case 1 : console.log('step2')
                     const removeTaxField = (index : number) => {
-                        let newArr = taxFields.map((taxField : string,i) => {
+                        let newArr = taxFields.map((taxField : string,i : number) => {
                             if(i !== index)
                                 return taxField
                             else return ''
                             
                         })
-                        newArr = newArr.filter(el => el !== '')
+                        newArr = newArr.filter((el: string) => el !== '')
                         setTaxFields([...newArr]);
 
                     }
@@ -100,7 +101,7 @@ const CreateDataStore : React.FC<Props> = () => {
                         console.log('added');
                     }
                     const writeTaxValue = (value : string,index : number) => {
-                        const newArr = taxFields.map((taxField,i) => {
+                        const newArr = taxFields.map((taxField : string,i : number) => {
                             if(i === index)
                                 return value
                             else return taxField
