@@ -51,7 +51,7 @@ const Home : React.FC<Props> = ()=>{
 
     //Updates
 
-    if(displayName != '' && displayName != currentUser.displayName ){
+    if(displayName !== '' && displayName !== currentUser.displayName ){
       console.log(displayName);
       updateDisplayName(displayName);
     }

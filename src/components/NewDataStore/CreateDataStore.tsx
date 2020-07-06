@@ -22,6 +22,7 @@ const CreateDataStore : React.FC<Props> = () => {
     
     //Data Fields Page
     const [dataFields,setDataFields] = useState(['ID','Item Name','Price']);
+    const [shopName,setShopName] = useState('');
     //Tax Fields Page
     const [taxFields,setTaxFields] = useState(['CGST','SGST']);
 
@@ -34,12 +35,12 @@ const CreateDataStore : React.FC<Props> = () => {
             case 0 : console.log('step 1');
                      const removeDataField = (index : number) => {
                         let newArr = dataFields.map((dataField : string,i) => {
-                            if(i != index)
+                            if(i !== index)
                                 return dataField
                             else return ''
                             
                         })
-                        newArr = newArr.filter(el => el != '')
+                        newArr = newArr.filter(el => el !== '')
                         setDataFields([...newArr]);
 
                     }
@@ -58,12 +59,21 @@ const CreateDataStore : React.FC<Props> = () => {
                          setDataFields([...newArr]);
 
                      }
+
+                     const writeShopValue = (value: string) => setShopName(value);
+
                      const nextPage = () => {
-                         if(dataFields === []){
+                         if(dataFields.length === 0){
                             setOpenAlert(true);
                             setDisplayMessage("Please add Data Fields to continue!");
-                            setErrorType("info");
-                             
+                            setErrorType("error");
+                             console.log(dataFields)
+                         }
+                         else if(!shopName){
+                            setOpenAlert(true);
+                            setDisplayMessage("Please enter your Shop Name!");
+                            setErrorType("error");
+                             console.log(shopName)
                          }
                          else{
                             console.log(dataFields)
@@ -71,17 +81,17 @@ const CreateDataStore : React.FC<Props> = () => {
                          }
 
                      }
-                      return <DataFieldsPage displayDataFields = {dataFields} removeDataField = {removeDataField} addDataField = {addDataField} writeValue = {writeValue} nextPage = {nextPage} />;
+                      return <DataFieldsPage displayDataFields = {dataFields} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} nextPage = {nextPage} />;
                       
             case 1 : console.log('step2')
                     const removeTaxField = (index : number) => {
                         let newArr = taxFields.map((taxField : string,i) => {
-                            if(i != index)
+                            if(i !== index)
                                 return taxField
                             else return ''
                             
                         })
-                        newArr = newArr.filter(el => el != '')
+                        newArr = newArr.filter(el => el !== '')
                         setTaxFields([...newArr]);
 
                     }

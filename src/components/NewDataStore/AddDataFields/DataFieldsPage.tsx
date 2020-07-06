@@ -8,37 +8,39 @@ import Button from '@material-ui/core/Button';
 
 interface Props{
     displayDataFields : Array<string>;
+    shopName: string;
     removeDataField : (index : number) => any;
     addDataField : () => any;
     writeValue : (value : string, index : number) => any;
+    writeShopValue : (value: string) => any;
     nextPage : () => any;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,removeDataField,addDataField,writeValue,nextPage}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,shopName,removeDataField,addDataField,writeValue,writeShopValue,nextPage}) => {
 
     return(
     <div className = "dataFieldsPageMain">
         <div className="sideBlock">
-                
-            <div className = "pageName">Add Data Field</div>
+             <div className="shopName"><TextField id="standard-basic" size = "small" label = "Shop Name" value = {shopName} onChange = {(e)=>writeShopValue(e.target.value)} className = "shopNameField"  /></div>   
+            <div className = "pageName">Add Data Fields</div>
             <div className="pageDescription">Add the Data Fields, they will act as columns in your data table!</div>
             
         </div>
         <div className = "dataFieldsDiv">
-        {   
+        {   (displayDataFields.length) ?
             displayDataFields.map( (dataField,index) => {
 
-            return (<div className = "dataFieldDiv" key = {index}> <Button variant="contained"  key = {index} className = "dataFieldButton" >
+            return (<div className = "dataFieldDiv" key = {index}> <Button variant="contained"  className = "dataFieldButton" >
 
-<TextField id="standard-basic" size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField" />
+<TextField id={`standard-basic ${index}`} size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField"  />
             <span onClick = {
                 () => removeDataField(index)
-            } key = {index} ><RemoveCircleTwoToneIcon/></span>
+            } ><RemoveCircleTwoToneIcon/></span>
 
             </Button> </div>    
         )
 
-                })
+                }) : <div className="pageDescription">Add Data Fields</div>
             
         }
 
@@ -50,7 +52,7 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,removeDataField,add
         </div>
 
 
-        <div onClick = {()=> nextPage()} className="nextPageButton"><ArrowForwardIcon /></div>
+        <div onClick = {()=> nextPage()} className="nextPageButton"><ArrowForwardIcon style ={{fontSize: 30}} /></div>
 
     </div>)
 }
