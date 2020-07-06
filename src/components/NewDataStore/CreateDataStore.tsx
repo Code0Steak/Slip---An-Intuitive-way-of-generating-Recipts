@@ -18,7 +18,7 @@ const CreateDataStore : React.FC<Props> = () => {
     /* Routing */
     const history = useHistory();
 
-    /* Component Logic */
+    /* Component Logic and Variables*/
     const [selectStep,setSelectStep] = useStickyState(0,"step");
     
     //Data Fields Page
@@ -26,7 +26,8 @@ const CreateDataStore : React.FC<Props> = () => {
     const [shopName,setShopName] = useStickyState('',"shopName");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
-
+    //Feed Data Page
+    const [items,setItems] = useStickyState([],"items");
     // Tracks if the User has made progress with the form   
     const [progress,setProgress] = useState(false);
 
@@ -130,7 +131,14 @@ const CreateDataStore : React.FC<Props> = () => {
                      return <TaxFieldsPage displayTaxFields = {taxFields} removeTaxField = {removeTaxField} addTaxField = {addTaxField} writeValue = {writeTaxValue} nextPage = {nextTaxPage} backPage = {backTaxPage} />;
                      
             case 2 : console.log('step 3')
-            return <FeedDataPage />;
+
+            const nextFeedPage = () => {
+                setSelectStep(3);
+            }
+            const backFeedPage = () => {
+                setSelectStep(1);
+            }
+            return <FeedDataPage tableCell = {dataFields} nextPage = {nextFeedPage} backPage = {backFeedPage} />;
             
             case 3: console.log('step 4')
             return <FeedTaxDataPage />;
