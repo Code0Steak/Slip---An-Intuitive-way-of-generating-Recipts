@@ -27,23 +27,38 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,shopName,removeData
             
         </div>
         <div className = "dataFieldsDiv">
-        {   (displayDataFields.length) ?
-            displayDataFields.map( (dataField,index) => {
+       
+        {
+        
+        displayDataFields.map( (dataField,index) => {
 
             return (<div className = "dataFieldDiv" key = {index}> <Button variant="contained"  className = "dataFieldButton" >
 
-<TextField id={`standard-basic ${index}`} size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField"  />
+       { (dataField === 'Price') ? 
+       
+         <>
+
+            <TextField disabled id={`standard-basic ${index}`} size = "small"  value = {dataField} className = "dataField"  />
+
+
+         </>
+       
+       : <>
+       <TextField id={`standard-basic ${index}`} size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField"  />
             <span onClick = {
                 () => removeDataField(index)
             } ><RemoveCircleTwoToneIcon/></span>
+            </> 
+            
+        }
 
             </Button> </div>    
         )
 
-                }) : <div className="pageDescription">Add Data Fields</div>
+                }) 
             
+        
         }
-
         
         <div className="addDataField"><span onClick = {
                     () => addDataField()

@@ -5,7 +5,6 @@ import DataFieldsPage from './AddDataFields/DataFieldsPage';
 import TaxFieldsPage from './AddTaxFields/TaxFieldsPage';
 import FeedDataPage from './FeedData/FeedDataPage';
 import FeedTaxDataPage from './FeedTaxData/FeedTaxDataPage';
-import { Link } from 'react-router-dom'
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
 import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
 import useStickyState from '../../custom-hooks/persistState/useStickyState';
@@ -40,6 +39,7 @@ const CreateDataStore : React.FC<Props> = () => {
     //Data Fields Page
     const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price'],"dataFields");
     const [shopName,setShopName] = useStickyState('',"shopName");
+    const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
     //Feed Data Page
@@ -70,11 +70,13 @@ const CreateDataStore : React.FC<Props> = () => {
                             
                         })
                         newArr = newArr.filter((el: string) => el !== '')
-                        setDataFields([...newArr]);
+                        
+                        setDataFields([...newArr])
 
                     }
                      const addDataField = () => {
-                         setDataFields([...dataFields,'']);
+                         const [p = 'price',...others] = dataFields;
+                         setDataFields([...others,'',p]);
                          console.log('added');
                      }
                      const writeValue = (value : string,index : number) => {
@@ -82,7 +84,6 @@ const CreateDataStore : React.FC<Props> = () => {
                              if(i === index)
                                  return value
                              else return dataField
-                             
                          })
 
                          setDataFields([...newArr]);
