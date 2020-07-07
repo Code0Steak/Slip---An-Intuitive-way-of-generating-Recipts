@@ -75,8 +75,9 @@ const CreateDataStore : React.FC<Props> = () => {
 
                     }
                      const addDataField = () => {
-                         const [p = 'price',...others] = dataFields;
-                         setDataFields([...others,'',p]);
+                         
+                         setDataFields([...dataFields,'']);
+                         console.log(dataFields);
                          console.log('added');
                      }
                      const writeValue = (value : string,index : number) => {
