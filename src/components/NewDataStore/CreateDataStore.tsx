@@ -161,13 +161,18 @@ const CreateDataStore : React.FC<Props> = () => {
                      
             case 2 : console.log('step 3')
 
+            const createRow = () => {
+                const newRow = 
+            }
+
             const nextFeedPage = () => {
                 setSelectStep(3);
             }
             const backFeedPage = () => {
                 setSelectStep(1);
             }
-            return <FeedDataPage tableCell = {dataFields} nextPage = {nextFeedPage} backPage = {backFeedPage} />;
+            
+            return <FeedDataPage tableCell = {dataFields} tableRow = {items} nextPage = {nextFeedPage} backPage = {backFeedPage} createRow = {createRow} />;
             
             case 3: console.log('step 4')
             return <FeedTaxDataPage />;

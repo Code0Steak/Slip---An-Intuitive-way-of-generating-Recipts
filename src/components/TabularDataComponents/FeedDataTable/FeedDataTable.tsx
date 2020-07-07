@@ -40,10 +40,11 @@ const useStyles = makeStyles({
 
 interface Props{
     cells: Array<string>;
-    rows: Array<any>
+    rows: Array<any>;
+    createRow: () => any;
 }
 
-const FeedDataTable: React.FC<Props> = ({cells,rows}) => {
+const FeedDataTable: React.FC<Props> = ({cells,rows,createRow}) => {
     const classes = useStyles();
   
     return (
@@ -57,17 +58,17 @@ const FeedDataTable: React.FC<Props> = ({cells,rows}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cells.map((row) => (
-              <StyledTableRow key={row}>
-                <StyledTableCell component="th" scope="row">
-                  {row}
-                </StyledTableCell>
-                <StyledTableCell align="right">{row}</StyledTableCell>
-                <StyledTableCell align="right">{row}</StyledTableCell>
-                <StyledTableCell align="right">{row}</StyledTableCell>
-                <StyledTableCell align="right">{row}</StyledTableCell>
-              </StyledTableRow>
-            ))}
+            
+            {
+              (rows) ?  rows.map((row,index) => 
+                <StyledTableRow key = {index}>
+                  {
+                    Object.values(row).forEach()
+                  }
+                </StyledTableRow>
+              )
+                : createRow(cells) 
+            }
           </TableBody>
         </Table>
       </TableContainer>
