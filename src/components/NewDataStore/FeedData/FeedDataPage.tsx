@@ -2,7 +2,7 @@ import React from 'react'
 import './FeedDataPage.css'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
+import FeedDataTable from '../../TabularDataComponents/FeedDataTable/FeedDataTable';
 interface Props {
     tableCell : Array<string>
     nextPage : () => any;
@@ -17,6 +17,7 @@ const FeedDataPage : React.FC<Props> = ({tableCell,nextPage,backPage}) => {
             {   
                 tableCell.map(item=>item)
             }
+            <FeedDataTable cells = {tableCell} rows = {tableCell} />
         </div>
         
 
