@@ -167,6 +167,7 @@ const CreateDataStore : React.FC<Props> = () => {
                     newRow = {...newRow,[data] : ''}
                 }) 
                 setItems([...items,newRow]);
+                console.log(items);
             }
 
             const nextFeedPage = () => {

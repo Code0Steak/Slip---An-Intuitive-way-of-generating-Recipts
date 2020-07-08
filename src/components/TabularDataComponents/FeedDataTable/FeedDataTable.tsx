@@ -8,7 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-//Cell Styling
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
     head: {
@@ -21,7 +20,6 @@ const StyledTableCell = withStyles((theme: Theme) =>
   }),
 )(TableCell);
 
-//Row Styling
 const StyledTableRow = withStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -33,46 +31,48 @@ const StyledTableRow = withStyles((theme: Theme) =>
 )(TableRow);
 
 const useStyles = makeStyles({
-    table: {
-      minWidth: 700,
-    },
+  table: {
+    minWidth: 700,
+  },
 });
 
-interface Props{
-    cells: Array<string>;
-    rows: Array<any>;
-    createRow: () => any;
+interface Props {
+  cells: Array<string>;
+  rows: Array<any>;
+  createRow: () => any;
 }
 
-const FeedDataTable: React.FC<Props> = ({cells,rows,createRow}) => {
-    const classes = useStyles();
-  
-    return (
-      <TableContainer component={Paper}>
+const FeedDataTable : React.FC<Props> = ({cells,rows,createRow}) => {
+
+  const classes = useStyles();
+
+  return (
+    <div>
+        <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
               {
-                  cells.map(cell => <StyledTableCell>{cell}</StyledTableCell> )
+                cells.map((cell: string)=><StyledTableCell align="right">{cell}</StyledTableCell>)
               }
             </TableRow>
           </TableHead>
           <TableBody>
-            
-            {
-              (rows) ?  rows.map((row,index) => 
-                <StyledTableRow key = {index}>
-                  {
-                    Object.values(row).forEach(val => )
-                  }
-                </StyledTableRow>
-              )
-                : createRow() 
-            }
+            {(rows.length === 0) ? createRow() : rows.map((row : any,index: number) => (
+              <TableRow key={index}>
+                {
+                  Object.values(row).map((val: any) => <StyledTableCell align="right">{val}</StyledTableCell>)
+                }
+              </TableRow>
+            ))
+         
+          
+          }
           </TableBody>
         </Table>
       </TableContainer>
-    );
-  }
+    </div>
+  )
+}
 
-export default FeedDataTable; 
+export default FeedDataTable;
