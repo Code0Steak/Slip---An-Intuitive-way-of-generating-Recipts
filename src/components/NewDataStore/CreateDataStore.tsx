@@ -162,7 +162,11 @@ const CreateDataStore : React.FC<Props> = () => {
             case 2 : console.log('step 3')
 
             const createRow = () => {
-                const newRow = 
+                let newRow = {}
+                dataFields.forEach((data: any) => {
+                    newRow = {...newRow,[data] : ''}
+                }) 
+                setItems([...items,newRow]);
             }
 
             const nextFeedPage = () => {

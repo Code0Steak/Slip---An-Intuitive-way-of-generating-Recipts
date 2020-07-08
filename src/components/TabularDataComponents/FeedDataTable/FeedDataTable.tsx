@@ -63,11 +63,11 @@ const FeedDataTable: React.FC<Props> = ({cells,rows,createRow}) => {
               (rows) ?  rows.map((row,index) => 
                 <StyledTableRow key = {index}>
                   {
-                    Object.values(row).forEach()
+                    Object.values(row).forEach(val => )
                   }
                 </StyledTableRow>
               )
-                : createRow(cells) 
+                : createRow() 
             }
           </TableBody>
         </Table>
