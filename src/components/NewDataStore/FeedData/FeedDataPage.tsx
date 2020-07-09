@@ -5,7 +5,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import FeedDataTable from '../../TabularDataComponents/FeedDataTable/FeedDataTable';
 interface Props {
     tableCell : Array<string>;
-    tableRow : any;
+    tableRow : Array<any>;
     nextPage : () => any;
     backPage : () => any;
     createRow: () => any;

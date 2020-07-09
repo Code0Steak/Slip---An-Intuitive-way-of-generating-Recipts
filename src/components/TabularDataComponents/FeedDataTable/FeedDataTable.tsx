@@ -7,8 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -40,7 +38,7 @@ const useStyles = makeStyles({
 
 interface Props {
   cells: Array<string>;
-  rows: any;
+  rows: Array<any>;
   createRow: () => any;
 }
 
@@ -55,29 +53,20 @@ const FeedDataTable : React.FC<Props> = ({cells,rows,createRow}) => {
           <TableHead>
             <TableRow>
               {
-                cells.map((cell: string)=><StyledTableCell align="right" key = {cell}>{cell}</StyledTableCell>)
+                cells.map((cell: string)=><StyledTableCell align="right">{cell}</StyledTableCell>)
               }
             </TableRow>
           </TableHead>
           <TableBody>
-            {(Object.keys(rows).length === 0) ? createRow() : 
-            // rows.map((row : any,index: number) => (
-            //   <TableRow key={index}>
-            //     {
-            //       Object.keys(row).map((key: string) => <StyledTableCell align="right" key = {key}>
-                    
-            //         <TextField id={`standard-basic ${key}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" />
-
-            //         </StyledTableCell>)
-            //     }
-            //   </TableRow>
-            // ))
-            
-            Object.keys(rows).map((key : any) => {
-              rows[key].map((val: string,index: number)=> <TableRow><StyledTableCell>{`gg ${val}`}</StyledTableCell></TableRow>)
-            })
-            
-            
+            {(rows.length === 0) ? createRow() : rows.map((row : any,index: number) => (
+              <TableRow key={index}>
+                {
+                  Object.values(row).map((val: any) => <StyledTableCell align="right">{val}</StyledTableCell>)
+                }
+              </TableRow>
+            ))
+         
+          
           }
           </TableBody>
         </Table>

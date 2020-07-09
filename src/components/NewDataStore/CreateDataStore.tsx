@@ -43,7 +43,7 @@ const CreateDataStore : React.FC<Props> = () => {
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
     //Feed Data Page
-    const [items,setItems] = useStickyState({},"items");
+    const [items,setItems] = useStickyState([],"items");
 
     //reset
     const reset = () => {
@@ -162,12 +162,12 @@ const CreateDataStore : React.FC<Props> = () => {
             case 2 : console.log('step 3')
 
             const createRow = () => {
-                let itemSkeleton = {}
+                let newRow = {}
                 dataFields.forEach((data: any) => {
-                    itemSkeleton = {...itemSkeleton,[data] : ['']}
+                    newRow = {...newRow,[data] : ''}
                 }) 
-                setItems(itemSkeleton);
-                console.log(items,itemSkeleton);
+                setItems([...items,newRow]);
+                console.log(items);
             }
 
             const nextFeedPage = () => {
