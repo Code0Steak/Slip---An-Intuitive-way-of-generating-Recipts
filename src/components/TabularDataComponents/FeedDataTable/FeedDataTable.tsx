@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 
+
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
     head: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles({
 
 interface Props {
   cells: Array<string>;
-  rows: Array<any>;
+  rows: any;
   createRow: () => any;
 }
 
@@ -59,19 +60,24 @@ const FeedDataTable : React.FC<Props> = ({cells,rows,createRow}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(rows.length === 0) ? createRow() : rows.map((row : any,index: number) => (
-              <TableRow key={index}>
-                {
-                  Object.keys(row).map((key: string) => <StyledTableCell align="right" key = {key}>
+            {(Object.keys(rows).length === 0) ? createRow() : 
+            // rows.map((row : any,index: number) => (
+            //   <TableRow key={index}>
+            //     {
+            //       Object.keys(row).map((key: string) => <StyledTableCell align="right" key = {key}>
                     
-                    <TextField id={`standard-basic ${key}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" />
+            //         <TextField id={`standard-basic ${key}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" />
 
-                    </StyledTableCell>)
-                }
-              </TableRow>
-            ))
-         
-          
+            //         </StyledTableCell>)
+            //     }
+            //   </TableRow>
+            // ))
+            
+            Object.keys(rows).map((key : any) => {
+              rows[key].map((val: string,index: number)=> <TableRow><StyledTableCell>{`gg ${val}`}</StyledTableCell></TableRow>)
+            })
+            
+            
           }
           </TableBody>
         </Table>
