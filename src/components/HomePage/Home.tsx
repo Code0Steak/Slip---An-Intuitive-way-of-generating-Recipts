@@ -12,7 +12,7 @@ import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateC
 
 import Popover from '@material-ui/core/Popover';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-import {auth,updateDisplayName} from '../../firebase/fire';
+import {auth,updateDisplayName, storeImage} from '../../firebase/fire';
 
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone';
 import TextField from '@material-ui/core/TextField';
@@ -191,11 +191,13 @@ const Home : React.FC<Props> = ()=>{
     setOpenDialogue(false);
   }
   const handelSubmitImageDialogue = () => {
-    if(imageFile !== null){
+    if(imageFile){
       if(imageFile.type.includes('image')){
         setOpenAlert(true);
-      setDisplayMessage("First Upload a Image");
-      setErrorType("info");
+        setDisplayMessage("Success");
+        setErrorType("success");
+        const storageRef = storeImage(imageFile);
+        
       }
       else{
         setOpenAlert(true);

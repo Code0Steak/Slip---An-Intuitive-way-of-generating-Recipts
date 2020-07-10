@@ -1,7 +1,7 @@
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 import firebase from "firebase/app";
-
+import "firebase/storage";
 // Add the Firebase services that you want to use
 import "firebase/auth";
 import "firebase/firestore";
@@ -21,6 +21,9 @@ firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+
+//reference to storage service
+export const storage = firebase.storage();
 
 //For SignIn/SignUp with Google
 const provider = new firebase.auth.GoogleAuthProvider();
@@ -198,4 +201,21 @@ export const updateEmail = (e : string,pass: string) => {
 
   }
 
+}
+
+
+/* Create Storage */
+export const storeImage = (imageFile : any) => {
+
+  const user = auth.currentUser;
+  if(user){
+
+    //Create a storage reference
+    const storageRef = storage.ref(`${user.uid}` + imageFile.name );
+    //Upload file
+    let task = storageRef.put(imageFile);
+    
+    return task;
+    
+  }
 }

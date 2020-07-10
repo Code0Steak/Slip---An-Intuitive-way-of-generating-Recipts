@@ -7,6 +7,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -32,7 +33,7 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      
+      <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
           <CloseIcon />
@@ -56,21 +57,21 @@ const DialogActions = withStyles((theme: Theme) => ({
 }))(MuiDialogActions);
 
 interface Props{
-    open: boolean;
-    handleCloseCancel: () => any;
-    handleCloseExit: () => any;
-    title: string;
-    content: string | any;
-    buttonContent: string;
+  open : boolean;
+  title: string;
+  content: string | any;
+  handleCloseCancel: () => any;
+  handleCloseExit : () => any;
+  buttonContent: string;
+
 }
 
-const CreateDataStoreDialogues: React.FC<Props> = ({open,handleCloseCancel,handleCloseExit,title,content,buttonContent}) => {
+const CreateDataStoreDialogues : React.FC<Props>  = ({open, title, content, handleCloseCancel,handleCloseExit,buttonContent}) => {
   
-
   return (
     <div>
       
-      <Dialog onClose={handleCloseCancel} aria-labelledby="customized-dialog-title" open={open} >
+      <Dialog onClose={handleCloseCancel} aria-labelledby="customized-dialog-title" open={open}>
         <DialogTitle id="customized-dialog-title" onClose={handleCloseCancel}>
           {title}
         </DialogTitle>
