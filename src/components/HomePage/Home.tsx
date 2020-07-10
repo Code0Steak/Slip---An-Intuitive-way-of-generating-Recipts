@@ -16,6 +16,9 @@ import {auth,updateDisplayName} from '../../firebase/fire';
 
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone';
 import TextField from '@material-ui/core/TextField';
+import CreateDataStore from '../NewDataStore/CreateDataStore';
+import CreateDataStoreDialogues from '../Dialogues/CreateDataStoreDialogues/CreateDataStoreDialogues';
+import ImageDialogueContent from '../Dialogues/ImageDialogueContent/ImageDialogueContent';
 
 interface Props {
     
@@ -98,6 +101,14 @@ const Home : React.FC<Props> = ()=>{
       setErrorType("info");
   }
 
+  /*Upload Image Fields*/
+  const [imageFile,setImageFile] = useState<FileList|any>();
+  const saveInState = (e : any) => {
+        setImageFile(e.target.files[0]);
+        console.log(e.target.files[0],e.target,e)
+  }
+ 
+
   /*Error and Regex*/
   const [err,setError] = useState(true);
   //Email Regex Validation
@@ -168,6 +179,37 @@ const Home : React.FC<Props> = ()=>{
     };
   const [errorType,setErrorType] = useState('');
 
+  //Dialogue Declarationd
+  const [openDialogue,setOpenDialogue] = useState(false);
+  const openImageDialogue = () => {
+    setOpenAlert(false);
+    setDisplayMessage('');
+    setErrorType('');
+    setOpenDialogue(!openDialogue);
+  }
+  const handelCancelImageDialogue = () => {
+    setOpenDialogue(false);
+  }
+  const handelSubmitImageDialogue = () => {
+    if(imageFile !== null){
+      if(imageFile.type.includes('image')){
+        setOpenAlert(true);
+      setDisplayMessage("First Upload a Image");
+      setErrorType("info");
+      }
+      else{
+        setOpenAlert(true);
+        setDisplayMessage("cannot be uploaded");
+        setErrorType("error");
+      }
+    }
+    else{
+      setOpenAlert(true);
+      setDisplayMessage("First Upload a Image");
+      setErrorType("info");
+    }
+  }
+
     return (currentUser) ? (
         <div className="landingMain">
             <div className = "name">Slip</div>
@@ -219,7 +261,7 @@ const Home : React.FC<Props> = ()=>{
             { (currentUser.password) ? (<div>Hello</div>) :(  <div className="profilePopover">
         <ul>
           <li><img src={`${currentUser.photoURL}`} alt="" className = "changeProfileIMG" />
-          <AddAPhotoTwoToneIcon />
+          <AddAPhotoTwoToneIcon onClick = {openImageDialogue} />
           </li>
             <li>
               
@@ -338,6 +380,7 @@ const Home : React.FC<Props> = ()=>{
                     </ul>
                     
             </div>
+            <CreateDataStoreDialogues open = {openDialogue} handleCloseCancel = {handelCancelImageDialogue} handleCloseExit = {handelSubmitImageDialogue} title = {'Change Profile Image'} content = {<ImageDialogueContent saveInState={saveInState}  />} buttonContent = {'Save'} />
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
         </div>
     )

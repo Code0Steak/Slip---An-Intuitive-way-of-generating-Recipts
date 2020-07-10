@@ -44,7 +44,8 @@ const CreateDataStore : React.FC<Props> = () => {
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
     //Feed Data Page
     const [items,setItems] = useStickyState([],"items");
-
+    //dataFields to items mapping hash
+    const [hash,setHash] = useStickyState([],"hashArray");
     //reset
     const reset = () => {
         console.log('erazed')
@@ -69,6 +70,15 @@ const CreateDataStore : React.FC<Props> = () => {
                             else return ''
                             
                         })
+                        //Update Hash and Items 
+                        if(items.length !== 0){
+                            let index = newArr.forEach((val : string,index : number) =>{ if(val === '')return index})
+                            let newHash = hash.filter((i : string) => i !== `${index}`);
+                            let newItems = items.forEach((item: { [x: string]: any; })=> delete item[`${index}`])
+                            setItems(newItems)
+                            setHash(newHash);
+                            console.log(items,hash);
+                        }
                         newArr = newArr.filter((el: string) => el !== '')
                         
                         setDataFields([...newArr])
@@ -77,6 +87,15 @@ const CreateDataStore : React.FC<Props> = () => {
                      const addDataField = () => {
                          
                          setDataFields([...dataFields,'']);
+                        
+                         if(items.length !== 0){
+                            let index = hash.length + 1;
+                            setHash([...hash,`${index}`]);
+                            let newItems = items.forEach((item: { [x: string]: string; })=> {
+                                item[`${index}`] = '';
+                            })
+                            setItems(newItems);
+                         }
                          console.log(dataFields);
                          console.log('added');
                      }
@@ -162,12 +181,15 @@ const CreateDataStore : React.FC<Props> = () => {
             case 2 : console.log('step 3')
 
             const createRow = () => {
-                let newRow = {}
-                dataFields.forEach((data: any) => {
-                    newRow = {...newRow,[data] : ''}
+                let newRow = {};
+                let newHash = dataFields.map((_ : string,index : number) => `${index}`) ;
+                setHash(newHash);
+                newHash.forEach((index: string) => {
+                    newRow = {...newRow,[index] : ''}
                 }) 
-                setItems([...items,newRow]);
-                console.log(items);
+               setItems([...items,newRow]);  
+                console.log(items,newRow,hash);
+
             }
 
             const nextFeedPage = () => {
@@ -216,7 +238,7 @@ const CreateDataStore : React.FC<Props> = () => {
             <div className = "cancel" onClick = {()=>setOpenDialogue(true)}  ><CancelTwoToneIcon style={{fontSize: 40}} /></div>
             <div className="stepNumber"><span>1</span> <span>2</span> <span>3</span> <span>4</span></div>
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
-            <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit}  />
+            <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit} title = {'Warning!'} content = {'Going back to Home will erase all the progress you made so far in Creating a New DataStore. Are you sure you want to Exit?'} buttonContent = {'Exit'}  />
         </div>
     )
 }

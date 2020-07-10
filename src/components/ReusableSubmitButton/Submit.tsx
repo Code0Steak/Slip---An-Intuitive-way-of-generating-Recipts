@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { useSpring, animated } from 'react-spring'
 
 interface Props {
-    displayString : string;
+    displayString : string | any;
     validate: () => any;
 }
 
@@ -31,13 +31,14 @@ const Submit : React.FC<Props> = ({displayString,validate}) => {
                 }}>
 
                   {
-                      (displayString.includes("Google")) ? 
-                       <div style = {{backgroundColor: '#4286F5',
-                       borderRadius: '20px',color:'white'}} >  {displayString} </div>
+                    
+                      ((typeof displayString).match(typeof '') && displayString.includes("Google")) ? 
+                       (<div style = {{backgroundColor: '#4286F5',
+                       borderRadius: '20px',color:'white'}} >  {displayString} </div>)
                        :
                   <div style = {{backgroundColor: '#c4c4c4',
                     borderRadius: '20px'}}>{displayString}</div>
-
+                    
                   }
                   
 

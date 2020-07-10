@@ -7,7 +7,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import WarningTwoToneIcon from '@material-ui/icons/WarningTwoTone';
+
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -59,24 +59,27 @@ interface Props{
     open: boolean;
     handleCloseCancel: () => any;
     handleCloseExit: () => any;
+    title: string;
+    content: string | any;
+    buttonContent: string;
 }
 
-const CreateDataStoreDialogues: React.FC<Props> = ({open,handleCloseCancel,handleCloseExit}) => {
+const CreateDataStoreDialogues: React.FC<Props> = ({open,handleCloseCancel,handleCloseExit,title,content,buttonContent}) => {
   
 
   return (
     <div>
       
-      <Dialog onClose={handleCloseCancel} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog onClose={handleCloseCancel} aria-labelledby="customized-dialog-title" open={open} >
         <DialogTitle id="customized-dialog-title" onClose={handleCloseCancel}>
-          <WarningTwoToneIcon/>
+          {title}
         </DialogTitle>
         <DialogContent dividers>
-          Going back to Home will erase all the progress you made so far in Creating a New DataStore. Are you sure you want to Exit?
+          {content}
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleCloseExit} color="primary">
-            Exit
+            {buttonContent}
           </Button>
         </DialogActions>
       </Dialog>
