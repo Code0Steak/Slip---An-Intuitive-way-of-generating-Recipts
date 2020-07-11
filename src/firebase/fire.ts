@@ -211,7 +211,7 @@ export const storeImage = (imageFile : any) => {
   if(user){
 
     //Create a storage reference
-    const storageRef = storage.ref(`${user.uid}` + imageFile.name );
+    const storageRef = storage.ref().child(`${user.uid}/` + imageFile.name );
     //Upload file
     let task = storageRef.put(imageFile);
     
