@@ -63,6 +63,7 @@ const CreateDataStore : React.FC<Props> = () => {
     const renderComponent = (step : number) => {
         switch(step){
             case 0 : console.log('step 1');
+                     //Remove a dataField from a dataFields array
                      const removeDataField = (index : number) => {
                         let newArr = dataFields.map((dataField : string,i : number) => {
                             if(i !== index)
@@ -70,13 +71,17 @@ const CreateDataStore : React.FC<Props> = () => {
                             else return ''
                             
                         })
-                        //Update Hash and Items 
+                        //Update Hash and Items
+                        // let index = newArr.forEach((val : string,index : number) =>{ if(val === '')return index})
+                        let newHash = hash.filter((i : number) => i !== index);
+                        setHash(newHash);
+
+                        //Update items array if exists
                         if(items.length !== 0){
-                            let index = newArr.forEach((val : string,index : number) =>{ if(val === '')return index})
-                            let newHash = hash.filter((i : string) => i !== `${index}`);
+                            
                             let newItems = items.forEach((item: { [x: string]: any; })=> delete item[`${index}`])
                             setItems(newItems)
-                            setHash(newHash);
+                            
                             console.log(items,hash);
                         }
                         newArr = newArr.filter((el: string) => el !== '')
@@ -84,21 +89,32 @@ const CreateDataStore : React.FC<Props> = () => {
                         setDataFields([...newArr])
 
                     }
+
+                    //Add a dataField to the dataFields array
                      const addDataField = () => {
                          
                          setDataFields([...dataFields,'']);
-                        
+                         let addedIndex = 0;
+                         if(hash.length === 0)
+                            setHash([addedIndex]);    
+                         else{
+                             addedIndex = hash.reduce((a : number,b : number)=> Math.max(a,b)) + 1;
+                            setHash([...hash,addedIndex]);
+                         }
+                         
                          if(items.length !== 0){
-                            let index = hash.length + 1;
-                            setHash([...hash,`${index}`]);
-                            let newItems = items.forEach((item: { [x: string]: string; })=> {
-                                item[`${index}`] = '';
+                            
+                            let newItems = items.forEach((item: { [x: string]: any; })=> {
+                                item[`${addedIndex}`] = '';
+
                             })
                             setItems(newItems);
                          }
                          console.log(dataFields);
                          console.log('added');
                      }
+
+                     //Write a value in the dataFields array
                      const writeValue = (value : string,index : number) => {
                          const newArr = dataFields.map((dataField: string,i: number) => {
                              if(i === index)
@@ -181,15 +197,11 @@ const CreateDataStore : React.FC<Props> = () => {
             case 2 : console.log('step 3')
 
             const createRow = () => {
-                let newRow = {};
-                let newHash = dataFields.map((_ : string,index : number) => `${index}`) ;
-                setHash(newHash);
-                newHash.forEach((index: string) => {
-                    newRow = {...newRow,[index] : ''}
-                }) 
-               setItems([...items,newRow]);  
+                let newRow : {[key : string] : string} = {};
+                hash.forEach((index : number) => newRow[`${index}`] = '')
+               setItems([newRow]);  
                 console.log(items,newRow,hash);
-
+            
             }
 
             const nextFeedPage = () => {

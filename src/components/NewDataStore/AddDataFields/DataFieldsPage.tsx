@@ -40,7 +40,6 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,shopName,removeData
 
             <TextField disabled id={`standard-basic ${index}`} size = "small"  value = {dataField} className = "dataField"  />
 
-
          </>
        
        : <>
