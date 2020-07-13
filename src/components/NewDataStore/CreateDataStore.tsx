@@ -70,13 +70,31 @@ const CreateDataStore : React.FC<Props> = () => {
                         newArr = newArr.filter((dataField: string) => dataField != '');
                         setDataFields(newArr);
 
+                        let removeHash = hash.filter((i : number) => (i != index) )   
+                        setHash(removeHash);
+
+                        let newItems = items;
+                        newItems.forEach((item : {[key : string] : string}) => delete item[`${index}`]);
+                        setItems(newItems);
                     }
 
                     //Add a dataField to the dataFields array
                      const addDataField = () => {
-                         
                          setDataFields([...dataFields,'']);
-                        }
+
+                         let newIndex = 0;
+                         if(hash.length === 0){
+                             setHash([newIndex]);
+                         }
+                         else{
+                             newIndex = hash.slice(-1)[0] + 1;
+                             setHash([...hash, newIndex ])
+                         }
+
+                         let newItems = items;
+                         newItems.forEach((item : {[key : string]:string}) => item[`${newIndex}`] = '' );
+                         setItems(newItems);
+                    }
 
                      //Write a value in the dataFields array
                      const writeValue = (value : string,index : number) => {
@@ -99,10 +117,11 @@ const CreateDataStore : React.FC<Props> = () => {
                          })
 
                          setDataFields([...newArr]);
-                        }
-
+                    }
+                    //Set Shop Name
                      const writeShopValue = (value: string) => setShopName(value);
 
+                     //Go to Next Page
                      const nextPage = () => {
                          if(dataFields.length === 0){
                             setOpenAlert(true);
