@@ -3,8 +3,6 @@ import './CreateDataStore.css'
 import { useHistory } from 'react-router-dom';
 import DataFieldsPage from './AddDataFields/DataFieldsPage';
 import TaxFieldsPage from './AddTaxFields/TaxFieldsPage';
-import FeedDataPage from './FeedData/FeedDataPage';
-import FeedTaxDataPage from './FeedTaxData/FeedTaxDataPage';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
 import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
 import useStickyState from '../../custom-hooks/persistState/useStickyState';
@@ -71,23 +69,7 @@ const CreateDataStore : React.FC<Props> = () => {
                             else return ''
                             
                         })
-                        //Update Hash and Items
-                        // let index = newArr.forEach((val : string,index : number) =>{ if(val === '')return index})
-                        let newHash = hash.filter((i : number) => i !== index);
-                        setHash(newHash);
-
-                        //Update items array if exists
-                        if(items.length !== 0){
-                            
-                            let newItems = items;
-                            newItems = newItems.map((item: { [x: string]: string; })=> delete item[`${index}`])
-                            setItems(newItems)
-                            
-                            console.log(items,hash);
-                        }
-                        newArr = newArr.filter((el: string) => el !== '')
-                        
-                        setDataFields([...newArr])
+                       
 
                     }
 
@@ -95,27 +77,7 @@ const CreateDataStore : React.FC<Props> = () => {
                      const addDataField = () => {
                          
                          setDataFields([...dataFields,'']);
-                         let addedIndex = 0;
-                         if(hash.length !== 0)
-                            addedIndex = hash.reduce((a : number,b : number)=> Math.max(a,b)) + 1;
-                         setHash([...hash,addedIndex]);
                          
-                         if(items.length !== 0){
-                            
-                            let newItems = items;
-                            newItems = newItems.map((item: { [x: string]: string; })=> {
-                                item[`${addedIndex}`] = '';
-
-                            })
-                            setItems(newItems);
-                         }
-                         else{
-                             let newItem : any = {};
-                             hash.forEach((index : number) => newItem[`${index}`] = '');
-                             setItems([...items,newItem]);
-                         }
-                         console.log(dataFields);
-                         console.log('added');
                      }
 
                      //Write a value in the dataFields array
@@ -198,27 +160,6 @@ const CreateDataStore : React.FC<Props> = () => {
 
                      return <TaxFieldsPage displayTaxFields = {taxFields} removeTaxField = {removeTaxField} addTaxField = {addTaxField} writeValue = {writeTaxValue} nextPage = {nextTaxPage} backPage = {backTaxPage} />;
                      
-            case 2 : console.log('step 3')
-
-            const createRow = () => {
-                let newRow : {[key : string] : string} = {};
-                hash.forEach((index : number) => newRow[`${index}`] = '')
-               setItems([newRow]);  
-                console.log(items,newRow,hash);
-            
-            }
-
-            const nextFeedPage = () => {
-                setSelectStep(3);
-            }
-            const backFeedPage = () => {
-                setSelectStep(1);
-            }
-            
-            return <FeedDataPage tableCell = {dataFields} tableRow = {items} nextPage = {nextFeedPage} backPage = {backFeedPage} createRow = {createRow} />;
-            
-            case 3: console.log('step 4')
-            return <FeedTaxDataPage />;
             
             default: console.log('No Page Match')
             return '403 error';

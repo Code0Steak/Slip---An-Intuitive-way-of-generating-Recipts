@@ -63,7 +63,7 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows}) => {
                     {
                       Object.keys(row).map((key: string,i : number) => <StyledTableCell align="right" key = {key}>
                         
-                        <TextField id={`standard-basic ${i}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`} />
+                        <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`} />
     
                         </StyledTableCell>)
                     }
