@@ -38,7 +38,7 @@ const CreateDataStore : React.FC<Props> = () => {
     const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price'],"dataFields");
     const [shopName,setShopName] = useStickyState('',"shopName");
     const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");
-    const [hash,setHash] = useStickyState([],"hashArray");
+    const [hash,setHash] = useStickyState([0,1,2],"hashArray");
     //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
@@ -76,24 +76,22 @@ const CreateDataStore : React.FC<Props> = () => {
                         let newItems = items;
                         newItems.forEach((item : {[key : string] : string}) => delete item[`${index}`]);
                         setItems(newItems);
+                        console.log(dataFields,hash,items);
                     }
 
                     //Add a dataField to the dataFields array
                      const addDataField = () => {
                          setDataFields([...dataFields,'']);
 
-                         let newIndex = 0;
-                         if(hash.length === 0){
-                             setHash([newIndex]);
-                         }
-                         else{
-                             newIndex = hash.slice(-1)[0] + 1;
+                         let newIndex = hash.slice(-1)[0] + 1;
                              setHash([...hash, newIndex ])
-                         }
+                         
 
                          let newItems = items;
                          newItems.forEach((item : {[key : string]:string}) => item[`${newIndex}`] = '' );
                          setItems(newItems);
+
+                         console.log(dataFields,hash,items);
                     }
 
                      //Write a value in the dataFields array
