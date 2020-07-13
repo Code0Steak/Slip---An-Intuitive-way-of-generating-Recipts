@@ -80,10 +80,22 @@ const CreateDataStore : React.FC<Props> = () => {
 
                      //Write a value in the dataFields array
                      const writeValue = (value : string,index : number) => {
+                        let changeValue = value;
                          const newArr = dataFields.map((dataField: string,i: number) => {
                              if(i === index)
-                                 return value
-                             else return dataField
+                                 return changeValue;
+                             else{ 
+                                 //If 2 dataFields have the same value
+                                if(dataField === changeValue){
+                                    setOpenAlert(true);
+                                    setDisplayMessage("The name of two data fields matched");
+                                    setErrorType("error");
+                                    changeValue = '';
+                                    return dataField;
+                                }
+                                else
+                                
+                                return dataField}
                          })
 
                          setDataFields([...newArr]);
