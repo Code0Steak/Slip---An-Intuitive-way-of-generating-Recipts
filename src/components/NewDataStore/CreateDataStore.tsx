@@ -37,13 +37,12 @@ const CreateDataStore : React.FC<Props> = () => {
     //Data Fields Page
     const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price'],"dataFields");
     const [shopName,setShopName] = useStickyState('',"shopName");
-    const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
+    const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");
+    const [hash,setHash] = useStickyState([],"hashArray");
+    //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
-    //Feed Data Page
-    const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");
-    //dataFields to items mapping hash
-    const [hash,setHash] = useStickyState([],"hashArray");
+    
     //reset
     const reset = () => {
         console.log('erazed')
@@ -54,8 +53,6 @@ const CreateDataStore : React.FC<Props> = () => {
         setTaxFields(['CGST','SGST']);
         setItems([]);
     }
-    // Tracks if the User has made progress with the form   
-    const [progress,setProgress] = useState(false);
 
     //Function for change in state
     const renderComponent = (step : number) => {
@@ -69,7 +66,9 @@ const CreateDataStore : React.FC<Props> = () => {
                             else return ''
                             
                         })
-                       
+
+                        newArr = newArr.filter((dataField: string) => dataField != '');
+                        setDataFields(newArr);
 
                     }
 
@@ -77,8 +76,7 @@ const CreateDataStore : React.FC<Props> = () => {
                      const addDataField = () => {
                          
                          setDataFields([...dataFields,'']);
-                         
-                     }
+                        }
 
                      //Write a value in the dataFields array
                      const writeValue = (value : string,index : number) => {
@@ -89,8 +87,7 @@ const CreateDataStore : React.FC<Props> = () => {
                          })
 
                          setDataFields([...newArr]);
-
-                     }
+                        }
 
                      const writeShopValue = (value: string) => setShopName(value);
 
