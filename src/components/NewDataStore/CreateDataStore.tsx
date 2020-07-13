@@ -7,6 +7,7 @@ import SnackErrorAlert from '../Alerts/SnackErrorAlert';
 import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
 import useStickyState from '../../custom-hooks/persistState/useStickyState';
 import CreateDataStoreDialogue from '../Dialogues/CreateDataStoreDialogues/CreateDataStoreDialogues';
+import { has } from 'lodash-es';
 
 interface Props {
     
@@ -84,7 +85,7 @@ const CreateDataStore : React.FC<Props> = () => {
                          setDataFields([...dataFields,'']);
 
                          let newIndex = hash.slice(-1)[0] + 1;
-                             setHash([...hash, newIndex ])
+                         setHash([...hash, newIndex ])
                          
 
                          let newItems = items;
@@ -115,6 +116,7 @@ const CreateDataStore : React.FC<Props> = () => {
                          })
 
                          setDataFields([...newArr]);
+                         console.log(dataFields,hash,items)
                     }
                     //Set Shop Name
                      const writeShopValue = (value: string) => setShopName(value);

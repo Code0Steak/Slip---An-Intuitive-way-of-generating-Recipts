@@ -53,7 +53,7 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows}) => {
                 <TableHead>
                 <TableRow>
                     {
-                        cells.map((cell : string,index : number) => <StyledTableCell key = {index}>{cell}</StyledTableCell>)
+                        cells.map((cell : string,index : number) =>{ (cell) ? <StyledTableCell key = {index}>{cell}</StyledTableCell> : ''})
                     }
                 </TableRow>
                 </TableHead>
@@ -61,11 +61,17 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows}) => {
                 {rows.map((row : any,index : number) => (
                     <TableRow key={index}>
                     {
-                      Object.keys(row).map((key: string,i : number) => <StyledTableCell align="right" key = {key}>
-                        
-                        <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`} />
-    
-                        </StyledTableCell>)
+                      Object.keys(row).map((key: string,i : number) => 
+                      
+                        {(cells[parseInt(key)]) ?
+                        <StyledTableCell align="right" key = {key}>
+                          
+                          <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`} />
+      
+                          </StyledTableCell> : ''
+                          }
+                          
+                        )
                     }
                   </TableRow>
                 ))}
