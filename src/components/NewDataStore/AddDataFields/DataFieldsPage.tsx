@@ -9,6 +9,7 @@ import ItemsDataTable from '../../TabularDataComponents/ForNewData/ForDataFields
 
 interface Props{
     displayDataFields : Array<string>;
+    items : Array<any>;
     shopName: string;
     removeDataField : (index : number) => any;
     addDataField : () => any;
@@ -17,7 +18,7 @@ interface Props{
     nextPage : () => any;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,shopName,removeDataField,addDataField,writeValue,writeShopValue,nextPage}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeShopValue,nextPage}) => {
 
     return(
     <div className = "dataFieldsPageMain">
@@ -39,12 +40,12 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,shopName,removeData
        
          <>
 
-            <TextField disabled id={`standard-basic ${index}`} size = "small"  value = {dataField} className = "dataField"  />
+            <TextField disabled id={`standard-basic ${index}`} size = "small"  value = {dataField} className = "dataField" key = {index}  />
 
          </>
        
        : <>
-       <TextField id={`standard-basic ${index}`} size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField"  />
+       <TextField id={`standard-basic ${index}`} size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField" key = {index}  />
             <span onClick = {
                 () => removeDataField(index)
             } ><RemoveCircleTwoToneIcon/></span>
@@ -68,7 +69,9 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,shopName,removeData
 
         <div className="tableDiv">
             {
-                (displayDataFields.length > 1) ? <ItemsDataTable cells = {displayDataFields} /> : ''
+                ((displayDataFields.length > 1) && (
+                    (displayDataFields.length - displayDataFields.filter(item => item === '').length) >= 2
+                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} /> : ''
             }
         </div>
 

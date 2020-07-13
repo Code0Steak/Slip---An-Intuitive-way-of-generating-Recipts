@@ -43,7 +43,7 @@ const CreateDataStore : React.FC<Props> = () => {
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
     //Feed Data Page
-    const [items,setItems] = useStickyState([],"items");
+    const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");
     //dataFields to items mapping hash
     const [hash,setHash] = useStickyState([],"hashArray");
     //reset
@@ -79,7 +79,8 @@ const CreateDataStore : React.FC<Props> = () => {
                         //Update items array if exists
                         if(items.length !== 0){
                             
-                            let newItems = items.forEach((item: { [x: string]: any; })=> delete item[`${index}`])
+                            let newItems = items;
+                            newItems = newItems.map((item: { [x: string]: string; })=> delete item[`${index}`])
                             setItems(newItems)
                             
                             console.log(items,hash);
@@ -95,20 +96,23 @@ const CreateDataStore : React.FC<Props> = () => {
                          
                          setDataFields([...dataFields,'']);
                          let addedIndex = 0;
-                         if(hash.length === 0)
-                            setHash([addedIndex]);    
-                         else{
-                             addedIndex = hash.reduce((a : number,b : number)=> Math.max(a,b)) + 1;
-                            setHash([...hash,addedIndex]);
-                         }
+                         if(hash.length !== 0)
+                            addedIndex = hash.reduce((a : number,b : number)=> Math.max(a,b)) + 1;
+                         setHash([...hash,addedIndex]);
                          
                          if(items.length !== 0){
                             
-                            let newItems = items.forEach((item: { [x: string]: any; })=> {
+                            let newItems = items;
+                            newItems = newItems.map((item: { [x: string]: string; })=> {
                                 item[`${addedIndex}`] = '';
 
                             })
                             setItems(newItems);
+                         }
+                         else{
+                             let newItem : any = {};
+                             hash.forEach((index : number) => newItem[`${index}`] = '');
+                             setItems([...items,newItem]);
                          }
                          console.log(dataFields);
                          console.log('added');
@@ -147,7 +151,7 @@ const CreateDataStore : React.FC<Props> = () => {
                          }
 
                      }
-                      return <DataFieldsPage displayDataFields = {dataFields} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} nextPage = {nextPage} />;
+                      return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} nextPage = {nextPage} />;
                       
             case 1 : console.log('step2')
                     const removeTaxField = (index : number) => {

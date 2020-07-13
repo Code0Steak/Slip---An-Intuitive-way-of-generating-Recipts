@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -30,18 +31,6 @@ const StyledTableRow = withStyles((theme: Theme) =>
   }),
 )(TableRow);
 
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
@@ -49,10 +38,11 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-    cells : Array<string>
+    cells : Array<string>;
+    rows : Array<any>
 }
 
-const ItemsDataTable : React.FC<Props> = ({cells}) => {
+const ItemsDataTable : React.FC<Props> = ({cells,rows}) => {
 
     const classes = useStyles();
 
@@ -63,21 +53,21 @@ const ItemsDataTable : React.FC<Props> = ({cells}) => {
                 <TableHead>
                 <TableRow>
                     {
-                        cells.map((cell : string) => <StyledTableCell>{cell}</StyledTableCell>)
+                        cells.map((cell : string,index : number) => <StyledTableCell key = {index}>{cell}</StyledTableCell>)
                     }
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {rows.map((row) => (
-                    <StyledTableRow key={row.name}>
-                    <StyledTableCell component="th" scope="row">
-                        {row.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                    <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                    <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                    <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                    </StyledTableRow>
+                {rows.map((row : any,index : number) => (
+                    <TableRow key={index}>
+                    {
+                      Object.keys(row).map((key: string,i : number) => <StyledTableCell align="right" key = {key}>
+                        
+                        <TextField id={`standard-basic ${i}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`} />
+    
+                        </StyledTableCell>)
+                    }
+                  </TableRow>
                 ))}
                 </TableBody>
             </Table>
