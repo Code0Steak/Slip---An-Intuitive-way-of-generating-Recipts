@@ -5,6 +5,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import RemoveCircleTwoToneIcon from '@material-ui/icons/RemoveCircleTwoTone';
 import AddBoxTwoToneIcon from '@material-ui/icons/AddBoxTwoTone';
 import Button from '@material-ui/core/Button';
+import ItemsDataTable from '../../TabularDataComponents/ForNewData/ForDataFieldsPage/ItemsDataTable';
 
 interface Props{
     displayDataFields : Array<string>;
@@ -65,6 +66,11 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,shopName,removeData
 
         </div>
 
+        <div className="tableDiv">
+            {
+                (displayDataFields.length > 1) ? <ItemsDataTable cells = {displayDataFields} /> : ''
+            }
+        </div>
 
         <div onClick = {()=> nextPage()} className="nextPageButton"><ArrowForwardIcon style ={{fontSize: 30}} /></div>
 
