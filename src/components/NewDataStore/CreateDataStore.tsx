@@ -96,9 +96,13 @@ const CreateDataStore : React.FC<Props> = () => {
                          
 
                          let newItems = items;
-                         newItems.forEach((item : {[key : string]:string}) => item[`${newIndex}`] = '' );
+                        //  newItems.forEach((item : {[key : string]:string}) => item[`${newIndex}`] = '' );
+                        newItems = newItems.map((item : {[key : string]:string}) => {
+                            item = {...item,[`${newIndex}`] : '' };
+                            return item;
+                        } )
                          setItems(newItems);
-
+                         
                          console.log(dataFields,hash,items);
                         }
                     }
