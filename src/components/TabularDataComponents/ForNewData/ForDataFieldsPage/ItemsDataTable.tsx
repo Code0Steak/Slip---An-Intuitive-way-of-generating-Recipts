@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -41,18 +42,21 @@ interface Props {
     cells : Array<string>;
     rows : Array<any>;
     writeItem : (value : string, index : number,key : string ) => any;
+    handleCheckChange : (e : boolean, index : number ) => any;
 }
 
-const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem}) => {
+const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChange}) => {
 
     const classes = useStyles();
-
+  
     return (
         <div>
             <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="customized table">
                 <TableHead>
+                  Data Table
                 <TableRow>
+                  <StyledTableCell></StyledTableCell>
                     {
                         cells.filter((cell : string) => cell != '').map((cell : string,index : number) =><StyledTableCell key = {index}>{cell}</StyledTableCell> )
                     }
@@ -61,6 +65,11 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem}) => {
                 <TableBody>
                 {rows.map((row : any,index : number) => (
                     <TableRow key={index}>
+                     <StyledTableCell > <Checkbox
+                        onChange = {(e) => handleCheckChange(e.target.checked,index)}
+                        color="default"
+                        inputProps={{ 'aria-label': 'checkbox with default color' }}
+                      /></StyledTableCell>
                     {
                       Object.keys(row).filter((key: string) => cells[parseInt(key)] !== '' ).map((key: string,i : number) => 
                       

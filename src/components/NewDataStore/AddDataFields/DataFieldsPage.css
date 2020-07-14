@@ -1,7 +1,7 @@
 .dataFieldsPageMain{
     display : grid;
     grid-template-columns: 40% auto;
-    grid-template-rows: 200px 67px 491px auto;
+    grid-template-rows: 200px 67px 400px 300px auto;
 }
 /* Side Fields */
 .sideBlock{
@@ -65,4 +65,11 @@
   position: absolute;
   bottom: 3.2%;
   right: 2%;
+}
+
+.tableDiv{
+  grid-column-start: 1;
+  grid-column-end: auto;
+  grid-row-start: 4;
+  grid-row-end: auto;
 }

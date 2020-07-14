@@ -40,6 +40,10 @@ const CreateDataStore : React.FC<Props> = () => {
     const [shopName,setShopName] = useStickyState('',"shopName");
     const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");   
     const [hash,setHash] = useStickyState([0,1,2],"hashArray");
+    const [createRow,setCreateRow] = useStickyState(1,"createRow");
+
+    const [checkedCount,setCheckedCount] = useStickyState(0,"checkedCount"); 
+    const [toGroupIndexes,setToGroupIndexes] = useStickyState([],"toGroupIndexes");
     //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
@@ -138,7 +142,16 @@ const CreateDataStore : React.FC<Props> = () => {
                         clone[index] = updated;
                         setItems(clone);
 
-
+                        //Add a new row if change is for the first time
+                        if(index === createRow - 1 ){
+                            let newItems = items;
+                            let clone : any = {};
+                            Object.keys(newItems[index]).forEach((key : string) => clone = {...clone,[key] : ''}  );
+                            newItems = [...newItems, clone ];
+                            setItems(newItems);
+                            setCreateRow(createRow + 1);
+                            console.log(items,createRow);
+                        }
 
                     }
 
@@ -165,7 +178,21 @@ const CreateDataStore : React.FC<Props> = () => {
                          }
 
                      }
-                      return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem} nextPage = {nextPage} />;
+
+                     //Groups
+                     const handleCheckChange = (e : boolean,index : number) => {
+
+                        if(e) 
+                            setCheckedCount(checkedCount + 1);
+                        else if((checkedCount > 0) && !e ) setCheckedCount(checkedCount + 1);
+
+                     }
+
+                      return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem} nextPage = {nextPage} 
+                      
+                      handleCheckChange = {handleCheckChange}
+                      
+                      />;
                       
             case 1 : console.log('step2')
                     const removeTaxField = (index : number) => {
