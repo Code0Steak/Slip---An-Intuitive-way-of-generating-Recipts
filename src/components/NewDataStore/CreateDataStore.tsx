@@ -38,7 +38,7 @@ const CreateDataStore : React.FC<Props> = () => {
     //Data Fields Page
     const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price'],"dataFields");
     const [shopName,setShopName] = useStickyState('',"shopName");
-    const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");
+    const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");   
     const [hash,setHash] = useStickyState([0,1,2],"hashArray");
     //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
@@ -82,6 +82,13 @@ const CreateDataStore : React.FC<Props> = () => {
 
                     //Add a dataField to the dataFields array
                      const addDataField = () => {
+
+                        if(dataFields.includes('')){
+                            setOpenAlert(true);
+                            setDisplayMessage("Please fill in the blank field and then add a new Data Field");
+                            setErrorType("error");
+                        }
+                        else{
                          setDataFields([...dataFields,'']);
 
                          let newIndex = hash.slice(-1)[0] + 1;
@@ -93,6 +100,7 @@ const CreateDataStore : React.FC<Props> = () => {
                          setItems(newItems);
 
                          console.log(dataFields,hash,items);
+                        }
                     }
 
                      //Write a value in the dataFields array
@@ -118,6 +126,18 @@ const CreateDataStore : React.FC<Props> = () => {
                          setDataFields([...newArr]);
                          console.log(dataFields,hash,items)
                     }
+
+                    const writeItem = (value: string,index: number,key : string) => {
+                        const old = items[index];
+                        const updated = { ...old, [key]: value }
+                        const clone = [...items];
+                        clone[index] = updated;
+                        setItems(clone);
+
+
+
+                    }
+
                     //Set Shop Name
                      const writeShopValue = (value: string) => setShopName(value);
 
@@ -141,7 +161,7 @@ const CreateDataStore : React.FC<Props> = () => {
                          }
 
                      }
-                      return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} nextPage = {nextPage} />;
+                      return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem} nextPage = {nextPage} />;
                       
             case 1 : console.log('step2')
                     const removeTaxField = (index : number) => {

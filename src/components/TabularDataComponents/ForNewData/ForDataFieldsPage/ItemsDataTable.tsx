@@ -39,10 +39,11 @@ const useStyles = makeStyles({
 
 interface Props {
     cells : Array<string>;
-    rows : Array<any>
+    rows : Array<any>;
+    writeItem : (value : string, index : number,key : string ) => any;
 }
 
-const ItemsDataTable : React.FC<Props> = ({cells,rows}) => {
+const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem}) => {
 
     const classes = useStyles();
 
@@ -66,7 +67,11 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows}) => {
                         
                         <StyledTableCell align="right" key = {key}>
                           
-                          <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} ${key}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`} />
+                          <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
+                          
+                            onChange = {(e) => writeItem(e.target.value,index,key)}
+                          
+                          />
       
                           </StyledTableCell> 
                           

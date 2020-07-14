@@ -14,11 +14,12 @@ interface Props{
     removeDataField : (index : number) => any;
     addDataField : () => any;
     writeValue : (value : string, index : number) => any;
+    writeItem : (value : string, index : number,key : string ) => any;
     writeShopValue : (value: string) => any;
     nextPage : () => any;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeShopValue,nextPage}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,nextPage}) => {
 
     return(
     <div className = "dataFieldsPageMain">
@@ -71,7 +72,7 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
             {
                 ((displayDataFields.length > 1) && (
                     (displayDataFields.length - displayDataFields.filter(item => item === '').length) >= 2
-                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} /> : ''
+                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} writeItem = {writeItem} /> : ''
             }
         </div>
 
