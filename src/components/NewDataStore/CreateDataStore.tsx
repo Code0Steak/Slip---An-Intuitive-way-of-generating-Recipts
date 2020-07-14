@@ -182,15 +182,22 @@ const CreateDataStore : React.FC<Props> = () => {
                      //Groups
                      const handleCheckChange = (e : boolean,index : number) => {
 
-                        if(e) 
+                        if(e){ 
                             setCheckedCount(checkedCount + 1);
-                        else if((checkedCount > 0) && !e ) setCheckedCount(checkedCount + 1);
+                            setToGroupIndexes([...toGroupIndexes,index]);
+                        }
+                        else {
+                            setCheckedCount(checkedCount - 1);
+                            let updated = toGroupIndexes.filter((i : number) => i !== index);
+                            setToGroupIndexes(updated);
+                        }
 
+                        console.log(toGroupIndexes,checkedCount);
                      }
 
                       return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem} nextPage = {nextPage} 
                       
-                      handleCheckChange = {handleCheckChange}
+                      handleCheckChange = {handleCheckChange} chkCount = {checkedCount}
                       
                       />;
                       

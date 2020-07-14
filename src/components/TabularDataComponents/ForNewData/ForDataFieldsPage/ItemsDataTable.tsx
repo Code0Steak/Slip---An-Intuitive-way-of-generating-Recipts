@@ -43,9 +43,10 @@ interface Props {
     rows : Array<any>;
     writeItem : (value : string, index : number,key : string ) => any;
     handleCheckChange : (e : boolean, index : number ) => any;
+    chkCount : number;
 }
 
-const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChange}) => {
+const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChange,chkCount}) => {
 
     const classes = useStyles();
   
@@ -54,7 +55,7 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChang
             <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="customized table">
                 <TableHead>
-                  Data Table
+                  Data Table  {chkCount} {((rows.length - chkCount) && chkCount ) ? 'Delete' : '' } { (chkCount >= 3) ? 'Group' : '' }
                 <TableRow>
                   <StyledTableCell></StyledTableCell>
                     {

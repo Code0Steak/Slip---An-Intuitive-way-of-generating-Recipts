@@ -18,9 +18,10 @@ interface Props{
     writeShopValue : (value: string) => any;
     nextPage : () => any;
     handleCheckChange : (e : boolean,index : number) => any;
+    chkCount : number;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,nextPage,handleCheckChange}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,nextPage,handleCheckChange, chkCount}) => {
 
     return(
     <div className = "dataFieldsPageMain">
@@ -73,7 +74,7 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
             {
                 ((displayDataFields.length > 1) && (
                     (displayDataFields.length - displayDataFields.filter(item => item === '').length) >= 2
-                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} writeItem = {writeItem} handleCheckChange = {handleCheckChange} /> : ''
+                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} writeItem = {writeItem} handleCheckChange = {handleCheckChange} chkCount = {chkCount} /> : ''
             }
         </div>
 
