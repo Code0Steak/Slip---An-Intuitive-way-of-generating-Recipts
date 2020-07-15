@@ -4,18 +4,25 @@ import Button from '@material-ui/core/Button';
 import { TextField } from '@material-ui/core';
 import RemoveCircleTwoToneIcon from '@material-ui/icons/RemoveCircleTwoTone';
 import AddBoxTwoToneIcon from '@material-ui/icons/AddBoxTwoTone';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
+import ArrowRightAltTwoToneIcon from '@material-ui/icons/ArrowRightAltTwoTone';
+import Submit from '../../ReusableSubmitButton/Submit';
+
+
 interface Props {
-    displayTaxFields : Array<string>;
+    taxFields : Array<string>;
+    taxHash : Array<number>;
+    taxValues : Array<string>;
     removeTaxField : (index : number) => any;
     addTaxField : () => any;
-    writeValue : (value : string, index : number) => any;
-    nextPage : () => any;
-    backPage: () => any;
+    writeFieldValue : (value : string, index : number) => any;
+    writeTaxValue : (value : string, index : number) => any;
+    skipStep: boolean;
+    handleSkip: () => any;
+    printSubmission: () => any;
 }
 
-const TaxFieldsPage : React.FC<Props> = ({displayTaxFields,removeTaxField,addTaxField,writeValue,nextPage,backPage}) => {
+const TaxFieldsPage : React.FC<Props> = ({taxFields,taxHash,taxValues,removeTaxField,addTaxField,writeFieldValue,writeTaxValue,skipStep,handleSkip,printSubmission}) => {
     return (
         <div className = "taxFieldsPageMain">
             
@@ -25,21 +32,23 @@ const TaxFieldsPage : React.FC<Props> = ({displayTaxFields,removeTaxField,addTax
             </div>
 
             <div className="taxFieldsDiv">
-            {   (displayTaxFields.length) ?
-                    displayTaxFields.map( (taxField,index) => {
+            {   (taxHash.length) ?
+            
+                        taxHash.map((k : number,index : number) =>
+                        <div className = "taxFieldDiv" key = {index}> 
 
-                    return (<div className = "taxFieldDiv" key = {index}> 
-
-                <Button variant="contained"  className = "taxFieldButton" >
-                        <TextField id={`standard-basic ${index}`} size = "small" value = {taxField}  onChange={(e)=>writeValue(e.target.value,index)} className = "taxField" />
-                        <span onClick = {
-                () => removeTaxField(index)
-            } ><RemoveCircleTwoToneIcon/></span>
-
-                </Button>
-                </div>)
-
-                        }) : <div className="taxInfo">Add Tax Fields</div>
+                          <Button variant="contained"  className = "taxFieldButton" >
+                                   <TextField label = "Tax Field" disabled ={skipStep} id={`standard-basic ${index}`} size = "small" value = {taxFields[k]}  onChange={(e)=>writeFieldValue(e.target.value,index)} className = "taxField" />
+                                   <ArrowRightAltTwoToneIcon />
+                                   <TextField label = "Tax Value(in %)" disabled = {skipStep} id={`standard-size-small ${index}`} size = "small" value = {taxValues[k]}  onChange={(e)=>writeTaxValue(e.target.value,index)} className = "taxField" />
+                                   <span onClick = {
+                                     () => removeTaxField(k)
+                                                   } ><RemoveCircleTwoToneIcon/></span>
+            
+                            </Button>
+                        </div>
+                        )
+                        : <div className="taxInfo">Add Tax Fields</div>
             
             }
 
@@ -50,11 +59,9 @@ const TaxFieldsPage : React.FC<Props> = ({displayTaxFields,removeTaxField,addTax
 
             </div>
             
-
-
-        <div onClick = {()=> nextPage()} className="taxNextPageButton"><ArrowForwardIcon style ={{fontSize: 30}} /></div>
-        <div onClick = {()=> backPage()} className="taxBackPageButton"><ArrowBackIcon style = {{fontSize: 30}}  /></div>
-
+        <div className="skipStep"><Button variant="contained" onClick = {() => handleSkip()}>{ (skipStep) ? 'Undo Skip' : 'Skip Step'}</Button></div>
+        <div className="confirmSubmission"><Submit displayString = "Confirm Submission" validate = {()=> printSubmission() } /></div>
+       
         </div>
     )
 }

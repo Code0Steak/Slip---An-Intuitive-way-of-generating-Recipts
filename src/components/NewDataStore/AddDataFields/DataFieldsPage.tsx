@@ -16,14 +16,13 @@ interface Props{
     writeValue : (value : string, index : number) => any;
     writeItem : (value : string, index : number,key : string ) => any;
     writeShopValue : (value: string) => any;
-    nextPage : () => any;
     handleCheckChange : (e : boolean,index : number) => any;
     chkCount : number;
     deleteSelectedRows : () => any;
     toDeleteIndexes : Array<number>;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,nextPage,handleCheckChange, chkCount, deleteSelectedRows,toDeleteIndexes}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,handleCheckChange, chkCount, deleteSelectedRows,toDeleteIndexes}) => {
 
     return(
     <div className = "dataFieldsPageMain">
@@ -84,7 +83,6 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
             }
         </div>
 
-        <div onClick = {()=> nextPage()} className="nextPageButton"><ArrowForwardIcon style ={{fontSize: 30}} /></div>
 
     </div>)
 }

@@ -7,7 +7,7 @@ import SnackErrorAlert from '../Alerts/SnackErrorAlert';
 import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
 import useStickyState from '../../custom-hooks/persistState/useStickyState';
 import CreateDataStoreDialogue from '../Dialogues/CreateDataStoreDialogues/CreateDataStoreDialogues';
-import { has } from 'lodash-es';
+import Pagination from '@material-ui/lab/Pagination';
 
 interface Props {
     
@@ -47,6 +47,9 @@ const CreateDataStore : React.FC<Props> = () => {
     //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
+    const [taxHash,setTaxHash] = useStickyState([0,1],"taxHash");
+    const [taxValues,setTaxValues] = useStickyState(['5','5'],"setTaxValue");
+    const [skip,setSkip] = useStickyState(false,"skipTaxStep");
     
     //reset
     const reset = () => {
@@ -57,6 +60,31 @@ const CreateDataStore : React.FC<Props> = () => {
         setShopName('');
         setTaxFields(['CGST','SGST']);
         setItems([]);
+    }
+
+    //Navigation
+    const nextPage = () => {
+        if(dataFields.length === 0){
+           setOpenAlert(true);
+           setDisplayMessage("Please add Data Fields to continue!");
+           setErrorType("error");
+            console.log(dataFields)
+        }
+        else if(!shopName){
+           setOpenAlert(true);
+           setDisplayMessage("Please enter your Shop Name!");
+           setErrorType("error");
+            console.log(shopName)
+        }
+        else{
+           console.log(dataFields)
+            setSelectStep(1)
+        }
+
+    }
+
+    const prevPage = () => {
+        setSelectStep(0);
     }
 
     //Function for change in state
@@ -72,10 +100,10 @@ const CreateDataStore : React.FC<Props> = () => {
                             
                         })
 
-                        newArr = newArr.filter((dataField: string) => dataField != '');
+                        newArr = newArr.filter((dataField: string) => dataField !== '');
                         setDataFields(newArr);
 
-                        let removeHash = hash.filter((i : number) => (i != index) )   
+                        let removeHash = hash.filter((i : number) => (i !== index) )   
                         setHash(removeHash);
 
                         let newItems = items;
@@ -136,10 +164,10 @@ const CreateDataStore : React.FC<Props> = () => {
                     }
 
                     const writeItem = (value: string,index: number,key : string) => {
-
-                        if( (parseInt(key) === dataFields.indexOf('Price')) && (!parseInt(value)) ){
+                        //Price value regex
+                        if( (parseInt(key) === dataFields.indexOf('Price')) && (!/^\d+$/.test(value)) ){
                             setOpenAlert(true);
-                            setDisplayMessage("The Price field should contain values of the number type");
+                            setDisplayMessage("The Price field should contain values of the type 'number'");
                             setErrorType("error");
                             value = '';
                         }
@@ -174,25 +202,7 @@ const CreateDataStore : React.FC<Props> = () => {
                      const writeShopValue = (value: string) => setShopName(value);
 
                      //Go to Next Page
-                     const nextPage = () => {
-                         if(dataFields.length === 0){
-                            setOpenAlert(true);
-                            setDisplayMessage("Please add Data Fields to continue!");
-                            setErrorType("error");
-                             console.log(dataFields)
-                         }
-                         else if(!shopName){
-                            setOpenAlert(true);
-                            setDisplayMessage("Please enter your Shop Name!");
-                            setErrorType("error");
-                             console.log(shopName)
-                         }
-                         else{
-                            console.log(dataFields)
-                             setSelectStep(1)
-                         }
-
-                     }
+                     
 
 
                      //Groups
@@ -224,7 +234,7 @@ const CreateDataStore : React.FC<Props> = () => {
                         console.log('del',items,toDeleteIndexes);
                      }
 
-                      return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem} nextPage = {nextPage} 
+                      return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem}  
                       
                       handleCheckChange = {handleCheckChange} chkCount = {checkedCount} deleteSelectedRows = {deleteSelectedRows}
                       
@@ -233,49 +243,89 @@ const CreateDataStore : React.FC<Props> = () => {
                       />;
                       
             case 1 : console.log('step2')
+
+                  //Remove Tax Field
                     const removeTaxField = (index : number) => {
-                        let newArr = taxFields.map((taxField : string,i : number) => {
-                            if(i !== index)
-                                return taxField
-                            else return ''
-                            
-                        })
-                        newArr = newArr.filter((el: string) => el !== '')
-                        setTaxFields([...newArr]);
+                        
+                        let newTaxField = taxFields;
+                        newTaxField = newTaxField.filter((_ : string,i : number ) => i !== index);
+
+                        let newTaxValue = taxValues;
+                        newTaxValue = newTaxValue.filter((_ : string,i : number ) => i !== index);
+
+                        let newHash = newTaxValue.map((_ : string,i : number) => i);
+
+                        setTaxFields(newTaxField);
+                        setTaxValues(newTaxValue);
+                        setTaxHash(newHash);
+                        console.log(taxFields,taxValues,taxHash)
 
                     }
+
+                    //Add Tax Field
                     const addTaxField = () => {
-                        setDataFields([...dataFields,'']);
+                        setTaxFields([...taxFields,'']);
+                        setTaxHash([...taxHash,taxHash.slice(-1)[0] + 1]);
+                        setTaxValues([...taxValues,'']);
                         console.log('added');
                     }
-                    const writeTaxValue = (value : string,index : number) => {
-                        const newArr = taxFields.map((taxField : string,i : number) => {
-                            if(i === index)
-                                return value
-                            else return taxField
-                            
+
+                    const writeFieldValue = (value : string,index : number) => {
+                        let newField = taxFields;
+                        newField = newField.map((val : string,i: number) => {
+                            if(i === index) return value 
+                            else return val
                         })
-
-                        setTaxFields([...newArr]);
-
+                        setTaxFields(newField);
+                        console.log(taxFields);
                     }
-                    const nextTaxPage = () => {
-                        if(dataFields){
-                            setSelectStep(2)
-                        }
-                        else{
+
+                    const writeTaxValue = (value : string,index : number) => {
+                        
+                        //Validation for the tax value
+                        if(!/^\d+$/.test(value)){
                             setOpenAlert(true);
-                            setDisplayMessage("Are you sure you want to continue without adding Tax Fields!");
-                            setErrorType("info");
+                            setDisplayMessage("The Tax value should be of the type 'number'");
+                            setErrorType("error");
+                            value = ''
+                        }
+                        else if(parseInt(value) > 100){
+                            setOpenAlert(true);
+                            setDisplayMessage("Please add in the percentage amount");
+                            setErrorType("error");
+                            value = '';
                         }
 
+                        if(openAlert){
+                            setOpenAlert(false);
+                            setDisplayMessage("");
+                            setErrorType("");
+                        }
+
+                        let newTaxValue = taxValues;
+                        newTaxValue = newTaxValue.map((val : string,i: number) => {
+                            if(i === index) return value 
+                            else return val
+                        })
+                        setTaxValues(newTaxValue);
+                        console.log(taxValues);
+                        
+
                     }
 
-                    const backTaxPage = () => {
-                        setSelectStep(0)
+                    //Skip tax page
+                    const handleSkip = () => setSkip(!skip);
+
+                    const printSubmission = () => {
+                        console.log('items',items);
+                        console.log('tax',taxFields,taxValues);
                     }
 
-                     return <TaxFieldsPage displayTaxFields = {taxFields} removeTaxField = {removeTaxField} addTaxField = {addTaxField} writeValue = {writeTaxValue} nextPage = {nextTaxPage} backPage = {backTaxPage} />;
+
+                     return <TaxFieldsPage taxFields = {taxFields} taxHash = {taxHash} taxValues = {taxValues} removeTaxField = {removeTaxField} addTaxField = {addTaxField} writeFieldValue = {writeFieldValue} writeTaxValue = {writeTaxValue}
+                       
+                      skipStep = {skip} handleSkip = {handleSkip} printSubmission = {printSubmission}
+                      />;
                      
             
             default: console.log('No Page Match')
@@ -309,8 +359,18 @@ const CreateDataStore : React.FC<Props> = () => {
             {
                 renderComponent(selectStep)
             }
+            
             <div className = "cancel" onClick = {()=>setOpenDialogue(true)}  ><CancelTwoToneIcon style={{fontSize: 40}} /></div>
-            <div className="stepNumber"><span>1</span> <span>2</span> <span>3</span> <span>4</span></div>
+            <Pagination count={2} page={selectStep + 1} onClick = {
+                () => {
+                    if(selectStep === 0){
+                        nextPage();
+                    }
+                    else{
+                        prevPage();
+                    }
+                }
+            }  />
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
             <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit} title = {'Warning!'} content = {'Going back to Home will erase all the progress you made so far in Creating a New DataStore. Are you sure you want to Exit?'} buttonContent = {'Exit'}  />
         </div>
