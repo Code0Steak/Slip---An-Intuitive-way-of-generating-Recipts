@@ -40,7 +40,7 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
 
             return (<div className = "dataFieldDiv" key = {index}> <Button variant="contained"  className = "dataFieldButton" >
 
-       { (dataField === 'Price') ? 
+       { (dataField === 'Price(per Item)') ? 
        
          <>
 

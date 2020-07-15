@@ -60,7 +60,7 @@ const TaxFieldsPage : React.FC<Props> = ({taxFields,taxHash,taxValues,removeTaxF
             </div>
             
         <div className="skipStep"><Button variant="contained" onClick = {() => handleSkip()}>{ (skipStep) ? 'Undo Skip' : 'Skip Step'}</Button></div>
-        <div className="confirmSubmission"><Submit displayString = "Confirm Submission" validate = {()=> printSubmission() } /></div>
+        <div className="confirmSubmission"><Submit displayString = "Submit" validate = {()=> printSubmission() } /></div>
        
         </div>
     )

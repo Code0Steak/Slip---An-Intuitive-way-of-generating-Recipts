@@ -8,6 +8,8 @@ import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
 import useStickyState from '../../custom-hooks/persistState/useStickyState';
 import CreateDataStoreDialogue from '../Dialogues/CreateDataStoreDialogues/CreateDataStoreDialogues';
 import Pagination from '@material-ui/lab/Pagination';
+import DbSubmissionDialogue from '../Dialogues/DbSubmissionDialogues/DbSubmissionDialogue';
+import DbSubmissionDialogueContent from './DbSubmissionDialogueContent';
 
 interface Props {
     
@@ -36,7 +38,7 @@ const CreateDataStore : React.FC<Props> = () => {
     const [selectStep,setSelectStep] = useStickyState(0,"step");
     
     //Data Fields Page
-    const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price'],"dataFields");
+    const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price(per Item)'],"dataFields");
     const [shopName,setShopName] = useStickyState('',"shopName");
     const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");   
     const [hash,setHash] = useStickyState([0,1,2],"hashArray");
@@ -56,7 +58,7 @@ const CreateDataStore : React.FC<Props> = () => {
         console.log('erazed')
         localStorage.clear();
         setSelectStep(0);
-        setDataFields(['ID','Item Name','Price']);
+        setDataFields(['ID','Item Name','Price(per Item)']);
         setShopName('');
         setTaxFields(['CGST','SGST']);
         setItems([]);
@@ -64,11 +66,10 @@ const CreateDataStore : React.FC<Props> = () => {
 
     //Navigation
     const nextPage = () => {
-        if(dataFields.length === 0){
-           setOpenAlert(true);
-           setDisplayMessage("Please add Data Fields to continue!");
-           setErrorType("error");
-            console.log(dataFields)
+        if(items.length < 3){
+            setOpenAlert(true);
+            setDisplayMessage("Please add at least 3 rows in your Data Table to continue to the next Step");
+            setErrorType("error");
         }
         else if(!shopName){
            setOpenAlert(true);
@@ -165,9 +166,9 @@ const CreateDataStore : React.FC<Props> = () => {
 
                     const writeItem = (value: string,index: number,key : string) => {
                         //Price value regex
-                        if( (parseInt(key) === dataFields.indexOf('Price')) && (!/^\d+$/.test(value)) ){
+                        if( (parseInt(key) === dataFields.indexOf('Price(per Item)')) && (!/^\d+$/.test(value)) ){
                             setOpenAlert(true);
-                            setDisplayMessage("The Price field should contain values of the type 'number'");
+                            setDisplayMessage("The Price field should contain values of the type 'number'. Note : If the Price field is left blank, it's value will be considered as 0");
                             setErrorType("error");
                             value = '';
                         }
@@ -315,10 +316,22 @@ const CreateDataStore : React.FC<Props> = () => {
 
                     //Skip tax page
                     const handleSkip = () => setSkip(!skip);
-
+            
                     const printSubmission = () => {
-                        console.log('items',items);
-                        console.log('tax',taxFields,taxValues);
+
+                        
+                        if((taxFields.includes('') || taxValues.includes('')) && (!skip) ){
+                            setOpenAlert(true);
+                            setDisplayMessage("Please don't leave the Tax fields incomplete during submission. If you want to skip this step of adding Tax fields, click on Skip Step");
+                            setErrorType("error");
+                        }
+                        else{
+
+                            console.log('items',items);
+                            
+                            console.log('tax',taxFields,taxValues);
+                            setOpenDbDialogue(true);
+                        }
                     }
 
 
@@ -350,6 +363,35 @@ const CreateDataStore : React.FC<Props> = () => {
     };
   const [errorType,setErrorType] = useState('');
 
+  //Confirm Submission Dialogue
+  const [openDbDialogue,setOpenDbDialogue] = useStickyState(false,"openDbDialogue");
+
+  const handleClickClose = () => {
+    setOpenDbDialogue(false);
+  }
+
+  const handleClickSubmit = () => {
+    setOpenDbDialogue(false);
+
+    let newItems = items;
+    newItems = newItems.map((item : {[x : string] : string}) => {
+        if(Object.values(item).some((i : string) => i !== '')) return item
+    })
+
+    newItems = newItems.filter((item : {[x : string] : string}) => item);
+
+    if(!skip){
+        let newTaxFields = taxFields;
+        let newHash = taxHash;
+        let newTaxValues = taxValues;
+        let taxObject = {};
+        newHash.forEach((i : number) => taxObject = {...taxObject,[newTaxFields[i]] : newTaxValues[i]} );
+        console.log('noGroupItems',taxObject);
+    }
+
+    console.log('taxFields',newItems);
+
+  }
 
     return (
         <div className = "mainOne">
@@ -373,6 +415,7 @@ const CreateDataStore : React.FC<Props> = () => {
             }  />
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
             <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit} title = {'Warning!'} content = {'Going back to Home will erase all the progress you made so far in Creating a New DataStore. Are you sure you want to Exit?'} buttonContent = {'Exit'}  />
+            <DbSubmissionDialogue open = {openDbDialogue} title = "Confirm Submission" content = {<DbSubmissionDialogueContent shopName = {shopName} />} toMatch = {`Create ${shopName} Data Store`} handleClickClose = {handleClickClose} handleClickSubmit = {handleClickSubmit} />
         </div>
     )
 }
