@@ -19,9 +19,11 @@ interface Props{
     nextPage : () => any;
     handleCheckChange : (e : boolean,index : number) => any;
     chkCount : number;
+    deleteSelectedRows : () => any;
+    toDeleteIndexes : Array<number>;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,nextPage,handleCheckChange, chkCount}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,nextPage,handleCheckChange, chkCount, deleteSelectedRows,toDeleteIndexes}) => {
 
     return(
     <div className = "dataFieldsPageMain">
@@ -74,7 +76,11 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
             {
                 ((displayDataFields.length > 1) && (
                     (displayDataFields.length - displayDataFields.filter(item => item === '').length) >= 2
-                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} writeItem = {writeItem} handleCheckChange = {handleCheckChange} chkCount = {chkCount} /> : ''
+                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} writeItem = {writeItem} handleCheckChange = {handleCheckChange} chkCount = {chkCount} deleteSelectedRows = {deleteSelectedRows}
+                
+                toDeleteIndexes = {toDeleteIndexes}
+
+                /> : ''
             }
         </div>
 

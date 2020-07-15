@@ -9,6 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -44,9 +46,11 @@ interface Props {
     writeItem : (value : string, index : number,key : string ) => any;
     handleCheckChange : (e : boolean, index : number ) => any;
     chkCount : number;
+    deleteSelectedRows : () => any;
+    toDeleteIndexes : Array<number>
 }
 
-const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChange,chkCount}) => {
+const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChange,chkCount,deleteSelectedRows,toDeleteIndexes}) => {
 
     const classes = useStyles();
   
@@ -55,8 +59,16 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChang
             <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="customized table">
                 <TableHead>
-                  Data Table  {chkCount} {((rows.length - chkCount) && chkCount ) ? 'Delete' : '' } { (chkCount >= 3) ? 'Group' : '' }
-                <TableRow>
+                 <div className="tableHead">
+                   
+                 <div>Data Table</div>  {chkCount} 
+                 
+                 <div className = "deleteButton">{(chkCount ) ? <DeleteForeverTwoToneIcon onClick = {() => deleteSelectedRows()} /> : '' }</div>
+                 
+                 
+                 </div> 
+                 
+                  <TableRow>
                   <StyledTableCell></StyledTableCell>
                     {
                         cells.filter((cell : string) => cell != '').map((cell : string,index : number) =><StyledTableCell key = {index}>{cell}</StyledTableCell> )
@@ -66,11 +78,12 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChang
                 <TableBody>
                 {rows.map((row : any,index : number) => (
                     <TableRow key={index}>
-                     <StyledTableCell > <Checkbox
+                     <StyledTableCell > {(Object.values(row).some(val => val !== '')) ?  <Checkbox
+                          checked = {toDeleteIndexes.includes(index)}
                         onChange = {(e) => handleCheckChange(e.target.checked,index)}
                         color="default"
                         inputProps={{ 'aria-label': 'checkbox with default color' }}
-                      /></StyledTableCell>
+                      /> : ''}</StyledTableCell>
                     {
                       Object.keys(row).filter((key: string) => cells[parseInt(key)] !== '' ).map((key: string,i : number) => 
                       

@@ -43,7 +43,7 @@ const CreateDataStore : React.FC<Props> = () => {
     const [createRow,setCreateRow] = useStickyState(1,"createRow");
 
     const [checkedCount,setCheckedCount] = useStickyState(0,"checkedCount"); 
-    const [toGroupIndexes,setToGroupIndexes] = useStickyState([],"toGroupIndexes");
+    const [toDeleteIndexes,setToDeleteIndexes] = useStickyState([],"toGroupIndexes");
     //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
@@ -136,23 +136,38 @@ const CreateDataStore : React.FC<Props> = () => {
                     }
 
                     const writeItem = (value: string,index: number,key : string) => {
+
+                        if( (parseInt(key) === dataFields.indexOf('Price')) && (!parseInt(value)) ){
+                            setOpenAlert(true);
+                            setDisplayMessage("The Price field should contain values of the number type");
+                            setErrorType("error");
+                            value = '';
+                        }
+                        else{
+                            if(openAlert){
+                            setOpenAlert(false);
+                            setDisplayMessage("");
+                            setErrorType("");
+                            }
+                        }
+                        
                         const old = items[index];
                         const updated = { ...old, [key]: value }
-                        const clone = [...items];
+                        let clone = [...items];
                         clone[index] = updated;
-                        setItems(clone);
-
+                        
                         //Add a new row if change is for the first time
                         if(index === createRow - 1 ){
-                            let newItems = items;
-                            let clone : any = {};
-                            Object.keys(newItems[index]).forEach((key : string) => clone = {...clone,[key] : ''}  );
-                            newItems = [...newItems, clone ];
-                            setItems(newItems);
+                            
+                            let _clone : any = {};
+                            Object.keys(old).forEach((key : string) => _clone = {..._clone,[key] : ''}  );
+                            clone = [...clone, _clone ];
+                            
                             setCreateRow(createRow + 1);
                             console.log(items,createRow);
                         }
-
+                        console.log(items,createRow);
+                        setItems(clone);
                     }
 
                     //Set Shop Name
@@ -179,26 +194,42 @@ const CreateDataStore : React.FC<Props> = () => {
 
                      }
 
+
                      //Groups
                      const handleCheckChange = (e : boolean,index : number) => {
 
                         if(e){ 
                             setCheckedCount(checkedCount + 1);
-                            setToGroupIndexes([...toGroupIndexes,index]);
+                            setToDeleteIndexes([...toDeleteIndexes,index]);
                         }
                         else {
                             setCheckedCount(checkedCount - 1);
-                            let updated = toGroupIndexes.filter((i : number) => i !== index);
-                            setToGroupIndexes(updated);
+                            let updated = toDeleteIndexes.filter((i : number) => i !== index);
+                            setToDeleteIndexes(updated);
                         }
 
-                        console.log(toGroupIndexes,checkedCount);
+                        console.log(toDeleteIndexes,checkedCount);
+                     }
+
+                     const deleteSelectedRows = () => {
+                        //  let newItems = items.filter((_ : {[x : string] : string},index : number) =>   )
+                        let newItems = items;
+                        newItems = newItems.filter((_ : {[x : string] : string},index : number) =>!toDeleteIndexes.includes(index));
+
+                        //reset some fields
+                        setCheckedCount(checkedCount - toDeleteIndexes.length);
+                        setToDeleteIndexes([]);
+                        setItems(newItems);
+                        setCreateRow(1);
+                        console.log('del',items,toDeleteIndexes);
                      }
 
                       return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem} nextPage = {nextPage} 
                       
-                      handleCheckChange = {handleCheckChange} chkCount = {checkedCount}
+                      handleCheckChange = {handleCheckChange} chkCount = {checkedCount} deleteSelectedRows = {deleteSelectedRows}
                       
+                      toDeleteIndexes = {toDeleteIndexes}
+
                       />;
                       
             case 1 : console.log('step2')
