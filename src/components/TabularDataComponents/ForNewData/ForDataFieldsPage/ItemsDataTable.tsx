@@ -11,32 +11,13 @@ import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
-const StyledTableCell = withStyles((theme: Theme) =>
-  createStyles({
-    head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }),
-)(TableCell);
-
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-      },
-    },
-  }),
-)(TableRow);
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 700,
+    minWidth: 650,
   },
 });
 
@@ -44,16 +25,19 @@ interface Props {
     cells : Array<string>;
     rows : Array<any>;
     writeItem : (value : string, index : number,key : string ) => any;
+    currencies: Array<any>;
+    currency: string;
+    handleCurrencyChange : (selectedCurrency : string) => any;
     handleCheckChange : (e : boolean, index : number ) => any;
     chkCount : number;
     deleteSelectedRows : () => any;
     toDeleteIndexes : Array<number>
 }
 
-const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChange,chkCount,deleteSelectedRows,toDeleteIndexes}) => {
+const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,currency,handleCurrencyChange,handleCheckChange,chkCount,deleteSelectedRows,toDeleteIndexes}) => {
 
     const classes = useStyles();
-  
+    
     return (
         <div>
             <TableContainer component={Paper}>
@@ -69,34 +53,67 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,handleCheckChang
                  </div> 
                  
                   <TableRow>
-                  <StyledTableCell></StyledTableCell>
+                  <TableCell></TableCell>
                     {
-                        cells.filter((cell : string) => cell != '').map((cell : string,index : number) =><StyledTableCell key = {index}>{cell}</StyledTableCell> )
+                        cells.filter((cell : string) => cell != '').map((cell : string,index : number) =><TableCell key = {index}>{(cell === "Price(/item)") ? 
+                        
+                        <TextField
+                            id="standard-select-currency"
+                            select
+                            label= {`${cell} in`}
+                            value={currency}
+                            onChange={(e) => handleCurrencyChange(e.target.value)}
+                            helperText="Please select your currency"
+                            
+                          >
+                            {currencies.map((option : any) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}  
+                              </MenuItem>
+                            ))}
+                      </TextField>
+                        
+                        
+                        : cell}</TableCell> )
                     }
                 </TableRow>
                 </TableHead>
                 <TableBody>
                 {rows.map((row : any,index : number) => (
                     <TableRow key={index}>
-                     <StyledTableCell > {(Object.values(row).some(val => val !== '')) ?  <Checkbox
+                     <TableCell > {(Object.values(row).some(val => val !== '')) ?  <Checkbox
                           checked = {toDeleteIndexes.includes(index)}
                         onChange = {(e) => handleCheckChange(e.target.checked,index)}
                         color="default"
                         inputProps={{ 'aria-label': 'checkbox with default color' }}
-                      /> : ''}</StyledTableCell>
+                      /> : ''}</TableCell>
                     {
                       Object.keys(row).filter((key: string) => cells[parseInt(key)] !== '' ).map((key: string,i : number) => 
                       
+                      (cells[parseInt(key)] === "Price(/item)") ?
                         
-                        <StyledTableCell align="right" key = {key}>
+                        <TableCell align="right" key = {key}>
                           
                           <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
                           
                             onChange = {(e) => writeItem(e.target.value,index,key)}
-                          
+                            InputProps={{
+                            startAdornment: <InputAdornment position="start">{currency}</InputAdornment>,
+                            }}
                           />
       
-                          </StyledTableCell> 
+                          </TableCell> :
+
+                              <TableCell align="right" key = {key}>
+                                                        
+                              <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
+
+                                onChange = {(e) => writeItem(e.target.value,index,key)}
+
+                              />
+
+                              </TableCell>
+
                           
                         )
                     }

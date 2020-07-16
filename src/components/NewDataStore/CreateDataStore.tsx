@@ -36,9 +36,37 @@ const CreateDataStore : React.FC<Props> = () => {
 
     /* Component Logic and Variables*/
     const [selectStep,setSelectStep] = useStickyState(0,"step");
-    
+    //Currencies
+    const currencies = [
+        {
+            value: 'INR',
+            label: '₹',
+        },
+        {
+          value: 'USD',
+          label: '$',
+        },
+        {
+          value: 'EUR',
+          label: '€',
+        },
+        {
+          value: 'BTC',
+          label: '฿',
+        },
+        {
+          value: 'JPY',
+          label: '¥',
+        },
+      ];
+      const [currency,setCurrency] = useStickyState('INR',"currency");
+
+      const handleCurrencyChange = (selectedCurrency : string) => {
+          setCurrency(selectedCurrency);
+      }
+
     //Data Fields Page
-    const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price(per Item)'],"dataFields");
+    const [dataFields,setDataFields] = useStickyState(['ID','Item Name','Price(/item)'],"dataFields");
     const [shopName,setShopName] = useStickyState('',"shopName");
     const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");   
     const [hash,setHash] = useStickyState([0,1,2],"hashArray");
@@ -58,7 +86,7 @@ const CreateDataStore : React.FC<Props> = () => {
         console.log('erazed')
         localStorage.clear();
         setSelectStep(0);
-        setDataFields(['ID','Item Name','Price(per Item)']);
+        setDataFields(['ID','Item Name','Price(/item)']);
         setShopName('');
         setTaxFields(['CGST','SGST']);
         setItems([]);
@@ -166,7 +194,7 @@ const CreateDataStore : React.FC<Props> = () => {
 
                     const writeItem = (value: string,index: number,key : string) => {
                         //Price value regex
-                        if( (parseInt(key) === dataFields.indexOf('Price(per Item)')) && (!/^\d+$/.test(value)) ){
+                        if( (parseInt(key) === dataFields.indexOf('Price(/item)')) && (!/^\d+$/.test(value)) ){
                             setOpenAlert(true);
                             setDisplayMessage("The Price field should contain values of the type 'number'. Note : If the Price field is left blank, it's value will be considered as 0");
                             setErrorType("error");
@@ -237,6 +265,8 @@ const CreateDataStore : React.FC<Props> = () => {
 
                       return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem}  
                       
+                     currencies = {currencies} currency = {currency} handleCurrencyChange = {handleCurrencyChange}
+
                       handleCheckChange = {handleCheckChange} chkCount = {checkedCount} deleteSelectedRows = {deleteSelectedRows}
                       
                       toDeleteIndexes = {toDeleteIndexes}

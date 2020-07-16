@@ -16,13 +16,16 @@ interface Props{
     writeValue : (value : string, index : number) => any;
     writeItem : (value : string, index : number,key : string ) => any;
     writeShopValue : (value: string) => any;
+    currencies: Array<any>;
+    currency: string;
+    handleCurrencyChange : (selectedCurrency : string) => any;
     handleCheckChange : (e : boolean,index : number) => any;
     chkCount : number;
     deleteSelectedRows : () => any;
     toDeleteIndexes : Array<number>;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,handleCheckChange, chkCount, deleteSelectedRows,toDeleteIndexes}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,currencies,currency,handleCurrencyChange , handleCheckChange, chkCount, deleteSelectedRows,toDeleteIndexes}) => {
 
     return(
     <div className = "dataFieldsPageMain">
@@ -40,7 +43,7 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
 
             return (<div className = "dataFieldDiv" key = {index}> <Button variant="contained"  className = "dataFieldButton" >
 
-       { (dataField === 'Price(per Item)') ? 
+       { (dataField === 'Price(/item)') ? 
        
          <>
 
@@ -75,7 +78,7 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
             {
                 ((displayDataFields.length > 1) && (
                     (displayDataFields.length - displayDataFields.filter(item => item === '').length) >= 2
-                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} writeItem = {writeItem} handleCheckChange = {handleCheckChange} chkCount = {chkCount} deleteSelectedRows = {deleteSelectedRows}
+                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} writeItem = {writeItem} currencies = {currencies} currency = {currency} handleCurrencyChange = {handleCurrencyChange} handleCheckChange = {handleCheckChange} chkCount = {chkCount} deleteSelectedRows = {deleteSelectedRows}
                 
                 toDeleteIndexes = {toDeleteIndexes}
 
