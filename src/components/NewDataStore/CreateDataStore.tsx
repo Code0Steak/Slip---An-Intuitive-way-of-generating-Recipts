@@ -410,16 +410,28 @@ const CreateDataStore : React.FC<Props> = () => {
 
     newItems = newItems.filter((item : {[x : string] : string}) => item);
 
+    let taxObject = {};
     if(!skip){
         let newTaxFields = taxFields;
         let newHash = taxHash;
         let newTaxValues = taxValues;
-        let taxObject = {};
+        
         newHash.forEach((i : number) => taxObject = {...taxObject,[newTaxFields[i]] : newTaxValues[i]} );
-        console.log('noGroupItems',taxObject);
+        
+    }
+    console.log('taxObject',taxObject);
+    console.log('noGroupItems',newItems);
+    console.log('noGroupDataFields',dataFields);
+    console.log('currency',currency);
+
+    const finalObject = {
+        'noGroupItems' : newItems,
+        'noGroupDataFields' : dataFields,
+        'taxFields' : taxObject,
+        'currency' : currency
     }
 
-    console.log('taxFields',newItems);
+    console.log(finalObject);
 
   }
 
