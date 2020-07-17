@@ -96,6 +96,8 @@ export const signUpWithEmailAndPassword = async (firstName: string,lastName: str
 //Export the entire firebase lib
 export default firebase;
 
+
+//Get User Info
 export const createUserProfileDocument = async (userAuth : any, additionalData : any) => {
   if(!userAuth) return;
 
@@ -141,6 +143,22 @@ export const createUserProfileDocument = async (userAuth : any, additionalData :
  
 }
 
+export const getUserDataStoreNames =() =>  {
+
+  const user = auth.currentUser;
+  if(user) {
+
+  const userRef = firestore.doc(`Shops/${user.uid}`);
+  
+  let snapShot : any;
+  userRef.get().then((doc) => {snapShot = doc.data();console.log(doc,doc.data())}).catch(err => snapShot = err.message);
+    console.log('snap',snapShot);
+  return snapShot
+  
+  }
+  else return [];
+
+}
 // export const SignUp = (email : string, pass : string) => {
 
     
@@ -219,6 +237,7 @@ export const storeImage = (imageFile : any) => {
     
   }
 }
+
 
 /* Create New Data Store */
 

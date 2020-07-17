@@ -12,7 +12,7 @@ import useAuthStateChange from '../../custom-hooks/authStateChange/useAuthStateC
 
 import Popover from '@material-ui/core/Popover';
 import SnackErrorAlert from '../Alerts/SnackErrorAlert';
-import {auth,updateDisplayName, storeImage} from '../../firebase/fire';
+import {auth,updateDisplayName, storeImage, getUserDataStoreNames} from '../../firebase/fire';
 
 import AddAPhotoTwoToneIcon from '@material-ui/icons/AddAPhotoTwoTone';
 import TextField from '@material-ui/core/TextField';
@@ -31,9 +31,10 @@ const Home : React.FC<Props> = ()=>{
     
 
   //User Auth  
-  const currentUser = useAuthStateChange();
-  console.log(currentUser); 
-  
+  const currentUser  = useAuthStateChange();
+  //Data Stores
+  const dataStores = getUserDataStoreNames();
+  console.log(dataStores);
   //routes
   const history = useHistory();
 
@@ -87,7 +88,8 @@ const Home : React.FC<Props> = ()=>{
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [confirmPassword,setConformPassword] = useState('');
-
+  //Existing DataStores
+  //  const [dataStores,setDataStores] = useState([]);
     //Profile Enable Fields
     const [showMore,setShowMore] = useState(false);
     const [enableNameEditingOnDoubleClick,setEnableNameEditingOnDoubleClick] = useState(false);
@@ -381,6 +383,9 @@ const Home : React.FC<Props> = ()=>{
                         <li><img src={hazzleFree} alt="" className="hazzleFreePNG"/></li>
                     </ul>
                     
+            </div>
+            <div className = "dataStores" >
+
             </div>
             <CreateDataStoreDialogues open = {openDialogue} handleCloseCancel = {handelCancelImageDialogue} handleCloseExit = {handelSubmitImageDialogue} title = {'Change Profile Image'} content = {<ImageDialogueContent saveInState={saveInState}  />} buttonContent = {'Save'} />
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />

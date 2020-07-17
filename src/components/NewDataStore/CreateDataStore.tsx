@@ -446,7 +446,7 @@ const CreateDataStore : React.FC<Props> = () => {
 
     feed = "Success" ;
     setFeedback([...feedback,feed]);
-
+    reset();
     setTimeout(()=> history.replace('/home'),3000)
 
     

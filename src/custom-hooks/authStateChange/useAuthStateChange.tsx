@@ -19,7 +19,7 @@ const useAuthStateChange = () : any => {
           createUserProfileDocument(user,null);
           
           setCurrentUser({...user});
-          console.log(user);
+          console.log(user);    
         }
         else return;
         
