@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import useStickyState from '../../../custom-hooks/persistState/useStickyState';
-
+import LinearProgress from '@material-ui/core/LinearProgress';
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -63,13 +63,15 @@ interface Props {
     open: boolean;
     title: string;
     content: any;
+    feedback: Array<string>;
     toMatch: string;
+    finalSubmission: boolean;
     handleClickClose : () => any;
     handleClickSubmit : () => any;
    
 }
 
- const DbSubmissionDialogue : React.FC<Props> = ({open,title,content,toMatch,handleClickClose,handleClickSubmit}) => {
+ const DbSubmissionDialogue : React.FC<Props> = ({open,title,content,feedback,toMatch,finalSubmission,handleClickClose,handleClickSubmit}) => {
     
     const [err,setErr] = useState(true);
     const handleChange = (value : string) => {
@@ -85,14 +87,24 @@ interface Props {
                 </DialogTitle>
                 <DialogContent dividers>
                     {
-                        content
+                      (finalSubmission ) ?
+                          
+                            (<div>
+
+                            <div>{(feedback) ? feedback.map((msg : string) =><div>{msg}</div> ) : ''}</div>
+                              <div><LinearProgress  /></div>
+                                  </div>
+                            )
+                            : 
+                            (   <>{ content }<TextField error = {err} id="standard-error" label="Enter Text"  onChange = {(e)=> handleChange(e.target.value)} /></>
+                            )
                     }
-                    <TextField error = {err} id="standard-error" label="Enter Text"  onChange = {(e)=> handleChange(e.target.value)} />
                 </DialogContent>
                 <DialogActions>
+                  {(finalSubmission) ? '' :
                 <Button disabled = {err} autoFocus onClick={handleClickSubmit} color="primary"  >
                     Confirm Submission
-                </Button>
+                </Button>}
                 </DialogActions>
             </Dialog>
          </div>

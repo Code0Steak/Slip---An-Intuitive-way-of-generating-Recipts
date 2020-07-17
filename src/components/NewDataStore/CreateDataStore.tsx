@@ -10,6 +10,8 @@ import CreateDataStoreDialogue from '../Dialogues/CreateDataStoreDialogues/Creat
 import Pagination from '@material-ui/lab/Pagination';
 import DbSubmissionDialogue from '../Dialogues/DbSubmissionDialogues/DbSubmissionDialogue';
 import DbSubmissionDialogueContent from './DbSubmissionDialogueContent';
+import CreateDataStoreSubmission from './Submission/CreateDataStoreSubmission';
+import { createNewDataStoreNoGroupItems, createNewDataStoreDataFields, createNewDataStoreTaxFields ,createNewDataStoreCurrency } from '../../firebase/fire';
 
 interface Props {
     
@@ -71,9 +73,11 @@ const CreateDataStore : React.FC<Props> = () => {
     const [items,setItems] = useStickyState([{'0' : '','1' : '', '2' : ''}],"items");   
     const [hash,setHash] = useStickyState([0,1,2],"hashArray");
     const [createRow,setCreateRow] = useStickyState(1,"createRow");
-
+    
     const [checkedCount,setCheckedCount] = useStickyState(0,"checkedCount"); 
     const [toDeleteIndexes,setToDeleteIndexes] = useStickyState([],"toGroupIndexes");
+    const [finalSubmission,setFinalSubmission] = useState(false);
+
     //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
@@ -395,13 +399,13 @@ const CreateDataStore : React.FC<Props> = () => {
 
   //Confirm Submission Dialogue
   const [openDbDialogue,setOpenDbDialogue] = useStickyState(false,"openDbDialogue");
-
+  const [feedback,setFeedback] = useStickyState([],"feedback");
   const handleClickClose = () => {
     setOpenDbDialogue(false);
   }
 
   const handleClickSubmit = () => {
-    setOpenDbDialogue(false);
+    // setOpenDbDialogue(false);
 
     let newItems = items;
     newItems = newItems.map((item : {[x : string] : string}) => {
@@ -424,14 +428,29 @@ const CreateDataStore : React.FC<Props> = () => {
     console.log('noGroupDataFields',dataFields);
     console.log('currency',currency);
 
-    const finalObject = {
-        'noGroupItems' : newItems,
-        'noGroupDataFields' : dataFields,
-        'taxFields' : taxObject,
-        'currency' : currency
-    }
+    setFinalSubmission(true);
 
-    console.log(finalObject);
+    //Send noGroupDataFields
+    let feed = createNewDataStoreDataFields(shopName,{'noGroupDataFields' : dataFields});
+    setFeedback([...feedback,feed]);
+    //Send noGroupItems
+    feed = createNewDataStoreNoGroupItems(shopName,{'noGroupItems' : newItems});
+    setFeedback([...feedback,feed]);
+    //Send taxFields
+    feed = createNewDataStoreTaxFields(shopName,{'taxFields' : taxObject});
+    if(!skip) feed = "Adding Tax Fields Skipped"
+    setFeedback([...feedback,feed]);
+    //Set currency
+    feed = createNewDataStoreCurrency(shopName,{'currency' : currency});
+    setFeedback([...feedback,feed]);
+
+    feed = "Success" ;
+    setFeedback([...feedback,feed]);
+
+    setTimeout(()=> history.replace('/home'),3000)
+
+    
+
 
   }
 
@@ -457,7 +476,7 @@ const CreateDataStore : React.FC<Props> = () => {
             }  />
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
             <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit} title = {'Warning!'} content = {'Going back to Home will erase all the progress you made so far in Creating a New DataStore. Are you sure you want to Exit?'} buttonContent = {'Exit'}  />
-            <DbSubmissionDialogue open = {openDbDialogue} title = "Confirm Submission" content = {<DbSubmissionDialogueContent shopName = {shopName} />} toMatch = {`Create ${shopName} Data Store`} handleClickClose = {handleClickClose} handleClickSubmit = {handleClickSubmit} />
+            <DbSubmissionDialogue open = {openDbDialogue} title = "Confirm Submission" content = {<DbSubmissionDialogueContent shopName = {shopName} />} feedback = {feedback} toMatch = {`Create ${shopName} Data Store`} finalSubmission = {finalSubmission} handleClickClose = {handleClickClose} handleClickSubmit = {handleClickSubmit} />
         </div>
     )
 }

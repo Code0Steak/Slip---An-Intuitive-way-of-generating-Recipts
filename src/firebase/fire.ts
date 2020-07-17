@@ -219,3 +219,60 @@ export const storeImage = (imageFile : any) => {
     
   }
 }
+
+/* Create New Data Store */
+
+export const createNewDataStoreNoGroupItems = (shopName : string,ob : any) => {
+
+  const user= auth.currentUser;
+  let err : any;
+  if(user){
+  firestore.collection("Shops").doc(`${user.uid}`).collection(`${shopName}`).doc('noGroupItems').set(ob).then(() => err = "Feed Data Table Pushed").catch((error) => err = error.message);
+
+  }
+  else{
+    err = "No User Found"
+  }
+  return err;
+} 
+
+export const createNewDataStoreDataFields = (shopName : string,ob : any) => {
+  const user= auth.currentUser;
+  let err : any;
+  if(user){
+  firestore.collection("Shops").doc(`${user.uid}`).collection(`${shopName}`).doc('dataFields').set(ob).then(() => err = "Data Fields for the Table Pushed").catch((error) => err = error.message);
+
+  }
+  else{
+    err = "No User Found"
+  }
+  return err;
+}
+
+export const createNewDataStoreTaxFields = (shopName : string,ob : any) => {
+  const user= auth.currentUser;
+  let err : any;
+  if(user){
+  firestore.collection("Shops").doc(`${user.uid}`).collection(`${shopName}`).doc('taxFields').set(ob).then(() => err = "Tax Data Pushed").catch((error) => err = error.message);
+
+  }
+  else{
+    err = "No User Found"
+  }
+  return err;
+}
+
+export const createNewDataStoreCurrency = (shopName : string,ob : any) => {
+
+  const user= auth.currentUser;
+  let err : any;
+  if(user){
+  firestore.collection("Shops").doc(`${user.uid}`).collection(`${shopName}`).doc('currency').set(ob).then(() => err = `Currency set to ${ob}`).catch((error) => err = error.message);
+
+  }
+  else{
+    err = "No User Found"
+  }
+  return err;
+
+}
