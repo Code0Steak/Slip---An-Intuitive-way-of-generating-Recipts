@@ -478,6 +478,7 @@ const CreateDataStore : React.FC<Props> = () => {
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
             <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit} title = {'Warning!'} content = {'Going back to Home will erase all the progress you made so far in Creating a New DataStore. Are you sure you want to Exit?'} buttonContent = {'Exit'}  />
             <DbSubmissionDialogue open = {openDbDialogue} title = "Confirm Submission" content = {<DbSubmissionDialogueContent shopName = {shopName} />} feedback = {feedback} toMatch = {`Create ${shopName} Data Store`} finalSubmission = {finalSubmission} handleClickClose = {handleClickClose} handleClickSubmit = {handleClickSubmit} />
+            
         </div>
     )
 }
