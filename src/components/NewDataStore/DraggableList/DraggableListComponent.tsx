@@ -11,9 +11,10 @@ interface Props{
     removeDataField : (index : number) => any;
     writeValue : (value : string, index : number) => any;
     displayOrder : Array<string>;
+    hash : Array<number>;
 }
 
-const DraggableListComponent : React.FC<Props> = ({displayDataFields,reorder,removeDataField,writeValue,displayOrder}) =>  {
+const DraggableListComponent : React.FC<Props> = ({displayDataFields,reorder,removeDataField,writeValue,displayOrder,hash}) =>  {
   
    
   const onDragEnd = (result : any) =>  {
@@ -41,8 +42,8 @@ const DraggableListComponent : React.FC<Props> = ({displayDataFields,reorder,rem
               
               {...provided.droppableProps}
             >
-              {  displayDataFields.map((dataField : string, index: number) => (
-                <Draggable key={dataField} draggableId={`${index}`} index={index}>
+              {  hash.map((i : number, index: number) => (
+                <Draggable key={i} draggableId={`${index}`} index={index}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
@@ -52,16 +53,16 @@ const DraggableListComponent : React.FC<Props> = ({displayDataFields,reorder,rem
                     >
                         <div className = "dataFieldDiv" key = {index}>
                         <Button variant="contained"  className = "dataFieldButton" >
-                        { (dataField === 'Price(/item)') ? 
+                        { (displayDataFields[i] === 'Price(/item)') ? 
        
                             <>
 
-                                <TextField disabled id={`standard-basic ${index}`} size = "small"  value = {dataField} className = "dataField" key = {index}  />
+                                <TextField disabled id={`standard-basic ${index}`} size = "small"  value = {displayDataFields[i]} className = "dataField" key = {index}  />
 
                             </>
                             
                             : <>
-                            <TextField id={`standard-basic ${index}`} size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField" key = {index}  />
+                            <TextField id={`standard-basic ${index}`} size = "small"  value = {displayDataFields[i]} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField" key = {index}  />
                                 <span onClick = {
                                     () => removeDataField(index)
                                 } ><RemoveCircleTwoToneIcon/></span>

@@ -155,7 +155,7 @@ const CreateDataStore : React.FC<Props> = () => {
                         else{
                          setDataFields([...dataFields,'']);
 
-                         let newIndex = hash.slice(-1)[0] + 1;
+                         let newIndex = Math.max.apply(Math,hash) + 1;
                          setHash([...hash, newIndex ])
                          
 
@@ -239,8 +239,7 @@ const CreateDataStore : React.FC<Props> = () => {
                         const [removed] = result.splice(startIndex, 1);
                         result.splice(endIndex, 0, removed);
                         console.log(result)
-                        setDisplayOrder(result);
-                        console.log('displayOrder',displayOrder);
+                        
                         console.log('dataFields',dataFields);
                     };
                      
@@ -277,7 +276,7 @@ const CreateDataStore : React.FC<Props> = () => {
 
                       return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem}  
                       
-                     reorder = {reorder} displayOrder = {displayOrder}
+                     reorder = {reorder} displayOrder = {displayOrder} hash = {hash}
 
                      currencies = {currencies} currency = {currency} handleCurrencyChange = {handleCurrencyChange}
 

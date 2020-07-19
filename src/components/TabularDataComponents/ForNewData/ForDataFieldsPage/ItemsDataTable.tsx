@@ -27,6 +27,7 @@ const useStyles = makeStyles({
 interface Props {
     cells : Array<string>;
     rows : Array<any>;
+    hash : Array<number>;
     writeItem : (value : string, index : number,key : string ) => any;
     currencies: Array<any>;
     currency: string;
@@ -37,7 +38,7 @@ interface Props {
     toDeleteIndexes : Array<number>
 }
 
-const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,currency,handleCurrencyChange,handleCheckChange,chkCount,deleteSelectedRows,toDeleteIndexes}) => {
+const ItemsDataTable : React.FC<Props> = ({cells,rows,hash,writeItem,currencies,currency,handleCurrencyChange,handleCheckChange,chkCount,deleteSelectedRows,toDeleteIndexes}) => {
 
     const classes = useStyles();
     
@@ -58,12 +59,12 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
                   <TableRow>
                   <TableCell></TableCell>
                     {
-                        cells.filter((cell : string) => cell != '').map((cell : string,index : number) =><TableCell key = {index}>{(cell === "Price(/item)") ? 
+                        hash.filter((cell : number) => cells[cell] != '').map((cell : number,index : number) =><TableCell key = {index}>{(cells[cell] === "Price(/item)") ? 
                         
                         <TextField
                             id="standard-select-currency"
                             select
-                            label= {`${cell} in`}
+                            label= {`${cells[cell]} in`}
                             value={currency}
                             onChange={(e) => handleCurrencyChange(e.target.value)}
                             helperText="Please select your currency"
@@ -77,7 +78,7 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
                       </TextField>
                         
                         
-                        : cell}</TableCell> )
+                        : cells[cell]}</TableCell> )
                     }
                 </TableRow>
                 </TableHead>
@@ -91,15 +92,15 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
                         inputProps={{ 'aria-label': 'checkbox with default color' }}
                       /> : ''}</TableCell>
                     {
-                      Object.keys(row).filter((key: string) => cells[parseInt(key)] !== '' ).map((key: string,i : number) => 
+                      hash.filter((key: number) => cells[key] !== '' ).map((key: number,i : number) => 
                       
-                      (cells[parseInt(key)] === "Price(/item)") ?
+                      (cells[key] === "Price(/item)") ?
                         
                         <TableCell align="right" key = {key}>
                           
-                          <TextField className={classes.input} id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
+                          <TextField className={classes.input} id={`standard-basic ${row[`${key}`]} ${key}`} label={`Item ${index + 1} - ${cells[key]}`} value = {row[`${key}`]} autoComplete = "none" key={`standard-basic ${i}`}
                           
-                            onChange = {(e) => writeItem(e.target.value,index,key)}
+                            onChange = {(e) => writeItem(e.target.value,index,`${key}`)}
                             InputProps={{
                             startAdornment: <InputAdornment position="start">{currency}</InputAdornment>,
                             }}
@@ -109,9 +110,9 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
 
                               <TableCell align="right" key = {key}>
                                                         
-                              <TextField className={classes.input} id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
+                              <TextField className={classes.input} id={`standard-basic ${row[`${key}`]} ${key}`} label={`Item ${index + 1} - ${cells[key]}`} value = {row[`${key}`]} autoComplete = "none" key={`standard-basic ${i}`}
 
-                                onChange = {(e) => writeItem(e.target.value,index,key)}
+                                onChange = {(e) => writeItem(e.target.value,index,`${key}`)}
 
                               />
 
