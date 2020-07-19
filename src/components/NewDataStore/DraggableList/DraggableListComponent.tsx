@@ -35,7 +35,7 @@ const DraggableListComponent : React.FC<Props> = ({displayDataFields,reorder,rem
   
     return (
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
+        <Droppable droppableId="droppable" direction="vertical">
           {(provided, snapshot) => (
             <div
               ref={provided.innerRef}
