@@ -29,12 +29,12 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
 
     return(
     <div className = "dataFieldsPageMain">
-        <div className="navBlock">
-            <div className = "pageName">Add Data Fields and Data Tables</div>
-            <div className="shopName"><TextField id="standard-basic" size = "small" label = "Shop Name" value = {shopName} onChange = {(e)=>writeShopValue(e.target.value)} className = "shopNameField"  /></div>   
-
+        <div className="sideBlock">
+             <div className="shopName"><TextField id="standard-basic" size = "small" label = "Shop Name" value = {shopName} onChange = {(e)=>writeShopValue(e.target.value)} className = "shopNameField"  /></div>   
+            <div className = "pageName">Add Data Fields</div>
+            <div className="pageDescription">Add the Data Fields, they will act as columns in your data table!</div>
+            
         </div>
-
         <div className = "dataFieldsDiv">
        
         {
