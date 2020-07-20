@@ -10,7 +10,6 @@ import CreateDataStoreDialogue from '../Dialogues/CreateDataStoreDialogues/Creat
 import Pagination from '@material-ui/lab/Pagination';
 import DbSubmissionDialogue from '../Dialogues/DbSubmissionDialogues/DbSubmissionDialogue';
 import DbSubmissionDialogueContent from './DbSubmissionDialogueContent';
-import CreateDataStoreSubmission from './Submission/CreateDataStoreSubmission';
 import { createNewDataStoreNoGroupItems, createNewDataStoreDataFields, createNewDataStoreTaxFields ,createNewDataStoreCurrency } from '../../firebase/fire';
 
 interface Props {
@@ -449,8 +448,6 @@ const CreateDataStore : React.FC<Props> = () => {
     reset();
     setTimeout(()=> history.replace('/home'),3000)
 
-    
-
 
   }
 
@@ -464,19 +461,24 @@ const CreateDataStore : React.FC<Props> = () => {
             }
             
             <div className = "cancel" onClick = {()=>setOpenDialogue(true)}  ><CancelTwoToneIcon style={{fontSize: 40}} /></div>
-            <Pagination count={2} page={selectStep + 1} onClick = {
-                () => {
-                    if(selectStep === 0){
-                        nextPage();
+            
+            <div className="paginationDiv">
+                <Pagination count={2} page={selectStep + 1} onClick = {
+                    () => {
+                        if(selectStep === 0){
+                            nextPage();
+                        }
+                        else{
+                            prevPage();
+                        }
                     }
-                    else{
-                        prevPage();
-                    }
-                }
-            }  />
+                } className = "pag" />
+            </div>
+            
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
             <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit} title = {'Warning!'} content = {'Going back to Home will erase all the progress you made so far in Creating a New DataStore. Are you sure you want to Exit?'} buttonContent = {'Exit'}  />
             <DbSubmissionDialogue open = {openDbDialogue} title = "Confirm Submission" content = {<DbSubmissionDialogueContent shopName = {shopName} />} feedback = {feedback} toMatch = {`Create ${shopName} Data Store`} finalSubmission = {finalSubmission} handleClickClose = {handleClickClose} handleClickSubmit = {handleClickSubmit} />
+            
         </div>
     )
 }
