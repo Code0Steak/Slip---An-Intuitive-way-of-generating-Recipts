@@ -1,11 +1,11 @@
 import React from 'react'
 import './DataFieldsPage.css'
 import TextField from '@material-ui/core/TextField';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import RemoveCircleTwoToneIcon from '@material-ui/icons/RemoveCircleTwoTone';
 import AddBoxTwoToneIcon from '@material-ui/icons/AddBoxTwoTone';
 import Button from '@material-ui/core/Button';
 import ItemsDataTable from '../../TabularDataComponents/ForNewData/ForDataFieldsPage/ItemsDataTable';
-import DraggableListComponent from '../DraggableList/DraggableListComponent';
 
 interface Props{
     displayDataFields : Array<string>;
@@ -16,8 +16,6 @@ interface Props{
     writeValue : (value : string, index : number) => any;
     writeItem : (value : string, index : number,key : string ) => any;
     writeShopValue : (value: string) => any;
-    reorder : (list : Array<string>, startIndex : number, endIndex : number) => any;
-    displayOrder: Array<string>;
     currencies: Array<any>;
     currency: string;
     handleCurrencyChange : (selectedCurrency : string) => any;
@@ -25,10 +23,9 @@ interface Props{
     chkCount : number;
     deleteSelectedRows : () => any;
     toDeleteIndexes : Array<number>;
-    hash : Array<number>;
 }
 
-const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,currencies,currency,handleCurrencyChange , handleCheckChange, chkCount, deleteSelectedRows,toDeleteIndexes,reorder,displayOrder, hash}) => {
+const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,removeDataField,addDataField,writeValue,writeItem,writeShopValue,currencies,currency,handleCurrencyChange , handleCheckChange, chkCount, deleteSelectedRows,toDeleteIndexes}) => {
 
     return(
     <div className = "dataFieldsPageMain">
@@ -38,7 +35,7 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
 
         </div>
 
-        {/* <div className = "dataFieldsDiv">
+        <div className = "dataFieldsDiv">
        
         {
         
@@ -75,18 +72,13 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
                     () => addDataField()
                 } ><AddBoxTwoToneIcon /></span></div>
 
-        </div> */}
-                <div className = "dataFieldsDiv">
-                    <DraggableListComponent displayDataFields = {displayDataFields}  reorder = {reorder} removeDataField = {removeDataField} writeValue = {writeValue} displayOrder = {displayOrder} hash = {hash} />
-                    <div className="addDataField"><span onClick = {
-                    () => addDataField()
-                } ><AddBoxTwoToneIcon /></span></div>
-                </div>
+        </div>
+
         <div className="tableDiv">
             {
                 ((displayDataFields.length > 1) && (
                     (displayDataFields.length - displayDataFields.filter(item => item === '').length) >= 2
-                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} hash = {hash} writeItem = {writeItem} currencies = {currencies} currency = {currency} handleCurrencyChange = {handleCurrencyChange} handleCheckChange = {handleCheckChange} chkCount = {chkCount} deleteSelectedRows = {deleteSelectedRows}
+                ) ) ? <ItemsDataTable cells = {displayDataFields} rows = {items} writeItem = {writeItem} currencies = {currencies} currency = {currency} handleCurrencyChange = {handleCurrencyChange} handleCheckChange = {handleCheckChange} chkCount = {chkCount} deleteSelectedRows = {deleteSelectedRows}
                 
                 toDeleteIndexes = {toDeleteIndexes}
 

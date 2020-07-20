@@ -77,7 +77,7 @@ const CreateDataStore : React.FC<Props> = () => {
     const [toDeleteIndexes,setToDeleteIndexes] = useStickyState([],"toGroupIndexes");
     const [finalSubmission,setFinalSubmission] = useState(false);
 
-    const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
+    //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
     const [taxHash,setTaxHash] = useStickyState([0,1],"taxHash");
@@ -155,7 +155,7 @@ const CreateDataStore : React.FC<Props> = () => {
                         else{
                          setDataFields([...dataFields,'']);
 
-                         let newIndex = Math.max.apply(Math,hash) + 1;
+                         let newIndex = hash.slice(-1)[0] + 1;
                          setHash([...hash, newIndex ])
                          
 
@@ -233,16 +233,7 @@ const CreateDataStore : React.FC<Props> = () => {
                     //Set Shop Name
                      const writeShopValue = (value: string) => setShopName(value);
 
-                    // Reorder List 
-                    const reorder = (list : Array<string>, startIndex : number, endIndex : number) => {
-                        const result = Array.from(list);
-                        const [removed] = result.splice(startIndex, 1);
-                        result.splice(endIndex, 0, removed);
-                        console.log(result)
-                        let reorderHash = result.map((val : string) => dataFields.indexOf(val) );
-                        setHash(reorderHash);
-                        console.log('dataFields',dataFields);
-                    };
+                     //Go to Next Page
                      
 
 
@@ -277,8 +268,6 @@ const CreateDataStore : React.FC<Props> = () => {
 
                       return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem}  
                       
-                     reorder = {reorder} displayOrder = {displayOrder} hash = {hash}
-
                      currencies = {currencies} currency = {currency} handleCurrencyChange = {handleCurrencyChange}
 
                       handleCheckChange = {handleCheckChange} chkCount = {checkedCount} deleteSelectedRows = {deleteSelectedRows}

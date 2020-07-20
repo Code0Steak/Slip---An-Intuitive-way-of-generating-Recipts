@@ -1,7 +1,7 @@
 .dataFieldsPageMain{
     display : grid;
     grid-template-columns: 100px auto 100px;
-    grid-template-rows: 290px 67px 400px 300px 400px auto;
+    grid-template-rows: 290px 67px 400px 300px auto;
 }
 /* Side Fields */
 .navBlock{
@@ -39,14 +39,11 @@
   grid-row-start: 2;
   grid-row-end: auto;
   justify-self: baseline;
-   height: 300px;
-  /*width: auto; */
+  height: 300px;
   padding: 30px;
   overflow: scroll;
-  
 }
 .dataFieldDiv{
-  
     width: 300px;
     padding: 15px;
 }
@@ -70,10 +67,4 @@
   grid-row-start: 4;
   grid-row-end: auto;
   
-}
-.test{
-  grid-column-start: 2;
-  grid-column-end: auto;
-  grid-row-start: 5;
-  grid-row-end: auto;
 }
