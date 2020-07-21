@@ -1,22 +1,22 @@
 .dataFieldsPageMain{
     display : grid;
-    grid-template-columns: 100px auto 100px;
-    grid-template-rows: 290px 67px 400px 300px auto;
+    grid-template-columns: 40% auto;
+    grid-template-rows: 200px 67px 400px 300px auto;
 }
 /* Side Fields */
-.navBlock{
+.sideBlock{
     
   background-color: #C4C4C4;
   width: auto;
   height: auto;
   grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column-end: 2;
   grid-row-start: 1;
-  grid-row-end: 2;
+  grid-row-end: 4;
 
   padding: 15px;
 
-  padding-top: 130px;
+  padding-top: 240px;
 
 }
 .pageName{
@@ -30,7 +30,13 @@
   color: #FFFFFF;
 }
 
-
+.pageDescription{
+  font-family: Roboto;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 24px;
+  
+}
 
 /*  */
 .dataFieldsDiv{
@@ -62,9 +68,8 @@
 }
 
 .tableDiv{
-  grid-column-start: 2;
-  grid-column-end: 3;
+  grid-column-start: 1;
+  grid-column-end: auto;
   grid-row-start: 4;
   grid-row-end: auto;
-  
 }
