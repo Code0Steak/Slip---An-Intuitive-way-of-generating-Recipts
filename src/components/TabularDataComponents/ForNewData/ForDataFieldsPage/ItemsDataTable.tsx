@@ -91,13 +91,13 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
                         inputProps={{ 'aria-label': 'checkbox with default color' }}
                       /> : ''}</TableCell>
                     {
-                      Object.keys(row).filter((key: string) => cells[parseInt(key)] !== '' ).map((key: string,i : number) => 
+                      Object.keys(row).filter((key: string,index : number) => cells[index] !== '' ).map((key: string,i : number) => 
                       
-                      (cells[parseInt(key)] === "Price(/item)") ?
+                      (cells[i] === "Price(/item)") ?
                         
                         <TableCell align="right" key = {key}>
                           
-                          <TextField className={classes.input} id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
+                          <TextField className={classes.input} id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[i]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
                           
                             onChange = {(e) => writeItem(e.target.value,index,key)}
                             InputProps={{
@@ -109,7 +109,7 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
 
                               <TableCell align="right" key = {key}>
                                                         
-                              <TextField className={classes.input} id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
+                              <TextField className={classes.input} id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[i]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
 
                                 onChange = {(e) => writeItem(e.target.value,index,key)}
 

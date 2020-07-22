@@ -47,12 +47,12 @@ const DataFieldsPage : React.FC<Props> = ({displayDataFields,items,shopName,remo
        
          <>
 
-            <TextField disabled id={`standard-basic ${index}`} size = "small"  value = {dataField} className = "dataField" key = {index}  />
+            <TextField disabled id={`standard-basic ${index}`}   value = {dataField} className = "dataField" key = {index}  />
 
          </>
        
        : <>
-       <TextField id={`standard-basic ${index}`} size = "small"  value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField" key = {index}  />
+       <TextField id={`standard-basic ${index}`}   value = {dataField} onChange = {(e)=>writeValue(e.target.value,index)} className = "dataField" key = {index}  />
             <span onClick = {
                 () => removeDataField(index)
             } ><RemoveCircleTwoToneIcon/></span>
