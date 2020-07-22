@@ -10,6 +10,7 @@ import CreateDataStoreDialogue from '../Dialogues/CreateDataStoreDialogues/Creat
 import Pagination from '@material-ui/lab/Pagination';
 import DbSubmissionDialogue from '../Dialogues/DbSubmissionDialogues/DbSubmissionDialogue';
 import DbSubmissionDialogueContent from './DbSubmissionDialogueContent';
+import CreateDataStoreSubmission from './Submission/CreateDataStoreSubmission';
 import { createNewDataStoreNoGroupItems, createNewDataStoreDataFields, createNewDataStoreTaxFields ,createNewDataStoreCurrency } from '../../firebase/fire';
 
 interface Props {
@@ -77,7 +78,7 @@ const CreateDataStore : React.FC<Props> = () => {
     const [toDeleteIndexes,setToDeleteIndexes] = useStickyState([],"toGroupIndexes");
     const [finalSubmission,setFinalSubmission] = useState(false);
 
-    const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
+    //Order: const [displayOrder,setDisplayOrder] = useStickyState([],"dataFieldsOrder");
     //Tax Fields Page
     const [taxFields,setTaxFields] = useStickyState(['CGST','SGST'],"taxFields");
     const [taxHash,setTaxHash] = useStickyState([0,1],"taxHash");
@@ -155,7 +156,7 @@ const CreateDataStore : React.FC<Props> = () => {
                         else{
                          setDataFields([...dataFields,'']);
 
-                         let newIndex = Math.max.apply(Math,hash) + 1;
+                         let newIndex = hash.slice(-1)[0] + 1;
                          setHash([...hash, newIndex ])
                          
 
@@ -233,16 +234,7 @@ const CreateDataStore : React.FC<Props> = () => {
                     //Set Shop Name
                      const writeShopValue = (value: string) => setShopName(value);
 
-                    // Reorder List 
-                    const reorder = (list : Array<string>, startIndex : number, endIndex : number) => {
-                        const result = Array.from(list);
-                        const [removed] = result.splice(startIndex, 1);
-                        result.splice(endIndex, 0, removed);
-                        console.log(result)
-                        let reorderHash = result.map((val : string) => dataFields.indexOf(val) );
-                        setHash(reorderHash);
-                        console.log('dataFields',dataFields);
-                    };
+                     //Go to Next Page
                      
 
 
@@ -277,8 +269,6 @@ const CreateDataStore : React.FC<Props> = () => {
 
                       return <DataFieldsPage displayDataFields = {dataFields} items = {items} shopName = {shopName} removeDataField = {removeDataField} addDataField = {addDataField} writeShopValue = {writeShopValue} writeValue = {writeValue} writeItem = {writeItem}  
                       
-                     reorder = {reorder} displayOrder = {displayOrder} hash = {hash}
-
                      currencies = {currencies} currency = {currency} handleCurrencyChange = {handleCurrencyChange}
 
                       handleCheckChange = {handleCheckChange} chkCount = {checkedCount} deleteSelectedRows = {deleteSelectedRows}
@@ -459,6 +449,8 @@ const CreateDataStore : React.FC<Props> = () => {
     reset();
     setTimeout(()=> history.replace('/home'),3000)
 
+    
+
 
   }
 
@@ -472,24 +464,19 @@ const CreateDataStore : React.FC<Props> = () => {
             }
             
             <div className = "cancel" onClick = {()=>setOpenDialogue(true)}  ><CancelTwoToneIcon style={{fontSize: 40}} /></div>
-            
-            <div className="paginationDiv">
-                <Pagination count={2} page={selectStep + 1} onClick = {
-                    () => {
-                        if(selectStep === 0){
-                            nextPage();
-                        }
-                        else{
-                            prevPage();
-                        }
+            <Pagination count={2} page={selectStep + 1} onClick = {
+                () => {
+                    if(selectStep === 0){
+                        nextPage();
                     }
-                } className = "pag" />
-            </div>
-            
+                    else{
+                        prevPage();
+                    }
+                }
+            }  />
             <SnackErrorAlert open = {openAlert} handleClose = {handleCloseAlert} displayMessage = {displayMessage} errorType = {errorType} />
             <CreateDataStoreDialogue open = {openDialogue} handleCloseCancel = {handleCloseCancel} handleCloseExit = {handleCloseExit} title = {'Warning!'} content = {'Going back to Home will erase all the progress you made so far in Creating a New DataStore. Are you sure you want to Exit?'} buttonContent = {'Exit'}  />
             <DbSubmissionDialogue open = {openDbDialogue} title = "Confirm Submission" content = {<DbSubmissionDialogueContent shopName = {shopName} />} feedback = {feedback} toMatch = {`Create ${shopName} Data Store`} finalSubmission = {finalSubmission} handleClickClose = {handleClickClose} handleClickSubmit = {handleClickSubmit} />
-            
         </div>
     )
 }
