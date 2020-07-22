@@ -19,6 +19,9 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  input: {
+    color: '#C4C4C4',
+  }
 });
 
 interface Props {
@@ -64,7 +67,7 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
                             value={currency}
                             onChange={(e) => handleCurrencyChange(e.target.value)}
                             helperText="Please select your currency"
-                            
+                            className={classes.input}
                           >
                             {currencies.map((option : any) => (
                               <MenuItem key={option.value} value={option.value}>
@@ -94,7 +97,7 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
                         
                         <TableCell align="right" key = {key}>
                           
-                          <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
+                          <TextField className={classes.input} id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
                           
                             onChange = {(e) => writeItem(e.target.value,index,key)}
                             InputProps={{
@@ -106,7 +109,7 @@ const ItemsDataTable : React.FC<Props> = ({cells,rows,writeItem,currencies,curre
 
                               <TableCell align="right" key = {key}>
                                                         
-                              <TextField id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
+                              <TextField className={classes.input} id={`standard-basic ${row[key]} ${key}`} label={`Item ${index + 1} - ${cells[parseInt(key)]}`} value = {row[key]} autoComplete = "none" key={`standard-basic ${i}`}
 
                                 onChange = {(e) => writeItem(e.target.value,index,key)}
 
