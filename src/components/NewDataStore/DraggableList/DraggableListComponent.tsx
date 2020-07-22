@@ -43,8 +43,7 @@ const DraggableListComponent : React.FC<Props> = ({displayDataFields,reorder,rem
               {...provided.droppableProps}
             >
               {  hash.map((i : number, index: number) => (
-                <div className = "dataFieldDiv" key = {index} >
-                <Draggable key={displayDataFields[i]} draggableId={displayDataFields[i]} index={index}   >
+                <Draggable key={i} draggableId={`${index}`} index={index}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
@@ -52,8 +51,8 @@ const DraggableListComponent : React.FC<Props> = ({displayDataFields,reorder,rem
                       {...provided.dragHandleProps}
                       
                     >
-                        
-                        <Button variant="contained"  className = "dataFieldButton"  >
+                        <div className = "dataFieldDiv" key = {index}>
+                        <Button variant="contained"  className = "dataFieldButton" >
                         { (displayDataFields[i] === 'Price(/item)') ? 
        
                             <>
@@ -71,10 +70,10 @@ const DraggableListComponent : React.FC<Props> = ({displayDataFields,reorder,rem
                                 
                         }
                       </Button>
-                      
+                      </div>
                     </div>
                   )}
-                </Draggable></div>
+                </Draggable>
               ))}
               {provided.placeholder}
             </div>
